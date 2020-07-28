@@ -14,7 +14,7 @@ public class App_u3 {
     String[] tel = new String[3];
     Date[] now = new Date[3];
     long currentMillis;
-    int count=0;    
+    int count=0;    dd q  q
     
     for(int i=0; i<3; i++) {
       count++;
