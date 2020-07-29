@@ -27,30 +27,30 @@ public class Test021 {
 
     keyInput.close();
     
-    if((no[0]<=no[1])==true){
-      if((no[0]<=no[2])==true){
-        if((no[0]<=no[3])==true){
-          if((no[0]<=no[4])==true){
+    if(no[0]<=no[1]){
+      if(no[0]<=no[2]){
+        if(no[0]<=no[3]){
+          if(no[0]<=no[4]){
             min = no[0];
           } else {
             min = no[4];
           }
         } else {
-          if((no[3]<=no[4])==true){
+          if(no[3]<=no[4]){
             min = no[3];
           } else {
             min = no[4];
           }
         }
       } else {
-        if((no[2]<=no[3])==true){
-          if((no[2]<=no[4])==true){
+        if(no[2]<=no[3]){
+          if(no[2]<=no[4]){
             min = no[2];
           } else {
             min = no[4];
           }
         } else {
-          if((no[3]<=no[4])==true){
+          if(no[3]<=no[4]){
             min = no[3];
           } else {
             min = no[4];
@@ -58,29 +58,29 @@ public class Test021 {
         }
       } 
     } else {
-      if((no[1]<=no[2])==true){
-        if((no[1]<=no[3])==true){
-          if((no[1]<=no[4])==true){
+      if(no[1]<=no[2]){
+        if(no[1]<=no[3]){
+          if(no[1]<=no[4]){
             min = no[1];
           } else {
             min = no[4];
           }
         } else {
-          if((no[3]<=no[4])==true){
+          if(no[3]<=no[4]){
             min = no[3];
           } else {
             min = no[4];
           }
         }
       } else {
-        if((no[2]<=no[3])==true){
-          if((no[2]<=no[4])==true){
+        if(no[2]<=no[3]){
+          if(no[2]<=no[4]){
             min = no[2];
           } else {
             min = no[4];
           }
         } else {
-          if((no[3]<=no[4])==true){
+          if(no[3]<=no[4]){
             min = no[3] ;
           } else {
             min = no[4];
@@ -89,30 +89,30 @@ public class Test021 {
       }
     }
     
-    if((no[0]>=no[1])==true){
-      if((no[0]>=no[2])==true){
-        if((no[0]>=no[3])==true){
-          if((no[0]>=no[4])==true){
+    if(no[0]>=no[1]){
+      if(no[0]>=no[2]){
+        if(no[0]>=no[3]){
+          if(no[0]>=no[4]){
             max = no[0];
           } else {
             max = no[4];
           }
         } else {
-          if((no[3]>=no[4])==true){
+          if(no[3]>=no[4]){
             max = no[3];
           } else {
             max = no[4];
           }
         }
       } else {
-        if((no[2]>=no[3])==true){
-          if((no[2]>=no[4])==true){
+        if(no[2]>=no[3]){
+          if(no[2]>=no[4]){
             max = no[2];
           } else {
             max = no[4];
           }
         } else {
-          if((no[3]>=no[4])==true){
+          if(no[3]>=no[4]){
             max = no[3];
           } else {
             max = no[4];
@@ -120,29 +120,29 @@ public class Test021 {
         }
       } 
     } else {
-      if((no[1]>=no[2])==true){
-        if((no[1]>=no[3])==true){
-          if((no[1]>=no[4])==true){
+      if(no[1]>=no[2]){
+        if(no[1]>=no[3]){
+          if(no[1]>=no[4]){
             max = no[1];
           } else {
             max = no[4];
           }
         } else {
-          if((no[3]>=no[4])==true){
+          if(no[3]>=no[4]){
             max = no[3];
           } else {
             max = no[4];
           }
         }
       } else {
-        if((no[2]>=no[3])==true){
-          if((no[2]>=no[4])==true){
+        if(no[2]>=no[3]){
+          if(no[2]>=no[4]){
             max = no[2];
           } else {
             max = no[4];
           }
         } else {
-          if((no[3]>=no[4])==true){
+          if(no[3]>=no[4]){
             max = no[3] ;
           } else {
             max = no[4];

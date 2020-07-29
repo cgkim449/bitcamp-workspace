@@ -1,14 +1,26 @@
 package com.eomcs.pms;
 
-public class App_test{
+import java.util.Scanner;
+
+public class App_test {
   
   public static void main(String[] args) {
     
-    int i = 2;
+    Scanner keyScan = new Scanner(System.in);
+    
+    System.out.print("나이가? ");
+    int age = keyScan.nextInt();
+    
+    if (age < 8)
+      System.out.println("아동입니다");
+    else if (age < 19)
+      System.out.println("미성년자입니다");
+    else if (age < 65)
+      System.out.println("성인입니다");
+    else
+      System.out.println("노인입니다");
     
     
-    System.out.println(i);
-    
+    keyScan.close();
   }
 }
-  
