@@ -20,7 +20,33 @@ public class Exam0412 {
     //    만약 31을 넘는 경우 32로 나눈 나머지 값을 비트 이동으로 간주한다.
     // => long 타입의 경우 비트 이동은 0 ~ 63까지 유효하다.
     //    만약 63을 넘는 경우 64로 나눈 나머지 값을 비트 이동으로 간주한다.
-    // 
+    
+    // 공식 :
+    // n << s
+    // s % 32 : 데이터타입비트수
+    // s & 31(0b11111) : 32로 나눈 나머지
+    // s & 0b111111 : 64로 나눈 나머지
+    
+    // If the promoted type of the left-hand operand is int, 
+    // then only the five lowest-order bits 
+    // of the right-hand operand are used as the shift distance. 
+    // It is as if the right-hand operand were subjected 
+    // to a bitwise logical AND operator & (§15.22.1) 
+    // with the mask value 0x1f (0b11111). 
+    // The shift distance actually used is therefore always 
+    // in the range 0 to 31, inclusive.
+    //
+    // If the promoted type of the left-hand operand is long, 
+    // then only the six lowest-order bits 
+    // of the right-hand operand are used as the shift distance. 
+    // It is as if the right-hand operand were subjected 
+    // to a bitwise logical AND operator & (§15.22.1) 
+    // with the mask value 0x3f (0b111111). 
+    // The shift distance actually used is therefore always 
+    // in the range 0 to 63, inclusive.
+
+    
+    //
     // => 공식:
     //    n << s
     //    - n 이 int 타입이라면, 다음 계산을 통해 s의 최종 값을 결정한다.  
@@ -28,6 +54,7 @@ public class Exam0412 {
     //      따라서 s의 값은 무조건 0 ~ 31 이다.
     //      결국 s의 값은 s % 32 의 결과와 같다.
     //
+    // 비트 이동 계산의 근거: Java Language Specification
     //    - n 이 long 타입이라면, 다음 계산을 통해 s의 최종 값을 결정한다. 
     //         s & 0b111111 = 최종 비트 이동 값
     //      따라서 s의 값은 무조건 0 ~ 63 이다.
@@ -57,24 +84,6 @@ public class Exam0412 {
     //  최종 비트 이동 값을 계산하면 다음과 같다.  
     //      3 << 65 ==> 3 << 1
     //
-    // 비트 이동 계산의 근거: Java Language Specification
-    // If the promoted type of the left-hand operand is int, 
-    // then only the five lowest-order bits 
-    // of the right-hand operand are used as the shift distance. 
-    // It is as if the right-hand operand were subjected 
-    // to a bitwise logical AND operator & (§15.22.1) 
-    // with the mask value 0x1f (0b11111). 
-    // The shift distance actually used is therefore always 
-    // in the range 0 to 31, inclusive.
-    //
-    // If the promoted type of the left-hand operand is long, 
-    // then only the six lowest-order bits 
-    // of the right-hand operand are used as the shift distance. 
-    // It is as if the right-hand operand were subjected 
-    // to a bitwise logical AND operator & (§15.22.1) 
-    // with the mask value 0x3f (0b111111). 
-    // The shift distance actually used is therefore always 
-    // in the range 0 to 63, inclusive.
     // 
   }
 }

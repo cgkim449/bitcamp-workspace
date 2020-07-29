@@ -16,7 +16,7 @@ public class App_g {
   }
   static int count =0;
   final static int MAX_LENGTH=5;
-  static Member[] members = new Member[MAX_LENGTH]; // 초기화할 필요도 없다!
+  static Member[] members = new Member[MAX_LENGTH]; 
 
   public static void main(String[] args) {
     

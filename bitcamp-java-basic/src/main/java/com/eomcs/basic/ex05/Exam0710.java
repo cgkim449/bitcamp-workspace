@@ -1,5 +1,5 @@
 package com.eomcs.basic.ex05;
-
+// assignment opertor
 //# 할당(배정,대입) 연산자  : +=  -=  *=  /=  %=  &=  |=  ^=  <<=  >>=  >>>=
 //
 public class Exam0710 {

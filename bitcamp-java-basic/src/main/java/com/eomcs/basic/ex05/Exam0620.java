@@ -15,8 +15,9 @@ public class Exam0620 {
     System.out.println(i); // 5
 
     System.out.println(i--);
-    // System.out.println(5);
+    // System.out.println(5); : i의 값을 일단 놓는다
     // i = i - 1;
+    // 출력 : 5
     System.out.println(i);
 
   }

@@ -4,12 +4,6 @@ package com.eomcs.basic.ex05;
 //
 public class Exam0431 {
   public static void main(String[] args) {
-    // 음수를 이동:
-    // - 왼쪽 빈자리는 숫자의 부호비트로 채운다.
-    //   음수니까 1로 채운다.
-    // - 2로 나눈 후에 소수점이 있으면
-    //   그 수보다 더 작은 정수값이 되는 결과가 나온다.
-    //
 
     int i = 0b11111111_11111111_11111111_10101001; // -87
 
