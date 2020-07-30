@@ -2,7 +2,7 @@ package com.eomcs.basic.ex061;
 
 //# 흐름 제어문 - for 반복문
 //
-public class Exam0413 {
+public class Exam0413g {
   public static void main(String[] args) {
     // for (변수선언 및 초기화; 조건; 증감문) 문장;
     // for (변수선언 및 초기화; 조건; 증감문) {문장1; 문장2; ...}

@@ -2,16 +2,23 @@ package com.eomcs.basic.ex05;
 
 //# 증감 연산자 : 후위(post-fix) 증감 연산자 응용 I
 //
-public class Exam0630 {
+public class Exam0630g {
   public static void main(String[] args) {
     int i = 7;
     
     int j = i++;
-    // 위 문장은 다음과 같이 실행된다.  
-    //int temp = i;
-    //i = i + 1;
-    //j = temp;
+    // 위 문장은 컴파일 될때 다음과 같은 형태로 변환된다.  
+    //    int j;
+    // => int temp;
+    // => temp = i
+    // => i = i+1;
+    // => j = temp;
     //
+    // 소스코드 그대로 설명하면 다음과 같이 설명할 수 있다
+    // 그러나 가능한 컴파일 후에 변환된 코드를 그대로 이해하는게 더 낫다.
+    // optimizing! 컴파일러가 바이트코드로 바꾸는 과정에서 최적화함
+    // 바이트코드를 다시 소스파일로 만들면 원래 내가 작성한 소스파일로 돌아가지 않는다
+    // 
     // 1) i 값을 그자리에 놓는다. 
     //    => j = 7;    
     //    => 7 값을 j에 저장할 수 없다. 
