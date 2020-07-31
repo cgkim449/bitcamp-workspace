@@ -1,11 +1,24 @@
 package com.eomcs.basic.ex06;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class Ex0410 {
   public static void main(String[] args) {
-// 되도록 i를 for문 바깥에서 선언하지 말자
+    ArrayList<String> scores = new ArrayList<>();
 
-    for (int i = 1, j = 2; i <= 10; i+=2, j+=2) {
-      System.out.printf("%d %d\n", i, j);
+    scores.add("오호라");
+    scores.add("오호라");
+    scores.add("오호라");
+    scores.add("오호라");
+    scores.add("오호라");
+    scores.add("오호라");
+    Date date = new Date();
+
+    for (String value : scores) {
+      System.out.println(value);
     }
+
+
   }
 }

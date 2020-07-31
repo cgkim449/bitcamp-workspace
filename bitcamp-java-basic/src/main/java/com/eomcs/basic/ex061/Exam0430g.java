@@ -13,5 +13,3 @@ public class Exam0430g {
     }
   }
 }
-
-

@@ -1,42 +1,64 @@
 package com.eomcs.pms;
 
+import java.sql.Date;
+import java.util.Scanner;
+
 public class App2 {
-
   public static void main(String[] args) {
-    java.util.Scanner keyInput = new java.util.Scanner(System.in);
-    System.out.print("[");
-    System.out.print("프로젝트");
-    System.out.println("]");
 
-    System.out.print("번호? ");
-    int no = keyInput.nextInt();
-    keyInput.nextLine();
-    
-    System.out.print("프로젝트명? ");
-    String project = keyInput.nextLine();
+    class Project {
+      int no;
+      String title;
+      String content;
+      Date startDate;
+      Date completedDate;
+      String worker;
+      String teammates;
+    }
+    Scanner keyScan = new Scanner(System.in);
+    final int LENGTH = 100;
+    int count = 0;
 
-    System.out.print("내용? ");
-    String content = keyInput.nextLine();
+    Project[] projects = new Project[LENGTH];
 
-    System.out.print("시작일? " );
-    java.sql.Date start = java.sql.Date.valueOf(keyInput.nextLine());
+    for (int i = 0; i < LENGTH; i++) {
 
-    System.out.print("종료일? " );
-    java.sql.Date end = java.sql.Date.valueOf(keyInput.nextLine());
+      count++;
+      Project p = new Project();
 
-    System.out.print("만든이? " );
-    String who = keyInput.nextLine();
-    
-    System.out.print("팀원? ");
-    String team = keyInput.nextLine();
-    keyInput.close(); 
-    System.out.println("-----------------------");
-    System.out.println("번호: " + no);
-    System.out.printf("프로젝트명: %s\n", project);
-    System.out.printf("내용: %s\n", content);
-    System.out.printf("시작일: %s\n", start);
-    System.out.printf("종료일: %s\n", end);
-    System.out.printf("만든이: %s\n", who);
-    System.out.printf("팀원: %s\n", team);
+      System.out.print("번호? ");
+      p.no = keyScan.nextInt();
+      keyScan.nextLine();
+      System.out.print("프로젝트명? ");
+      p.title = keyScan.nextLine();
+      System.out.print("내용? ");
+      p.content = keyScan.nextLine();
+      System.out.print("시작일? ");
+      p.startDate = Date.valueOf(keyScan.nextLine());
+      System.out.print("마감일? ");
+      p.completedDate = Date.valueOf(keyScan.nextLine());
+      System.out.print("소유자? ");
+      p.worker = keyScan.nextLine();
+      System.out.print("팀원? ");
+      p.teammates = keyScan.nextLine();
+
+      projects[i] = p;
+
+      System.out.print("계속 입력하시겠습니까? (y/N)\n");
+      String response = keyScan.nextLine();
+      if(!response.equalsIgnoreCase("y")) {
+        break;
+      }
+    }
+    System.out.println();
+
+    for (int i = 0; i < count; i++) {
+      Project p = projects[i];
+      System.out.printf("%d %s %s %s %s \n",
+          p.no, p.title, p.content, p.completedDate.toString(), p.worker);
+    }
+
+
+    keyScan.close();
   }
 }
