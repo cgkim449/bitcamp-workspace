@@ -1,85 +1,80 @@
 package com.eomcs.pms;
 
 import java.sql.Date;
+import java.util.Scanner;
 
 public class App3 {
-
+  /**
+   * @param args
+   */
   public static void main(String[] args) {
+ // 리모컨에 저장한다 도구새로사오자 어떻게뿌릴까(물을 틀자)
+    //리모컨에 저장한다 사온다 어떻게받을지에대한도구(키보드로 입력받자)
+    //변수.메서드() ( 예: state.equals("0"))
 
-    class Task {
-      int no;
-      String content;
-      Date completedDate;
-      String state;
-      String worker;
-    }
-    java.util.Scanner keyInput = new java.util.Scanner(System.in);
-    final int LENGTH = 100;
-    String project;
+
+    final int LENGTH = 10;
+    int[] no = new int[LENGTH];
+    String[] content = new String[LENGTH];
+    Date[] endDate = new Date[LENGTH];
+    String[] state = new String[LENGTH];
+    String[] author = new String[LENGTH];
+
     int count = 0;
+
+    Scanner keyInput = new Scanner(System.in);
 
     System.out.println("[작업]");
 
-    System.out.print("프로젝트? ");
-    project = keyInput.nextLine();
-
-    Task[] tasks = new Task[LENGTH];
-
     for (int i = 0; i < LENGTH; i++) {
       count++;
-      Task t = new Task();
       System.out.print("번호? ");
-      String str = keyInput.nextLine();
-      t.no = Integer.parseInt(str);
-
+      no[i] = keyInput.nextInt();
+      keyInput.nextLine();
       System.out.print("내용? ");
-      t.content = keyInput.nextLine();
-
-      System.out.print("완료일? ");
-      t.completedDate = java.sql.Date.valueOf(keyInput.nextLine());
-
-      System.out.println("상태? ");
-      System.out.println("0: 신규");
-      System.out.println("1: 진행중");
-      System.out.println("2: 완료");
+      content[i] = keyInput.nextLine();
+      System.out.print("마감일? ");
+      endDate[i] = Date.valueOf(keyInput.nextLine());
+      System.out.print("상태? \n");
+      System.out.print("0: 신규 \n");
+      System.out.print("1: 진행중 \n");
+      System.out.print("2: 완료 \n");
       System.out.print("> ");
-      t.state = keyInput.nextLine();
+
+      state[i] = keyInput.nextLine();
+      switch (state[i]) {
+        case "0":
+          state[i] = "신규";
+          break;
+        case "1":
+          state[i] = "진행중";
+          break;
+        case "2":
+          state[i] = "완료";
+          break;
+      }
 
       System.out.print("담당자? ");
-      t.worker = keyInput.nextLine();
-
-      tasks[i] = t;
+      author[i] = keyInput.nextLine();
 
       System.out.println();
-
-      System.out.print("계속 입력하시겠습니까?(y/N) ");
+      System.out.print("계속 입력하시겠습니까? (y/N) ");
       String response = keyInput.nextLine();
-      if (!response.equalsIgnoreCase("y"))
-        break;
-
       System.out.println();
+      if (!response.equalsIgnoreCase("y")) {
+        break;
+      }
+    }
+
+    System.out.println("------------------------------");
+
+    System.out.println("[프로젝트]");
+
+    for (int i = 0; i < count; i++) {
+      System.out.printf("%d, %s, %s, %s, %s\n",
+          no[i], content[i], endDate[i].toString(), state[i], author[i] );
     }
 
     keyInput.close();
-
-    System.out.println("--------------------");
-
-    System.out.printf("[%s]\n", project);
-
-    for (int i = 0; i < count; i++) {
-      Task t = tasks[i];
-      switch (t.state) {
-        case "0":
-          t.state = "신규";
-          break;
-        case "1":
-          t.state = "진행중";
-          break;
-        default:
-          t.state = "완료";
-      }
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          t.no, t.content, t.completedDate, t.state, t.worker);
-    }
   }
 }

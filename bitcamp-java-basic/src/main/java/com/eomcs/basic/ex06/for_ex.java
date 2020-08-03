@@ -14,5 +14,22 @@ public class for_ex {
 
     }
     // 기본
+    System.out.println("------------------------------------");
+
+    for (int i = 0, k = 1, j = 2; i < 10; i++, j--, k += 2)
+      System.out.println("(%d, %d, %d\n", i, j, k);
+
+    System.out.println("------------------------------------");
+
+    for (int i = 1; i <= 10; i++){
+      for (int j = 1; j <= i; j++) {
+        if (j % 2 == 0)
+          continue; // 변수증가문으로 이동한다
+        System.out.println(j+"");
+      }
+      System.out.println();
+    }
+
+    System.out.println("------------------------------------");
   }
 }
