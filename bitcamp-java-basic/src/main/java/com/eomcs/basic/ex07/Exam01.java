@@ -1,8 +1,6 @@
-// 실행속도가 느려지더라도 가독성을 위해서 최대한 메서드를 활용한다
-// 1. printStar, printSpace
-// + spaceCount
-
 package com.eomcs.basic.ex07;
+// 실행속도가 느려지더라도 가독성을 위해서 최대한 메서드를 활용한다
+// spaceCount 같은거!!!9한줄밖에 안되는 아주 간단한 메서드이지만 가독성을 위해 만든다)
 
 import java.util.Scanner;
 
@@ -33,7 +31,7 @@ public class Exam01 {
   }
 
   static void printSpace() {
-    while (spacePrint <= spaceCount(totalLength, starCount)) { // 이거!!!!!!!!!!!!!!!
+    while (spacePrint <= spaceCount(totalLength, starCount)) { // 이거!!
       System.out.print(" ");
       spacePrint++;
     }

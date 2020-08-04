@@ -24,7 +24,7 @@ public class for_ex {
     for (int i = 1; i <= 10; i++){
       for (int j = 1; j <= i; j++) {
         if (j % 2 == 0)
-          continue; // 변수증가문으로 이동한다
+          continue; // 변수증가문으로 이동한다, 다른거는 조건문으로 이동
         System.out.println(j+"");
       }
       System.out.println();

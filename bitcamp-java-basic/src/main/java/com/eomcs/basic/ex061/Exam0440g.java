@@ -15,6 +15,5 @@ public class Exam0440g {
 
     for (int i = 0; i < names.length; i++)
       System.out.println(names[i]);
-
   }
 }
