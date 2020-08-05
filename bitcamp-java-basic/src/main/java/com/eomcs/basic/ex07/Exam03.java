@@ -16,7 +16,7 @@ public class Exam03 {
 
     m1(a); // call by vlaue
 
-    System.out.println(a); // 메서드 안에서만 쓰이는 변수, 로컬변수!, 메서드 호출이 끝나면 사라진다
+    System.out.println(a);
 
     a = 300;
 
@@ -31,7 +31,6 @@ public class Exam03 {
 
     m2(arr); // call by reference // java에서는 primitive 변수의 주소를 넘길수는 없다!
     // 인스턴스로 만들어서 묶어서 넘길수는 있다
-    // 자바에서 주소는 배열, 등
 
     System.out.println(arr[0]);
     System.out.println(arr[1]);
@@ -53,7 +52,7 @@ public class Exam03 {
   }
 
   static void m1(int a) {
-    a = 100; // 메서드 안에서만 쓰이는 변수, 로컬변수!, 메서드 호출이 끝나면 사라진다
+    a = 100;
   }
 
   static void m2(int[] arr) {

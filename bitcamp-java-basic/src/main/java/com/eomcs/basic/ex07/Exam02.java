@@ -11,6 +11,17 @@
 
 // 5. boolean 뭐냐, boolean 뿐만이 아니라 문자열 연결해주는 + 이거 다른거에도 잘됨
 
+// 매서드 시그너처(method signature) : 메서드명, 변수 선언
+// 매서드 바디(method body) : 메서드 블럭
+// ## 메서드 종류
+// 1) 클래스 메서드
+// - 클래스에 소속되어있다
+// - 모든 인스턴스에 대해 사용할 수 있다
+// - static이 붙는다
+// 2) 인스턴스 메서드
+// - 인스턴스에 대ㅐ 사용할 수 있다.
+// - static이 붙지않는다
+
 package com.eomcs.basic.ex07;
 
 public class Exam02 {
