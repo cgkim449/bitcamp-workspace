@@ -1,11 +1,12 @@
+// # 여러개의 생성자 정의
 // # 당연히 다양한 핸드폰 초기설정들이 있다, 당연히 명령은 다 똑같이 '초기설정', 설정값만 다르다
 
-// 설명 : 
+// 설명 :
 // new SmartPhone();
 // new SmartPhone(100);
 // new SmartPhone("aaa", 100);
-// new SmartPhone(100, "aaa"); // 질문 : 이거 파라미터 순서 중요??
-// 파라미터는 다르지만 메서드명이 다 SmartPhone(클래스명)으로 같다
+// new SmartPhone(100, "aaa");
+// 파라미터는 다르지만 메서드명이 다 SmartPhone(클래스명)으로 같다 void인데 void 빼야됨
 
 
 
@@ -28,11 +29,11 @@ public class Exam0422 {
       System.out.println("SmartPhone(int) 생성자 호출됨!");
     }
 
-    public SmartPhone(String str, int a) {
+    public SmartPhone(String str, int a) { // String과 int를 순서대로 받는 생성자
       System.out.println("SmartPhone(String, int) 생성자 호출됨!");
     }
 
-    public SmartPhone(int a, String str) {
+    public SmartPhone(int a, String str) { // int와 String을 순서대로 받는 생성자
       System.out.println("SmartPhone(int, String) 생성자 호출됨!");
     }
   }

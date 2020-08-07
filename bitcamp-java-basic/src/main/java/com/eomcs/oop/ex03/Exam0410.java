@@ -1,9 +1,10 @@
-// # 핸드폰 초기설정인데 하라는 설정(볼륨,밝기 등)은 안하고 엉뚱한걸(화면에 출력) 할 수 있다
+// # 특별한 인스턴스 메서드 - 생성
+// # 핸드폰 초기설정인데 설정(볼륨,밝기 등)도하고 출력도 할수있고 소리도 낼수있음
 //
-// 설명 : 
-// 생성자는 메서드라는걸 잊지말자
+// 설명 :
+// 생성자도 인스턴스 메서드라는걸 잊지말자
 
-// # 생성자 
+// # 생성자
 // - 비유 : 핸드폰 초기설정
 
 
@@ -19,18 +20,18 @@ public class Exam0410 {
     int math;
     int sum;
     float average;
-    
+
     public Score() {
       System.out.println("Score()");
     }
-    
+
     public void compute() {
       sum = kor + eng + math;
       average = sum / 3f;
     }
   }
   public static void main(String[] args) {
-    
+
     Score s1 = new Score();
     Score s3 = new Score();
   }

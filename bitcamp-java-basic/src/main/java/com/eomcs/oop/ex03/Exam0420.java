@@ -1,7 +1,7 @@
-// # 생성자 당위성 : Score s = new Score("giorno", 100, 90, 70); 
-// 배열처럼 이렇게 선언 동시에 정의하고 싶어서
+// # 생성자 문법의 당위성 : Score s = new Score("giorno", 100, 90, 70);
+// 배열처럼 이렇게 간결하게 선언 동시에 정의하고 싶어서
 //
-// 설명 : 
+// 설명 :
 // 일일히 인스턴스변수에 값넣는거 너무 귀찮아서 init() 아래처럼 만들었는데
 // Score s1 = new Score();
 // s1.init("giorno", 100, 90, 77);
@@ -20,7 +20,7 @@ public class Exam0420 {
     int math;
     int sum;
     float average;
-    
+
     void init(String name, int kor, int eng, int math) {
       System.out.println("Score(String,int,int,int) 호출!");
       this.name = name;
@@ -29,7 +29,7 @@ public class Exam0420 {
       this.math = math;
       this.compute();
     }
-    
+
     public void compute() {
       sum = kor + eng + math;
       average = sum / 3f;
