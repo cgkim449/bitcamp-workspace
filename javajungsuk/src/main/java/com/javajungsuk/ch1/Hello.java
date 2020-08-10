@@ -1,5 +1,6 @@
-class Hello { 
-      public static void main(String[] args) { 
-            System.out.println("Hello, world."); // È­¸é¿¡ ±ÛÀÚ¸¦ Ãâ·ÂÇÑ´Ù.
-      } 
-} 
+package com.javajungsuk.ch1;
+class Hello {
+      public static void main(String[] args) {
+            System.out.println("Hello, world."); // È­ï¿½é¿¡ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+      }
+}
