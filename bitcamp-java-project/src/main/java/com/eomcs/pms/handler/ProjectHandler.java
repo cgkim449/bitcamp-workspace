@@ -5,7 +5,7 @@ import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  static class Project { //
+  static class Project {
     int no;
     String title;
     String content;
@@ -14,16 +14,13 @@ public class ProjectHandler {
     String owner;
     String members;
   }
-
   static final int LENGTH = 100;
-  static Project[] list = new Project[LENGTH];
   static int size = 0;
+  static Project[] list = new Project[LENGTH];
 
   public static void add() {
     System.out.println("[프로젝트 등록]");
-
     Project p = new Project();
-
     p.no = Prompt.inputInt("번호? ");
     p.title = Prompt.inputString("프로젝트명? ");
     p.content = Prompt.inputString("내용? ");
@@ -39,8 +36,7 @@ public class ProjectHandler {
     System.out.println("[프로젝트 목록]");
 
     for (int i = 0; i < size; i++) {
-      Project p = new Project();
-          p = list[i];
+      Project p = list[i];
       System.out.printf("%d, %s, %s, %s, %s\n",
           p.no, p.title, p.startDate, p.endDate, p.owner);
     }

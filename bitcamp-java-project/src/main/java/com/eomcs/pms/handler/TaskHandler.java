@@ -4,7 +4,6 @@ import java.sql.Date;
 import com.eomcs.util.Prompt;
 
 public class TaskHandler {
-
   static class Task {
     int no;
     String content;
@@ -14,14 +13,12 @@ public class TaskHandler {
   }
 
   static final int LENGTH = 100;
-  static Task[] list = new Task[LENGTH];
   static int size = 0;
+  static Task[] list = new Task[LENGTH];
 
   public static void add() {
     System.out.println("[작업 등록]");
-
     Task t = new Task();
-
     t.no = Prompt.inputInt("번호? ");
     t.content = Prompt.inputString("내용? ");
     t.deadline = Prompt.inputDate("마감일? ");

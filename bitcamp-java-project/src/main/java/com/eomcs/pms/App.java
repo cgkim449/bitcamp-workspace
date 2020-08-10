@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class App {
 
   public static void main(String[] args) {
+
     loop:
       while (true) {
         String command = Prompt.inputString("명령> ");
@@ -40,6 +41,7 @@ public class App {
         }
         System.out.println();
       }
-  Prompt.close();
+
+    Prompt.close();
   }
 }
