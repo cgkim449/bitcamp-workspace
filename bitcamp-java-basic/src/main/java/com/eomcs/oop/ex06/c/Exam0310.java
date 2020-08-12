@@ -1,4 +1,4 @@
-// 오버라이딩(overriding) - 오버라이딩할 때 접근 범위 조정하기
+// 오버라이딩할 때 접근 범위 조정하기
 package com.eomcs.oop.ex06.c;
 
 public class Exam0310 {

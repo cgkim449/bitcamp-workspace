@@ -1,9 +1,10 @@
 // 메서드 오버로딩(overloading) - 응용 I
+// 메서드 오버로딩의 예 : println(), Integer.valueOf()
 package com.eomcs.oop.ex06.b;
 
 public class Exam0310 {
   public static void main(String[] args) {
-    
+
     // 다양한 파라미터 값을 받는 println()
     System.out.println(100);
     System.out.println(true);

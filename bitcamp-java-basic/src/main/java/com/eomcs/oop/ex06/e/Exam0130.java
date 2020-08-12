@@ -1,4 +1,5 @@
 // final 사용법: 오버라이딩 불가!
+// 메서드에 final을 붙이면 서브 클래스에서 오버라이딩할 수 없다
 package com.eomcs.oop.ex06.e;
 
 public class Exam0130 {
