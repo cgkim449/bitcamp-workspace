@@ -42,7 +42,7 @@ public class Exam0115 {
     ((Sedan)c).auto = true;    // OK!
 
     // => 또는 인스턴스의 원래 클래스 레퍼런스에 저장한 다음에 사용.
-    Sedan s = (Sedan)c; // c에는 이미 어느 필드까지만 갈 수 있다는 설계가 있는 것이다
+    Sedan s = (Sedan)c; // c에는 이미 어느 필드까지만 갈 수 있다는 정보가 있는 것이다
     // Car의 필드에만 갈 수 있다는
     s.sunroof = true;
     s.auto = true;
