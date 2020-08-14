@@ -13,7 +13,7 @@ public class Exam0141 {
     // => 이런 경우 toString()을 호출할 때 String 클래스에서부터 찾는다.
     // => String 클래스가 toString()을 오버라이딩 했기 때문에
     // 결국 이 오버라이딩 메서드를 호출할 것이다.
-    String x2 = obj.toString(); // x2 <= 100
+    String x2 = obj.toString(); // x2 <= 100 // (그림 : 찾아 올라감)
 
     System.out.println(x1 == x2);
 

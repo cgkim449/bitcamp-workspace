@@ -1,4 +1,4 @@
-// String - toString()
+// String - toString() : this주소를 그대로 리턴하게 오버라이딩함
 package com.eomcs.corelib.ex02;
 
 public class Exam0140 {
@@ -11,7 +11,7 @@ public class Exam0140 {
     // => this 주소를 그대로 리턴한다.
     System.out.println(s1 == s2); // true
 
-    System.out.println(s1);
+    System.out.println(s2);
   }
 }
 

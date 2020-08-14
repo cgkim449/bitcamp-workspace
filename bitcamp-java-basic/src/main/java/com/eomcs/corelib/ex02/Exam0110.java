@@ -1,4 +1,6 @@
 // String - 문자열 객체 만들기
+// char 배열 utf-16으로 그대로 저장
+// jdk9부터 byte 배열 영어만있을땐 1바이트로 하자
 package com.eomcs.corelib.ex02;
 
 public class Exam0110 {

@@ -1,4 +1,6 @@
 // String - mutable vs immutable 객체
+
+// (buffer : 공간이있다)
 package com.eomcs.corelib.ex02;
 
 public class Exam0161 {

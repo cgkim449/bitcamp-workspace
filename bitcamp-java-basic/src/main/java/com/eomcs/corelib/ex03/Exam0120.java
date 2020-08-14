@@ -1,4 +1,8 @@
 // java.util.ArrayList와 비교
+
+//배열 목록
+// 인스턴스를 특정위치에 등록, 조회, 삽입, 제거
+
 package com.eomcs.corelib.ex03;
 
 import java.util.ArrayList;
@@ -13,14 +17,14 @@ public class Exam0120 {
 
     print(list);
 
-    list.remove(2); // aaa, bbb, ddd,
+    list.remove(2); // aaa, bbb, ddd, // 주소를 지움 => 가비지 만듬
     print(list);
 
     list.remove(0); // bbb, ddd,
     print(list);
 
-    // 유효한 인덱스가 아니면 예외 발생시킨다!
-    // list.remove(4); // 실행 오류!
+//     유효한 인덱스가 아니면 예외 발생시킨다!
+//     list.remove(4); // 실행 오류!
     print(list);
 
     list.add(1, "xxx"); // bbb, xxx, ddd,
@@ -32,7 +36,7 @@ public class Exam0120 {
     list.add(5, "ttt"); // zzz, bbb, yyy, xxx, ddd, ttt
     print(list);
 
-    list.set(1, "aaa"); // zzz, aaa, yyy, xxx, ddd
+    list.set(1, "aaa"); // zzz, aaa, yyy, xxx, ddd, ttt
     print(list);
 
     list.add("ccc"); // zzz, aaa, yyy, xxx, ddd, ttt, ccc
@@ -42,9 +46,9 @@ public class Exam0120 {
     print(list);
   }
 
-  static void print(ArrayList list) {
+  static void print(ArrayList list) { // 꺼낸다보단 조회
     for (int i = 0; i < list.size(); i++) {
-      System.out.print(list.get(i) + ", ");
+      System.out.print(list.get(i) + ", "); // toString() 호출
     }
     System.out.println();
   }
