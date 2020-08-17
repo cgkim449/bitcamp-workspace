@@ -1,5 +1,9 @@
+// 목록에 있는 내용물의 인덱스를 알아낼때도 equals()를 사용한다
+
 // indexOf()의 사용
 package com.eomcs.corelib.ex03;
+
+import java.util.ArrayList;
 
 public class Exam0310 {
   public static void main(String[] args) {

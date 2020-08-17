@@ -1,5 +1,9 @@
+// 목록에 내용물 유무를 검사할 때 contains()인데 equals()로 검사함
+
 // contains() 와 equals()의 관계
 package com.eomcs.corelib.ex03;
+
+import java.util.ArrayList;
 
 public class Exam0210 {
   public static void main(String[] args) {
@@ -8,12 +12,17 @@ public class Exam0210 {
     String s3 = new String("ccc");
     String s4 = new String("bbb"); // s2 != s4
 
+
     ArrayList list = new ArrayList();
     list.add(s1);
     list.add(s2);
     list.add(s3);
     print(list);
 
+    // contains()
+    // - 해당 인스턴스와 같은 객체가 있는지 알아낸다
+    // - 단 인스턴스 주소를 비교하는 것이 아니라
+    // - equals의 결과가 true인지 비교한다
     // contains() 가 값을 비교할 때는
     // equals()의 결과가 true 인지 비교한다.
     // 결론!
