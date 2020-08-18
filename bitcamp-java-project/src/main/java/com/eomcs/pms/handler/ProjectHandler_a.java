@@ -3,7 +3,7 @@ package com.eomcs.pms.handler;
 import java.sql.Date;
 import com.eomcs.util.Prompt;
 
-public class ProjectHandler {
+public class ProjectHandler_a {
 
   // 프로젝트 데이터
   static class Project {
@@ -29,7 +29,14 @@ public class ProjectHandler {
     project.content = Prompt.inputString("내용? ");
     project.startDate = Prompt.inputDate("시작일? ");
     project.endDate = Prompt.inputDate("종료일? ");
-    project.owner = Prompt.inputString("만든이? ");
+    while (true) {
+      String name = Prompt.inputString("만든이? ");
+      if (MemberHandler.findByName(name) != null) {
+        project.owner = name;
+        break;
+      }
+      System.out.println("등록된 회원이 아닙니다.");
+    }
     project.members = Prompt.inputString("팀원? ");
 
     list[size++] = project;

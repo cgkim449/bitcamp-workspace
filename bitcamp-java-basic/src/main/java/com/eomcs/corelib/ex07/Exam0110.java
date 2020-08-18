@@ -48,7 +48,7 @@ public class Exam0110 {
   }
 
   static void print(HashSet set) {
-    Object[] values = set.toArray();
+    Object[] values = set.toArray(); // get()이 없다
     for (Object value : values) {
       System.out.print(value + ", ");
     }

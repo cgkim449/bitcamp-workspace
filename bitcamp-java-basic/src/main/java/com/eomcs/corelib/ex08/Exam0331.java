@@ -31,7 +31,4 @@ public class Exam0331 {
       System.out.println(iterator.next());
     }
   }
-
 }
-
-

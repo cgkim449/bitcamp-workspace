@@ -27,12 +27,9 @@ public class Exam0320 {
 
     // Set 객체를 통해 key 를 꺼낼 때,
     // 그 순간의 HashSet에 있는 key를 꺼낸다.
-    // 즉 keySet()을 호출할 때 모든 key를 미리 목록을 만들어 리턴하지 않는다.
+    // 즉 keySet()을 호출할 때 모든 key를 미리 목록을 만들어 리턴하지 않는다.!
     for (Object key : keys) {
       System.out.println(key);
     }
   }
-
 }
-
-
