@@ -12,23 +12,15 @@ import com.eomcs.util.Prompt;
 // 2) `/board/list` 명령을 처리한다.
 // 3) 새 게시판을 추가한다.
 // 4) 새 게시판을 4개 더 추가한다.
-public class App {
+public class App_a {
 
   public static void main(String[] args) {
 
-    // 외부에서 값을 받을 필요가 없다
     MemberHandler memberHandler = new MemberHandler();
-    // ProjectHandler를 생성할 때 필요로 하는 의존객체를 전달한다
-    // => 이렇게 생성자를 명확하게 지정하면
-    //    객체를 생성하는 개발자에게 인스턴스 사용에 필요한
-    //    값이나 의존 객체 주입을 강제하는 효과가 있다
-    //    (기본생성자가 없으므로 기본생성자를 쓰면 컴파일러 에러가 뜨기때문에)
-
-
-    ProjectHandler projectHandler = new ProjectHandler(memberHandler);
+    ProjectHandler projectHandler = new ProjectHandler();
     // ProjectHandler의 의존객체 주입을 막는다
 //     projectHandler.memberHandler = memberHandler;
-    TaskHandler taskHandler = new TaskHandler(memberHandler);
+    TaskHandler taskHandler = new TaskHandler();
     // TaskHandler의 의존객체 주입을 막는다
 //     taskHandler.memberHandler = memberHandler;
     BoardHandler boardHandler = new BoardHandler();

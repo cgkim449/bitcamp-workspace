@@ -1,12 +1,24 @@
 package com.eomcs.pms.handler;
 
-import com.eomcs.pms.domain.Member;
+import java.sql.Date;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
   // 회원 데이터
+  static class Member {
+    int no;
+    String name;
+    String email;
+    String password;
+    String photo;
+    String tel;
+    Date registeredDate;
+  }
+  static final int LENGTH = 100;
 
+  Member[] list = new Member[LENGTH];
+  int size = 0;
 
   public void add() {
     System.out.println("[회원 등록]");
