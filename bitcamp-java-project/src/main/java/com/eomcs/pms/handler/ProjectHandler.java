@@ -1,30 +1,24 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import com.eomcs.pms.domain.Project;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  static class Project {
-    int no;
-    String title;
-    String content;
-    Date startDate;
-    Date endDate;
-    String owner;
-    String members;
-  }
-  static final int LENGTH = 100; // 공통으로 사용할 값을 보관하는 변수는 스태틱 멤버(클래스 멤버)로 만든다.
+  // 목록을 다루는 객체를 지정할 때,
+  // => 특정 클래스(예: AbstractList, LinkedList, ArrayList)를 지정하는 대신에,
+  // => 사용 규칙(예: List)을 지정함으로써
+  //    더 다양한 타입의 객체로 교체할 수 있게 만든다.
+  // => `List` 규칙을 따르는 객체라면 어떤 클래스의 객체든지 사용할 수 있다.
+  //    결국 유지보수를 더 유연하게 하기 위함이다.
+  List<Project> projectList;
+  MemberHandler memberHandler;
 
-  Project[] list = new Project[LENGTH]; // 개별적으로 값을 보관해야 하는 변수는 인스턴스 멤버(non-static 멤버)로 만든다.
-  int size = 0;
-
-  //외부에서 직접 이 변수를 사용하지 않기 때문에
-  // public으로 공개한 것을 취소한다
-  private MemberHandler memberHandler; // 의존객체 레퍼런스 선언 : 메서드들이 사용한다
-
-  // 인스턴스 변수들을 유효한 값으로 초기화시키는
-  public ProjectHandler(MemberHandler memberHandler) {
+  public ProjectHandler(List<Project> list, MemberHandler memberHandler) {
+    this.projectList = list;
     this.memberHandler = memberHandler;
   }
 
@@ -32,11 +26,11 @@ public class ProjectHandler {
     System.out.println("[프로젝트 등록]");
 
     Project project = new Project();
-    project.no = Prompt.inputInt("번호? ");
-    project.title = Prompt.inputString("프로젝트명? ");
-    project.content = Prompt.inputString("내용? ");
-    project.startDate = Prompt.inputDate("시작일? ");
-    project.endDate = Prompt.inputDate("종료일? ");
+    project.setNo(Prompt.inputInt("번호? "));
+    project.setTitle(Prompt.inputString("프로젝트명? "));
+    project.setContent(Prompt.inputString("내용? "));
+    project.setStartDate(Prompt.inputDate("시작일? "));
+    project.setEndDate(Prompt.inputDate("종료일? "));
 
     while (true) {
       String name = Prompt.inputString("만든이?(취소: 빈 문자열) ");
@@ -45,7 +39,7 @@ public class ProjectHandler {
         System.out.println("프로젝트 등록을 취소합니다.");
         return;
       } else if (memberHandler.findByName(name) != null) {
-        project.owner = name;
+        project.setOwner(name);
         break;
       }
 
@@ -58,7 +52,7 @@ public class ProjectHandler {
 
       if (name.length() == 0) {
         break;
-      } else if (memberHandler.findByName(name) != null) { // 의존객체
+      } else if (memberHandler.findByName(name) != null) {
         if (members.length() > 0) {
           members.append(",");
         }
@@ -67,30 +61,149 @@ public class ProjectHandler {
         System.out.println("등록된 회원이 아닙니다.");
       }
     }
-    project.members = members.toString();
+    project.setMembers(members.toString());
 
-    list[size++] = project;
-    // MemberHandler의 인스턴스 필드가 외부로부터의 접근을 막지 않기 때문에
-    // 다음과 같이 임의의 값으로 변경될 수 있다
-    // => 문제는 이렇게 변경된 값을 사용하는 다른 쪽에서 영향을 받을 수 있다
-//    memberHandler.size = 0;
-    // 이렇게 무효한 값으로 변경하는 것을 막지 못한다면?
-    // 코드를 작성한 의도와 다르게 동작할 수 있다
-    //project.add 했을뿐인데
+    projectList.add(project);
   }
 
   public void list() {
     System.out.println("[프로젝트 목록]");
 
-    for (int i = 0; i < size; i++) {
-      Project project = list[i];
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Project> iterator = projectList.iterator();
+
+    while (iterator.hasNext()) {
+      Project project = iterator.next();
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
-          project.no,
-          project.title,
-          project.startDate,
-          project.endDate,
-          project.owner,
-          project.members);
+          project.getNo(),
+          project.getTitle(),
+          project.getStartDate(),
+          project.getEndDate(),
+          project.getOwner(),
+          project.getMembers());
     }
+  }
+
+  public void detail() {
+    System.out.println("[프로젝트 상세보기]");
+    int no = Prompt.inputInt("번호? ");
+    Project project = findByNo(no);
+
+    if (project == null) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }
+
+    System.out.printf("프로젝트명: %s\n", project.getTitle());
+    System.out.printf("내용: %s\n", project.getContent());
+    System.out.printf("기간: %s ~ %s\n", project.getStartDate(), project.getEndDate());
+    System.out.printf("만든이: %s\n", project.getOwner());
+    System.out.printf("팀원: %s\n", project.getMembers());
+  }
+
+  public void update() {
+    System.out.println("[프로젝트 변경]");
+    int no = Prompt.inputInt("번호? ");
+    Project project = findByNo(no);
+
+    if (project == null) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }
+
+    String title = Prompt.inputString(
+        String.format("프로젝트명(%s)? ", project.getTitle()));
+    String content = Prompt.inputString(
+        String.format("내용(%s)? ", project.getContent()));
+    Date startDate = Prompt.inputDate(
+        String.format("시작일(%s)? ", project.getStartDate()));
+    Date endDate = Prompt.inputDate(
+        String.format("종료일(%s)? ", project.getEndDate()));
+
+    String owner = null;
+    while (true) {
+      String name = Prompt.inputString(
+          String.format("만든이(%s)?(취소: 빈 문자열) ", project.getOwner()));
+      if (name.length() == 0) {
+        System.out.println("프로젝트 등록을 취소합니다.");
+        return;
+      } else if (memberHandler.findByName(name) != null) {
+        owner = name;
+        break;
+      }
+      System.out.println("등록된 회원이 아닙니다.");
+    }
+
+    StringBuilder members = new StringBuilder();
+    while (true) {
+      String name = Prompt.inputString(
+          String.format("팀원(%s)?(완료: 빈 문자열) ", project.getMembers()));
+      if (name.length() == 0) {
+        break;
+      } else if (memberHandler.findByName(name) != null) {
+        if (members.length() > 0) {
+          members.append(",");
+        }
+        members.append(name);
+      } else {
+        System.out.println("등록된 회원이 아닙니다.");
+      }
+    }
+
+    String response = Prompt.inputString("정말 변경하시겠습니까?(y/N) ");
+    if (!response.equalsIgnoreCase("y")) {
+      System.out.println("프로젝트 변경을 취소하였습니다.");
+      return;
+    }
+
+    project.setTitle(title);
+    project.setContent(content);
+    project.setStartDate(startDate);
+    project.setEndDate(endDate);
+    project.setOwner(owner);
+    project.setMembers(members.toString());
+
+    System.out.println("프로젝트를 변경하였습니다.");
+  }
+
+  public void delete() {
+    System.out.println("[프로젝트 삭제]");
+    int no = Prompt.inputInt("번호? ");
+    int index = indexOf(no);
+
+    if (index == -1) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }
+
+    String response = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
+    if (!response.equalsIgnoreCase("y")) {
+      System.out.println("프로젝트 삭제를 취소하였습니다.");
+      return;
+    }
+
+    projectList.remove(index);
+    System.out.println("프로젝트를 삭제하였습니다.");
+  }
+
+  private Project findByNo(int no) {
+    for (int i = 0; i < projectList.size(); i++) {
+      Project project = projectList.get(i);
+      if (project.getNo() == no) {
+        return project;
+      }
+    }
+    return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < projectList.size(); i++) {
+      Project project = projectList.get(i);
+      if (project.getNo() == no) {
+        return i;
+      }
+    }
+    return -1;
   }
 }

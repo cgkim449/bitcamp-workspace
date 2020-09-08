@@ -1,57 +1,75 @@
-// 생성자의 존재 가장 큰 이유 : 누락!
-// + 간결성
 package com.eomcs.pms;
 
+import com.eomcs.pms.domain.Board;
+import com.eomcs.pms.domain.Member;
+import com.eomcs.pms.domain.Project;
+import com.eomcs.pms.domain.Task;
 import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
+import com.eomcs.util.ArrayList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.LinkedList;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.Queue;
+import com.eomcs.util.Stack;
 
-// 1) `/board/add` 명령을 처리한다.
-// 2) `/board/list` 명령을 처리한다.
-// 3) 새 게시판을 추가한다.
-// 4) 새 게시판을 4개 더 추가한다.
 public class App {
 
   public static void main(String[] args) {
 
-    // 외부에서 값을 받을 필요가 없다
-    MemberHandler memberHandler = new MemberHandler();
-    // ProjectHandler를 생성할 때 필요로 하는 의존객체를 전달한다
-    // => 이렇게 생성자를 명확하게 지정하면
-    //    객체를 생성하는 개발자에게 인스턴스 사용에 필요한
-    //    값이나 의존 객체 주입을 강제하는 효과가 있다
-    //    (기본생성자가 없으므로 기본생성자를 쓰면 컴파일러 에러가 뜨기때문에)
+    List<Board> boardList = new ArrayList<>();
+    BoardHandler boardHandler = new BoardHandler(boardList);
 
+    List<Member> memberList = new LinkedList<>();
+    MemberHandler memberHandler = new MemberHandler(memberList);
 
-    ProjectHandler projectHandler = new ProjectHandler(memberHandler);
-    // ProjectHandler의 의존객체 주입을 막는다
-//     projectHandler.memberHandler = memberHandler;
-    TaskHandler taskHandler = new TaskHandler(memberHandler);
-    // TaskHandler의 의존객체 주입을 막는다
-//     taskHandler.memberHandler = memberHandler;
-    BoardHandler boardHandler = new BoardHandler();
-    // 인스턴스를 사용하는데 필요한 의존객체 주입을 누락하더라도
-    // 컴파일러는 알 수 없다
-    // 실행할 때 의존객체가 누락된 문제가 발생할 것이다
-    // nullPointerException : 선언된 의존 객체 레퍼런스가 0(인스턴스를 주지도 않고 어떻게 하냐)
+    List<Project> projectList = new LinkedList<>();
+    ProjectHandler projectHandler = new ProjectHandler(projectList, memberHandler);
 
-    // nullPointerException : dangling point : 인스턴스 주소가 없다 null이다
+    List<Task> taskList = new ArrayList<>();
+    TaskHandler taskHandler = new TaskHandler(taskList, memberHandler);
+
+    Stack<String> commandStack = new Stack<>();
+    Queue<String> commandQueue = new Queue<>();
 
     loop:
       while (true) {
         String command = Prompt.inputString("명령> ");
 
+        // 사용자가 입력한 명령을 보관한다.
+        commandStack.push(command);
+        commandQueue.offer(command);
+
         switch (command) {
           case "/member/add": memberHandler.add(); break;
           case "/member/list": memberHandler.list(); break;
+          case "/member/detail": memberHandler.detail(); break;
+          case "/member/update": memberHandler.update(); break;
+          case "/member/delete": memberHandler.delete(); break;
           case "/project/add": projectHandler.add(); break;
           case "/project/list": projectHandler.list(); break;
+          case "/project/detail": projectHandler.detail(); break;
+          case "/project/update": projectHandler.update(); break;
+          case "/project/delete": projectHandler.delete(); break;
           case "/task/add": taskHandler.add(); break;
           case "/task/list": taskHandler.list(); break;
+          case "/task/detail": taskHandler.detail(); break;
+          case "/task/update": taskHandler.update(); break;
+          case "/task/delete": taskHandler.delete(); break;
           case "/board/add": boardHandler.add(); break;
           case "/board/list": boardHandler.list(); break;
+          case "/board/detail": boardHandler.detail(); break;
+          case "/board/update": boardHandler.update(); break;
+          case "/board/delete": boardHandler.delete(); break;
+
+          // Iterator 패턴을 이용하면,
+          // 자료 구조와 상관없이 일관된 방법으로 목록의 값을 조회할 수 있다.
+          case "history": printCommandHistory(commandStack.iterator()); break;
+          case "history2": printCommandHistory(commandQueue.iterator()); break;
+
           case "quit":
           case "exit":
             System.out.println("안녕!");
@@ -63,5 +81,22 @@ public class App {
       }
 
     Prompt.close();
+  }
+
+  static void printCommandHistory(Iterator<String> iterator) {
+    try {
+      int count = 0;
+      while (iterator.hasNext()) {
+        System.out.println(iterator.next());
+        count++;
+
+        // 5개 출력할 때 마다 계속 출력할지 묻는다.
+        if ((count % 5) == 0 && Prompt.inputString(":").equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("history 명령 처리 중 오류 발생!");
+    }
   }
 }
