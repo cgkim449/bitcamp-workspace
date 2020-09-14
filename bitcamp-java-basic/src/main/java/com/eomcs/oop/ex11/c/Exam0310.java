@@ -1,7 +1,4 @@
 // inner class : 다른 멤버가 중첩 클래스 사용하기
-// static멤버는 instance멤버를 사용할 수 없다
-// 왜냐면 내장변수 this가 없기 때문이다
-// 인스턴스 멤버를 사용하려면 인스턴스가 있어야한다
 package com.eomcs.oop.ex11.c;
 
 class C {

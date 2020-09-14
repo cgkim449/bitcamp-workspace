@@ -1,7 +1,4 @@
 // inner class : 클래스 정의와 인스턴스 생성
-// inner class를 생성할때는 outer class의 인스턴스가 필요하다 인스턴스 멤버이기 때문이다
-// 인스턴스 멤버를 사용하려면 항상 그 멤버의 클래스의 인스턴스가 필요하기 때문이다
-// 그래서 
 package com.eomcs.oop.ex11.c;
 
 class A {
