@@ -1,4 +1,11 @@
 // 메서드 레퍼런스 - 인스턴스 메서드 레퍼런스
+// 자격이있따!
+
+// 스태틱 메서드 레퍼런스는 클래스이름을 줬는데
+// 얘는 인스턴스를 줌
+
+// 값과함께 vs 값을 안줌
+// 값과 함께 주고싶으면 인스턴스 메서드 레퍼런스를 사용하자
 package com.eomcs.oop.ex12;
 
 
@@ -42,7 +49,8 @@ public class Exam0610 {
     Calculator 청년행복예금 = new Calculator(10);
 
     System.out.println("[보통예금]");
-    Interest i1 = 보통예금::year;
+    Interest i1 = 보통예금::year; // 인스턴스를 주는데 값과 함께!주겠다는거다(생성자로 주입받는거)
+    // 아까 스태틱하고는 다르다 스태틱은 값은 안준다 이 차이일뿐
     System.out.printf("년 이자: %.1f\n", i1.compute(10_0000_0000));
 
     i1 = 보통예금::month;

@@ -1,147 +1,93 @@
-# 25. `Iterator` 디자인 패턴
+# 32. JSON 형식으로 객체를 읽고 쓰기 : Gson 라이브러리 활용
 
-**반복자(Iterator) 패턴** 은 
+이번 훈련에서는,
+- **JSON(JavaScript Object Notation)** 형식으로 입출력하는 것을 연습할 것이다.
+- *JSON* 형식을 다루기 위해 **Gson** 외부 라이브러리를 활용할 것이다.
 
-- 객체 목록을 관리하는 컬렉션(collection)에서 
-  목록 조회 기능을 별도의 객체로 캡슐화하는 설계 기법이다.
-- 컬렉션의 관리 방식(data structure)에 상관없이 일관된 목록 조회 방법을 제공할 수 있다.
-- 컬렉션을 변경하지 않고도 다양한 방식의 목록 조회 기법을 추가할 수 있다.
+**JSON** 은,
+- 속성-값 또는 키-값 으로 된 데이터 객체를 텍스트로 표현하는 개방형 표준 데이터 포맷이다.
+```
+{속성:값, 속성:값, ...}
+예) {"no":1,"name":"1","email":"1","password":"1","photo":"1","tel":"1"}
+```
+- 텍스트 형식이기 때문에 프로그래밍 언어나 운영체제에 영향을 받지 않는다.
+- 바이너리 방식에 비해 데이터 커지는 문제가 있지만,
+   모든 프로그래밍 언어에서 다룰 수 있다는 장점이 있다.
+- 인터넷 상에서 애플리케이션 간에 데이터를 주고 받을 때 주로 사용한다.
+- 특히 이기종 플랫폼(OS, 프로그래밍 언어 등) 간에 데이터를 교환할 때 유용하다.
+- JSON 공식 홈인 https://www.json.org 사이트에 자세한 내용이 있다.
+
+**JSON 라이브러리**,
+- JSON 데이터 포맷을 다루는 라이브러리다.
+- JSON 홈페이지에 다양한 프로그래밍 언어에서 사용할 수 있는 라이브러리를 소개한다.
+
+**Gson**,
+- 구글에서 제공하는 JSON 자바 라이브러리다.
+- 자바 객체를 JSON 형식의 텍스트로 변환하는 기능을 제공한다.
+- JSON 형식의 텍스트를 자바 객체로 변환하는 기능을 제공한다.  
 
 
 ## 훈련 목표
-
-- **반복자(Iterator) 패턴** 의 용도와 특징을 이해하고 구현하는 방법을 배운다.
-- **인터페이스** 문법을 **반복자(Iterator) 패턴** 에 적용하는 방법을 배운다.
-- **반복자(Iterator)** 를 활용하여 목록을 조회하는 방법을 배운다.
+- *Gson* 라이브러리를 사용하여 자바 객체를 *JSON* 데이터 포맷으로 출력하는 것을 연습한다.
+- 꺼꾸로 *JSON* 형식의 텍스트를 읽어 들여 자바 객체로 변환하는 것을 연습한다.
 
 
 ## 훈련 내용
+- 프로젝트에 *Gson* 라이브러리를 추가한다.
+- 게시글, 회원, 프로젝트, 작업 목록을 JSON 형식의 텍스트로 변환하여 파일로 출력한다.
+- 파일로부터 JSON 형식의 텍스트를 읽어 List 구현체로 변환한다.
 
-- `Stack`, `Queue`, `List` 에서 목록을 조회하는 기능을 캡슐화하여 
-  그 사용 규칙을 `Iterator` 인터페이스로 정의한다.
-- `Stack`, `Queue`, `List` 각각에 대해 `Iterator` 규칙에 따라 **반복자** 를 구현한다.
-- `Stack`, `Queue`, `List` 에서 값을 꺼낼 때 **반복자(`Iterator`)** 를 사용한다.
 
 ## 실습
 
-### 1단계 - 데이터 목록을 조회하는 기능을 캡슐화하여 인터페이스로 정의한다.
+### 1단계 - *Gson* 라이브러리를 프로젝트에 추가한다.
 
-- `Iterator` 인터페이스
-  - `java.util.Iterator` 인터페이스를 모방하여 사용 규칙을 정의한다. 
-
-#### 작업 파일
-
-- com.eomcs.util.Iterator 인터페이스 생성
-
-
-### 2단계 - `ArrayList` 에 대한 `Iterator` 구현체를 정의한다.
-
-- `ListIterator` 클래스
-  - `List` 구현체의 목록을 조회하는 기능을 수행한다.
-  - `ArrayList` 나 `LinkedList` 모두 같은 인터페이스를 갖기 때문에 
-    각각 별개로 **반복자(`Iterator`)** 를 만들 필요는 없다.
+- `build.gradle` 빌드 스크립트 파일 변경
+  - Gson 라이브러리 정보를 dependecies {} 블록에 추가한다.
+    - https://search.maven.org/ 사이트에 방문한다.
+    - `gson` 검색어로 라이브러리를 찾는다.
+    - `com.google.code.gson` 라이브러리를 선택한다.
+    - 검색 결과에서 최신 버전을 선택한다.
+    - Gradle Groovy DSL 코드를 복사하여 빌드 스크립트에 붙여 넣는다.
+  - `$ gradle eclipse` 를 실행하여 라이브러리를 다운로드하여 프로젝트에 등록한다.
+    - 명령을 실행한 후 eclipse IDE 에서 해당 프로젝트를 refresh 해야 한다.
+    - 'Referenced Libraries' 노드에서 gson 라이브러리 파일이 추가된 것을 확인한다.
 
 #### 작업 파일
-
-- com.eomcs.util.ListIterator 클래스 생성
-
-
-### 3단계 - 모든 `List` 구현체(`ArrayList`, `LinkedList`)가 `Iterator` 객체를 리턴하도록 규칙을 추가한다.
-
-- `List` 인터페이스 변경
-  - `iterator()` 메서드 추가
-
-#### 작업 파일
-
-- com.eomcs.util.List 인터페이스 변경
+- build.gradle 변경
 
 
-### 4단계 - 모든 `List` 구현체가 `Iterator` 객체를 리턴하도록 `iterator()` 메서드를 구현한다.
+### 2단계 - 데이터를 파일에 저장할 때 JSON 형식으로 출력한다.
 
-- `AbstractList` 클래스 변경
-  - `List` 인터페이스에 추가된 `iterator()` 규칙을 구현한다.
-  - `ArrayList` 나 `LinkedList` 는 이 클래스를 상속 받기 때문에 
-    수퍼 클래스에서 `iterator()` 를 구현하면 된다.
+- App 클래스 변경
+  - CSV 형식 대신에 JSON 형식으로 출력하도록 saveObjects() 메서드를 변경한다.
 
 #### 작업 파일
-
-- com.eomcs.util.AbstractList 클래스 변경
-  
-
-### 5단계 - XxxHandler 에서 목록을 조회할 때 `Iterator` 를 사용한다.
-
-- `BoardHandler`, `MemberHandler`, `ProjectHandler`, `TaskHandler` 클래스
-  - `list()` 메서드를 변경한다.
-
-#### 작업 파일
-
-- com.eomcs.pms.handler.BoardHandler 클래스 변경
-- com.eomcs.pms.handler.MemberHandler 클래스 변경
-- com.eomcs.pms.handler.ProjectHandler 클래스 변경
-- com.eomcs.pms.handler.TaskHandler 클래스 변경
+- com.eomcs.pms.App 변경
 
 
-### 6단계 - `Stack` 객체에 들어 있는 값을 꺼내 줄 `Iterator` 구현체를 준비하고 리턴한다.
+### 3단계 - 파일로부터 JSON 형식의 텍스트를 읽어서 객체로 변환하여 `List` 객체에 저장한다.
 
-- `StackIterator` 클래스 생성
-  - `Iterator` 인터페이스를 구현한다.
-- `Stack` 클래스 변경
-    - `LinkedList` 로 부터 상속 받은 iterator() 를 서브 클래스 역할에 맞게 오버라이딩 한다.
+- App 변경
+  - CSV 형식 대신에 JSON 형식으로 파일에 저장된 데이터를 읽어서 객체로 변환한 다음
+    `List` 객체에 저장하도록 saveObjects() 메서드를 변경한다.
 
 #### 작업 파일
-
-- com.eomcs.pms.util.StackIterator 클래스 생성
-- com.eomcs.pms.util.Stack 클래스 변경
-
-### 7단계 - `history` 명령을 처리할 때 `Iterator` 를 사용하여 명령을 조회하고 출력한다.
-
-- `App` 클래스 변경
-  - `printCommandHistory()` 메서드를 변경한다.
-  - `Stack` 객체로부터 값을 직접 꺼내지 않고 `Iterator` 객체를 통해 값을 꺼낸다.
-
-#### 작업 파일
-
-- com.eomcs.pms.App 클래스 변경
+- com.eomcs.pms.App 변경
 
 
-### 8단계 - `Queue` 객체에 들어 있는 값을 꺼내 줄 `Iterator` 구현체를 준비하고 리턴한다.
+### 4단계 - `Arrays.asList()` 를 사용하여 배열을 데이터 목록에 바로 추가한다.
 
-- `QueueIterator` 클래스 생성
-  - `Iterator` 인터페이스를 구현한다.
-- `Queue` 클래스 변경
-    - `LinkedList` 로 부터 상속 받은 iterator() 를 서브 클래스 역할에 맞게 오버라이딩 한다.
+- App 변경
+  - loadObjects() 메서드를 변경한다.
+  - `Arrays.asList()` 를 사용하면 배열을 `List` 구현체로 만들 수 있다.
+  - `List.addAll()` 을 이용하면 `List` 객체를 통째로 추가할 수 있다.
+  - 반복문을 사용하는 것 보다 간결하다.
 
 #### 작업 파일
-
-- com.eomcs.pms.util.QueueIterator 클래스 생성
-- com.eomcs.pms.util.Queue 클래스 변경
-
-
-### 9단계 - `history2` 명령을 처리할 때 `Iterator` 를 사용하여 명령을 조회하고 출력한다.
-
-- `App` 클래스 변경
-  - `printCommandHistory()` 메서드의 파라미터의 타입을 `Iterator` 변경한다.
-  - 이 메서드에서 `history` 명령과 `history2` 명령을 모두 처리한다.
-  - `printCommandHistory2()` 메서드를 삭제한다.
-
-#### 작업 파일
-
-- com.eomcs.pms.App 클래스 변경
+- com.eomcs.pms.App 변경
 
 
 ## 실습 결과
-
-- src/main/java/com/eomcs/util/Iterator.java 추가
-- src/main/java/com/eomcs/util/ListIterator.java 추가
-- src/main/java/com/eomcs/util/StackIterator.java 추가
-- src/main/java/com/eomcs/util/QueueIterator.java 추가
-- src/main/java/com/eomcs/util/List.java 변경
-- src/main/java/com/eomcs/util/AbstractList.java 변경
-- src/main/java/com/eomcs/util/Stack.java 변경
-- src/main/java/com/eomcs/util/Queue.java 변경
-- src/main/java/com/eomcs/pms/handler/BoardHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/MemberHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/ProjectHandler.java 변경
-- src/main/java/com/eomcs/pms/handler/TaskHandler.java 변경
+- build.gradle 변경
 - src/main/java/com/eomcs/pms/App.java 변경
-  

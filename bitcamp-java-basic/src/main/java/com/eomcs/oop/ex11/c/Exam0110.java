@@ -20,7 +20,7 @@ public class Exam0110 {
     A  outer = null;//new A();
 
     //2) 바깥 클래스의 인스턴스 주소를 사용하여 inner class의 인스턴스 생성
-    obj = outer.new X();
+    obj = outer.new X(); 
 
   }
 

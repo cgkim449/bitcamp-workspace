@@ -1,4 +1,5 @@
 // nested class : 종류
+// 
 package com.eomcs.oop.ex11.a;
 
 public class Exam0210 {
@@ -25,6 +26,7 @@ public class Exam0210 {
   int b; // 논스태틱 필드 = 인스턴스 필드
   void m2() {}; // 논스태틱 메서드 = 인스턴스 메서드
   {} // 인스턴스 블록
+  // 생성자?
 
   public static void main(String[] args) {
     // 3) local class

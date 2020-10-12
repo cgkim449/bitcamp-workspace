@@ -1,4 +1,7 @@
 // 메서드 레퍼런스 - 생성자 레퍼런스
+
+// 인터페이스 구현체로서 기존에 만든 코드를 재활용하자
+
 package com.eomcs.oop.ex12;
 
 import java.util.ArrayList;
@@ -22,8 +25,8 @@ public class Exam0710 {
     // 지정된 클래스의 인스턴스를 만든 후 생성자를 호출한다.
     List list = f1.create(); // new ArrayList();
 
-    System.out.println(list instanceof ArrayList);
-    System.out.println(list.getClass().getName());
+    System.out.println(list instanceof ArrayList); // 
+    System.out.println(list.getClass().getName()); // 어떤 클래스의 인스턴스인지
   }
 }
 

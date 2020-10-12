@@ -1,18 +1,25 @@
+// 인터페이스 정의 I - 모든 메서드는 public이다.
 package com.eomcs.oop.ex09.b;
-// 인터페이스에 정의하는 메서드는 호출 규칙이다
-// 규칙은 공개되어야한다. public
-// 규칙은 클래스가 따라야한다. 따라서 몸체는 구현하지 않는다 abstract
-// 클래스는 인터페이스의 메서드의 공개범위를 좁힐 수 없다
-// 
-// 인터페이스는 규칙으르 사용되기 때문에
-// 추상클래스는 ~으로 사용되기 때문에
-// new 명령어로 인스턴스를 생성할 수 없다
-// 따라서 인터페이스의 모든 변수는 static
-// 그리고 규칙은 공개되어야하며 변경되면 안된다
-// 따라서 public final
-// 규칙은 변경되면 안된다 따라서 스태틱 블록을 둘 수 없다
-
 
 public interface A {
-  public static final int v1 = 100;
+  // 인터페이스에 정의하는 메서드는 호출 규칙이다.
+  // 규칙은 공개되어야 한다.
+  // 그래서 인터페이스에 선언되는 모든 메서드는 public 이다.
+  public void m1();
+
+  // => 무조건 public이기 때문에 생략해도 public 이다.
+  void m2(); // public 이 생략된 것이다. (default) 아니다!
+
+  // => private, protected, (default)는 없다.
+  //private void m3(); // 컴파일 오류!
+  //protected void m4(); // 컴파일 오류!
+  void m5(); // 이건 (default) 아니라, public 이 생략된 것이다.
+
 }
+
+
+
+
+
+
+
