@@ -57,16 +57,17 @@ public class Exam0210 {
 
     public MyThreadPool() {
       MyThread t1 = new MyThread("1번 스레드=>", this);
-      t1.start();
-      list.add(t1);
-
       MyThread t2 = new MyThread("2번 스레드***>", this);
-      t2.start();
-      list.add(t2);
-
       MyThread t3 = new MyThread("3번 스레드-->", this);
-      t3.start();
+
+      list.add(t1);
+      list.add(t2);
       list.add(t3);
+
+      // 일단 무조건 스레드를 실행해 놓느다
+      t1.start();
+      t2.start();
+      t3.start();
     }
 
     // 스레드 풀에서 한 개의 스레드를 꺼낸다.
