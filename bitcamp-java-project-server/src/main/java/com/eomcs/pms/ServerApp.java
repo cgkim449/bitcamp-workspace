@@ -87,36 +87,29 @@ public class ServerApp {
         BufferedReader in = new BufferedReader(
             new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream());) {
-      while (true) {
-        String request = in.readLine();
+      String request = in.readLine();
 
-        Command command = (Command) context.get(request);
-        if (command != null){
-          command.execute();
-        } else {
-          sendResponse(out, "해당 명령을 처리할 수 없습니다!");
-        }
-
-        sendResponse(out, request);
-
-        if (request.equalsIgnoreCase("quit"))
-          break;
-        else if (request.equalsIgnoreCase("stop")) {
-          stop = true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
-          break;
-        }
+      if (request.equalsIgnoreCase("stop")) {
+        stop = true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
+        out.println("서버를 종료하는 중입니다");
+        out.println();
+        out.flush();
+        return;
       }
+
+      Command command = (Command) context.get(request);
+      if (command != null){
+        command.execute(out, in);
+      } else {
+        out.println("해당 명령을 처리할 수 없습니다!");
+      }
+      out.println();
+      out.flush();
     } catch (Exception e) {
       System.out.println("클라이언트와의 통신 오류!");
     }
     System.out.printf("클라이언트(%s)와의 연결을 끊었습니다.\n",
         address.getHostAddress()); // 예외발생했을때 영향 안받게 여기에둠
-  }
-
-  private static void sendResponse(PrintWriter out, String message) {
-    out.println(message);
-    out.println();
-    out.flush();
   }
 }
 

@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import com.eomcs.util.Prompt;
 
-public class ClientApp {
+public class ClientApp01 {
 
   static String host;
   static int port;
@@ -34,6 +34,10 @@ public class ClientApp {
         break;
     }
     System.out.println("안녕!");
+
+
+
+
   }
 
   private static void request(String message) {
