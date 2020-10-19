@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 // 게시물, 회원, 프로젝트, 작업 데이터를 파일에서 로딩하고 파일로 저장하는 일을 한다.
 public class DataHandlerListener implements ApplicationContextListener {
 
-
   List<Board> boardList = new ArrayList<>();
   File boardFile = new File("./board.json"); // 게시글을 저장할 파일 정보
 
@@ -62,7 +61,7 @@ public class DataHandlerListener implements ApplicationContextListener {
     saveData(projectList, projectFile);
     saveData(taskList, taskFile);
   }
-  
+
   private <T> void loadData(
       Collection<T> list, // 객체를 담을 컬렉션
       File file, // JSON 문자열이 저장된 파일
