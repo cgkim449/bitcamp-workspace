@@ -9,24 +9,24 @@ import java.net.Socket;
 public class ServerApp {
   public static void main(String[] args) {
     try(ServerSocket serverSocket = new ServerSocket(8888);) {
-      System.out.println("서버 실행 중...");
+      System.out.println("서버 실행 중... ");
       try(Socket socket = serverSocket.accept();
           PrintWriter out = new PrintWriter(socket.getOutputStream());
-          BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));){
+          BufferedReader in = new BufferedReader(
+              new InputStreamReader(socket.getInputStream()));){
 
         while(true) {
           String message = in.readLine();
 
           sendResponse(out, message);
 
-          if (message.equalsIgnoreCase("quit")) {
+
+          if (message.equalsIgnoreCase("stop")) {
             break;
           }
-
-
         }
-      }
-    } catch (Exception e) {
+      } 
+    }catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -34,6 +34,6 @@ public class ServerApp {
   private static void sendResponse(PrintWriter out, String message) {
     out.println(message);
     out.println();
-    out.flush();
+    out.flush();    
   }
 }
