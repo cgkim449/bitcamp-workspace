@@ -1,5 +1,6 @@
 # DDL(Data Definition Language)
 DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는 SQL 명령이다.
+= Data를 어떻게 '조직'할것인가를
 
 - 데이터베이스(database) = 스키마(schema)
 - 테이블(table)
@@ -33,7 +34,7 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 
 예) 
 > create table test01 (
-    name varchar(50) not null, // 50자까지, 필수입력항목
+    name varchar(50) not null, 
     kor int not null,
     eng int not null,
     math int not null,
@@ -69,7 +70,7 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
     name varchar(20)
   );
   
-데이터 입력 테스트: // 문자열 : sql '', 자바는 ""
+데이터 입력 테스트:
 > insert into test1(no, name) values(1, 'aaa');
 > insert into test1(no, name) values(null, 'bbb');
 > insert into test1(no, name) values(3, null);
@@ -77,7 +78,7 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 > select * from test1;
 
 #### not null
-데이터를 입력하지 않으면 실행 거절!
+데이터를 입력하지 않으면 입력/변경 거절!
 > create table test1(
     no int not null, 
     name varchar(20)
@@ -92,7 +93,7 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 입력할 때 컬럼을 생략하면 지정된 기본값이 대신 입력된다.
 > create table test1(
     no int not null,
-    name varchar(20) default 'noname', // variable charactor 0~20 변하는
+    name varchar(20) default 'noname',
     age int default 20
   );
 
@@ -103,7 +104,13 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 > insert into test1(no, age) values(3, 30);
 > insert into test1(no, name) values(4, 'ddd');
 > insert into test1(no) values(5);
-> insert into test1(no, age, name ) values(6,null,null); // null을 명시하면 디폴트 옵션이 있든 없든 null값이 들어간다!!
+> insert into test1(no, age, name ) values(6,null,null); 
+
+컬럼에 default 옵션이 있는 경우,
+- 컬럼 값을 생략하면 default 옵션으로 지정한 값이 사용된다.
+- 컬럼 값을 null로 지정하면 기본 값이 사용되지 않는다.
+즉, null을 명시하면 디폴트 옵션이 있든 없든 null값이 들어간다!!
+> insert into test1(no, age, name) values(6, null, null);
 
 ### 컬럼 타입
 
@@ -117,14 +124,14 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 #### numeric = decimal
 - 전체 자릿수와 소수점 이하의 자릿수를 정밀하게 지정할 수 있다.
 - numeric(n,e) : 전체 n 자릿수 중에서 소수점은 e 자릿수다.
-- numeric : numeric(10,0)과 같다.
+- numeric : numeric(10, 0) 과 같다.
 
 입력 테스트:
 > create table test1(
   c1 int, 
   c2 float, 
   c3 numeric(6,2), /* 소수점 자릿수를 지정하면 부동소수점으로 사용 */
-  c4 numeric /* decimal과 같다 */
+  c4 numeric /* decimal 과 같다 */
   );
   
 > insert into test1(c1) values(100);
@@ -155,7 +162,8 @@ DB 객체(테이블, 뷰, 함수, 트리거 등)를 생성, 변경, 삭제하는
 - 최대 n개의 문자를 저장.
 - 0 ~ 65535 바이트 크기를 갖는다.
 - n 값은 문자집합에 따라 최대 값이 다르다.
-- 만약 UTF-8로 지정된 경우 n은 최대 21845까지 지정할 수 있다.
+- 한 문자에 1바이트를 사용하는 ISO-8859-n 문자집한인 경우 최대 65535 이다.
+- 그러나 UTF-8로 지정된 경우는, n은 최대 21844까지 지정할 수 있다.
 - 가변 크기를 갖는다.
 - 한 문자를 저장하면 한 문자 만큼 크기의 메모리를 차지한다.
 - 메모리 크기가 가변적이라서 데이터 위치를 찾을 때 시간이 오래 걸린다.
@@ -220,9 +228,10 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 > insert into test1(c1) values('2017-11-21 16:13:33'); /* 날짜 정보만 저장*/
 > insert into test1(c2) values('2017-11-21 16:13:33'); /* 시간 정보만 저장*/
 
-#### 불린 타입
+#### boolean
 - 보통 true, false를 의미하는 값을 저장할 때는 정수 1 또는 0으로 표현한다.
 - 또는 문자로 Y 또는 N으로 표현하기도 한다.
+- 실제 컬럼을 생성할 때 tinyint(1) 로 설정한다.
 
 > create table test1(
   c1 char(1),
@@ -245,14 +254,67 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 > insert into test1(c3) values('T'); /* error */
 > insert into test1(c3) values('F'); /* error */
 
-> insert into test1(c3) values(true);
-> insert into test1(c3) values(false);
-> insert into test1(c3) values('1'); /* true */
-> insert into test1(c3) values('0'); /* false */
-> insert into test1(c3) values(1); /* true */
-> insert into test1(c3) values(0); /* false */
+> insert into test1(c3) values(true); /* 저장할 때 1 */
+> insert into test1(c3) values(false); /* 저장할 때 0 */
+> insert into test1(c3) values('1'); /* true -> 1 */
+> insert into test1(c3) values('0'); /* false -> 0 */
+> insert into test1(c3) values(1); /* true -> 1 */
+> insert into test1(c3) values(0); /* false -> 0 */
+
+- 숫자 컬럼인 경우 값을 설정할 때 문자로 표현할 수 있다.
+- 즉 문자열을 숫자로 바꿀 수 있으면 된다.
 
 ### 키 컬럼 지정 
+
+테이블:
+- no, name, email, id, pwd, jumin, tel, postno, basic_addr, gender
+
+#### key vs candidate key 
+
+- key 
+  - 데이터를 구분할 때 사용하는 컬럼들의 집합
+  - 예)
+    - {email}, {jumin}, {id}, {name, tel}, {tel, basic, gender, name}
+    - {name, jumin}, {email, id}, {id, name, email} ... 
+- candidate key (후보키 = 최소키)
+  - key 들 중에서 최소 항목으로 줄인 키
+  - {jumin}, {email}, {id}, {name, tel}
+
+#### alternate key vs primary key 
+
+- primary key (주 키)
+  - candidate key 중에서 DBMS 관리자가 사용하기로 결정한 키
+  - 예) DBMS 관리자가 id 컬럼의 값을 데이터를 구분하는 키로 사용하기로 결정했다면, 
+    - 주 키는, {id} 가 된다.
+    - 주 키로 선택되지 않은 모든 candidate key는 alternate key가 된다.
+- alternate key (대안 키)
+  - candidate key 중에서 primary key로 선택된 키를 제외한 나머지 키.
+  - 비록 primary key는 아니지만, primary key 처럼 데이터를 구분하는 
+    용도로 대신 사용할 수 있다고 해서 **대안 키(alternate key)** 라 부른다.
+
+#### artificial key (인공키)
+- Primary key로 사용하기에 적절한 컬럼을 찾을 수 없다면,
+  - 예) 게시글 : 제목, 내용, 작성자, 등록일, 조회수
+- 이런 경우에 key로 사용할 컬럼을 추가한다.
+- 보통 일련번호를 저장할 정수 타입의 컬럼을 추가한다.
+  - 예) 게시글 : 게시글 번호
+- 대부분의 SNS 서비스들은 일련의 번호를 primary key 사용한다.
+- 왜?
+  - 회원 탈퇴의 경우,
+    - 회원 탈퇴할 때 아이디도 제거한다.
+    - 아이디를 지우면 그 아이디와 연결된 게시글을 지워야 한다.
+    - 그런데 회원 아이디 대신 일련 번호를 사용하면,
+    - 그 회원이 쓴 게시글은 일련번호와 묶인다.
+    - 따라서 아이디가 삭제되더라도 해당 글은 계속 유효하게 처리할 수 있다.
+  - 이메일 변경,
+    - primary key 값은 다른 데이터에서 사용하기 때문에,
+      - 예) 게시글을 저장할 때 회원 이메일을 저장한다고 가정하자.
+    - pk 값을 변경하면 그 값을 사용한 모든 데이터에 영향을 끼친다.
+    - 그래서 PK 값을 다른 데이터에서 사용한 경우,
+      DBMS는 PK 값을 변경하지 못하도록 통제한다.
+    - 이렇게 값을 변경될 수 있는 경우에는 PK로 사용하지 말라.
+    - 대신 회원 번호와 같은 임의의 키(인공 키)를 만들어 사용하는 것이 좋다.
+
 
 #### primary key 
 - 테이블의 데이터를 구분할 때 사용하는 컬럼들이다.
@@ -285,7 +347,7 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 > insert into test1(name,kor,eng,math) values('aaa', 100, 100, 100);
 > insert into test1(name,kor,eng,math) values('bbb', 90, 90, 90);
 > insert into test1(name,kor,eng,math) values('aaa', 100, 100, 100); /* 중복 오류!*/
-
+> insert into test1(kor,eng,math) values(100, 100, 100); /* PK는 기본이 not null 이다. */
 
 - 한 개 이상의 컬럼을 PK로 지정하기
 > create table test1(
@@ -299,6 +361,8 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 - 두 개 이상의 컬럼을 묶어서 PK로 선언하고 싶다면 
   각 컬럼에 대해서 개별적으로 PK를 지정해서는 안된다. 
 - 여러 개의 컬럼을 묶어서 PK로 지정하려면 별도의 문법을 사용해야 한다.
+  - constraint 제약조건이름 primary key (컬럼명, 컬럼명, ...)
+
 > create table test1(
   name varchar(20),
   age int,
@@ -306,7 +370,8 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
   eng int,
   math int,
   constraint test1_pk primary key(name, age)
-  );
+);
+
 
 - 입력 테스트:
 > insert into test1(name, age, kor, eng, math) values('aa', 10, 100, 100, 100);
@@ -319,7 +384,7 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 
 - 여러 개의 컬럼을 묶어서 PK로 사용하면 데이터를 다루기가 불편하다.
   즉 데이터를 찾을 때 마다 name과 age 값을 지정해야 한다.
-- 그래서 실무에서는 이런 경우 '학번'처럼 임의의 값을 저장하는 컬럼을 만들어 PK로 사용한다.
+- 그래서 실무에서는 이런 경우 '학번'처럼 임의의 값을 저장하는 컬럼을 만들어 PK로 사용한다. (인공 키의 예!)
 > create table test1(
   no int primary key, /* 학번 */
   name varchar(20),
@@ -343,6 +408,7 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 - 위와 같은 경우를 대비해 준비된 문법이 unique이다.
 - PK는 아니지만 PK처럼 중복을 허락하지 않는 컬럼을 지정할 때 사용한다.
 - 그래서 PK를 대신해서 사용할 수 있는 key라고 해서 "대안키(alternate key)"라고 부른다.
+- 즉 대안키는 DBMS에서 unique 컬럼으로 지정한다.
 
 #### unique = alternate key(대안키)
 > create table test1(
@@ -394,6 +460,22 @@ DBMS 중에는 고정 크기인 컬럼의 값을 비교할 때 빈자리까지 �
 
 ```
 create table test1(
+  no int primary key, // 중복해서는 안되는키
+  name varchar(20), // 0~ 20 , null허용(값입력안해도됨)
+  age int,
+  kor int,
+  eng int,
+  math int,
+  constraint test1_uk unique (name, age), // 이름, 나이는 중복되면 안된다
+  fulltext 풀텍스트로 검색할때 
+  index 인덱스를 만드는데
+  test1_name_idx (name) 이름에 대해서 만들어라
+); 
+인덱스를 자동으로 만든다
+ 없으면 만들고
+ 있으면 자동으로 갱신한다
+
+ create table test1(
   no int primary key,
   name varchar(20),
   age int,
@@ -441,7 +523,7 @@ create table test1 (
 - 테이블에 컬럼 추가
 ```
 alter table test1
-  add column no int;
+  add column no int; 
 
 alter table test1
   add column age int;  
@@ -459,7 +541,7 @@ alter table test1
   add fulltext index test1_name_idx (name);
 ```
 
-- 컬럼에 옵션 추가
+- 컬럼에 옵션 추가(타입, 낫널)
 ```
 alter table test1
   modify column name varchar(20) not null,
@@ -484,7 +566,11 @@ insert into test1(no,name,age,kor,eng,math,sum,aver)
   values(3,'bbb',21,100,100,100,300,100);  
 ```
 
-### 컬럼 값 자동 증가
+
+### 컬럼 값 자동 증가 auto column
+// 인공키에서 주로 사용한다
+// PK!!!!!!!!!!!!!!!!!!!!!!!!!!!! , unique!!!!!!!!!!!!!
+// auto column은 오직 하나
 - 숫자 타입의 PK 컬럼인 경우 값을 1씩 자동 증가시킬 수 있다.
 - 즉 데이터를 입력할 때 해당 컬럼의 값을 넣지 않아도 자동으로 증가된다.
 - 단 삭제를 통해 중간에 비어있는 번호는 다시 채우지 않는다.
@@ -503,12 +589,13 @@ create table test1(
 ```
 alter table test1
   modify column no int not null auto_increment; /* 아직 no가 pk가 아니기 때문에 오류*/
-  
+  // 오라클은 auto increment 없음, sequence? 있음
 alter table test1
   add constraint primary key (no); /* 일단 no를 pk로 지정한다.*/
 
 alter table test1
   add constraint unique (no); /* no를 unique로 지정해도 한다.*/
+// 프라이머리는 이미 유니크임
   
 alter table test1
   modify column no int not null auto_increment; /* 그런 후 auto_increment를 지정한다.*/
@@ -517,9 +604,11 @@ alter table test1
 - 입력 테스트
 ```
 /* auto-increment 컬럼의 값을 직접 지정할 수 있다.*/
+// auto increment이더라도 값을 직접 지정할 수 있다
 insert into test1(no, name) values(1, 'xxx');
 
 /* auto-increment 컬럼의 값을 생략하면 마지막 값을 증가시켜서 입력한다.*/
+// not null이더라도!!!!!!!
 insert into test1(name) values('aaa');
 
 insert into test1(no, name) values(100, 'yyy');
@@ -537,21 +626,21 @@ insert into test1(name) values('eee'); /* no=104 */
 
 insert into test1(name) values('123456789012345678901234');
 
-/* 다른 DBMS의 경우 입력 오류가 발생하더라도 번호는 자동 증가하기 때문에 
+/* 다른 DBMS의 경우 입력 오류가 발생하더라도 번호는 자동 증가!하기 때문에 
  * 다음 값을 입력할 때는 증가된 값이 들어간다.
- * 그러나 MySQL(MariaDB)는 증가되지 않는다.
+ * 그러나 MySQL(MariaDB)!는 증가되지 않는다.
  */
 insert into test1(name) values('fff'); /* no=? */
 
 ```
 
-## 뷰(view)
+## 뷰(view) = 가상테이블
 - 조회 결과를 테이블처럼 사용하는 문법
 - select 문장이 복잡할 때 뷰로 정의해 놓고 사용하면 편리하다.
 
 ```
 create table test1 (
-  no int primary key auto_increment,
+  no int primary key auto_increment, /* pk는 무조건 낫널 */
   name varchar(20) not null,
   class varchar(10) not null,
   working char(1) not null,
@@ -572,13 +661,15 @@ insert into test1(name,class,working) values('ooo','java101','N');
 
 - 직장인만 조회
 ```
-select no, name, class from test1 where working = 'Y';
+select no, name, class /* 컬럼을 선택하는 것을 프로젝션, row를 선택하는 것을 selection이라하는데
+여기선 select, where */
+from test1 where working = 'Y';
 ```
 
 - 직장인만 조회한 결과를 가상 테이블로 만들기
 ```
-create view worker
-  as select no, name, class from test1 where working = 'Y';
+create view worker /* 밑의 문장을 worker라고 부르기로 하는거다 select worker할때마다 밑의 select문이 내부적으로 실행된다 */
+  as select no, name, class from test1 where working = 'Y'; 
 ```
 
 - view가 참조하는 테이블에 데이터를 입력한 후 view를 조회하면?
@@ -586,10 +677,13 @@ create view worker
 - 뷰를 조회할 때 마다 매번 select 문장을 실행한다.
   => 미리 결과를 만들어 놓는 것이 아니다.
 - 일종의 조회 함수 역할을 한다.
-- 목적은 복잡한 조회를 가상의 테이블로 표현할 수 있어 SQL문이 간결해진다.
+- 목적은 복잡한 조회를 가상의 테이블로 표현할 수 있어 SQL문이 간결해진다!!!!!!!!!
+```
+show tables; /* 하면 뷰도 볼수있다*/
+```
 ```
 insert into test1(name,class,working) values('ppp','java101','Y');
-select * from worker;
+select * from worker; /* 미리 결과를 만들어놓는것이 아니라는 거다*/
 ```
 
 ### 뷰 삭제
