@@ -22,12 +22,12 @@ alter table test1
 /* 자동 증가 컬럼 지정 */
 alter table test1
   modify column no int not null auto_increment;
-  
+  /* int not null 빼면 안됨 다 적어줘야됨 */
 ```
 
 - 전체 컬럼 값 입력하기
 ```
-/* 컬럼을 지정하지 않으면 
+/* 컬럼을 지정하지 않으면 자동으로 전체 컬럼 값을 입력.
  * 테이블을 생성할 때 선언한 컬럼 순서대로 
  * 값을 지정해야 한다.*/
 insert into 테이블명 value(값,....);
@@ -59,14 +59,22 @@ insert into test1(name,tel) values
 ```
 create table test2 (
   no int not null primary key auto_increment,
-  name varchar(20) not null,
-  tel varchar(20) not null,
+  fullname varchar(20) not null,
+  phone varchar(20) not null,
   kor int,
   eng int,
   math int
 );
-insert into test2(name,tel)
+
+/* 
+select결과를 테이블에 바로 입력하기
+=> select 결과의 컬럼명과 insert 테이블의 컬럼명이 같을 필요는 없다
+=> 그러나 결과의 컬럼개수와 insert 하려는 컬럼 개수가 같아야한다
+=> 결과의 컬럼타입과 insert 하려는 컬럼의 타입이 같거나 입력 할 수 있는 타입이어야한다
+*/
+insert into test2(fullname,phone)
   select name, tel from test1 where addr='seoul'; 
+  /* test1에서 where addr='seoul'인 레코드들에서 name, tel을 추출(순서가 중요?) */
 ```
 
 ## update 
