@@ -3,14 +3,10 @@ package com.eomcs.pms;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
@@ -20,7 +16,6 @@ import com.eomcs.pms.handler.BoardDeleteCommand;
 import com.eomcs.pms.handler.BoardDetailCommand;
 import com.eomcs.pms.handler.BoardListCommand;
 import com.eomcs.pms.handler.BoardUpdateCommand;
-import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.handler.HelloCommand;
 import com.eomcs.pms.handler.MemberAddCommand;
 import com.eomcs.pms.handler.MemberDeleteCommand;
@@ -37,153 +32,105 @@ import com.eomcs.pms.handler.TaskDeleteCommand;
 import com.eomcs.pms.handler.TaskDetailCommand;
 import com.eomcs.pms.handler.TaskListCommand;
 import com.eomcs.pms.handler.TaskUpdateCommand;
-import com.eomcs.pms.listener.AppInitListener;
-import com.eomcs.pms.listener.DataHandlerListener;
 import com.eomcs.util.Prompt;
 
 public class App {
 
-  // 옵저버와 공유할 맵 객체
-  Map<String,Object> context = new Hashtable<>();
+  public static void main(String[] args) {
 
-  // 옵저버를 보관할 컬렉션 객체
-  List<ApplicationContextListener> listeners = new ArrayList<>();
+    List<Board> boardList = new ArrayList<>();
+    BoardAddCommand boardAddCommand = new BoardAddCommand(boardList);
+    BoardListCommand boardListCommand = new BoardListCommand(boardList);
+    BoardDetailCommand boardDetailCommand = new BoardDetailCommand(boardList);
+    BoardUpdateCommand boardUpdateCommand = new BoardUpdateCommand(boardList);
+    BoardDeleteCommand boardDeleteCommand = new BoardDeleteCommand(boardList);
 
-  // 옵저버를 등록하는 메서드
-  public void addApplicationContextListener(ApplicationContextListener listener) {
-    listeners.add(listener);
-  }
-
-  // 옵저버를 제거하는 메서드
-  public void removeApplicationContextListener(ApplicationContextListener listener) {
-    listeners.remove(listener);
-  }
-
-  // service() 실행 전에 옵저버에게 통지한다.
-  private void notifyApplicationContextListenerOnServiceStarted() {
-    for (ApplicationContextListener listener : listeners) {
-      // 곧 서비스를 시작할테니 준비하라고,
-      // 서비스 시작에 관심있는 각 옵저버에게 통지한다.
-      // => 옵저버에게 맵 객체를 넘겨준다.
-      // => 옵저버는 작업 결과를 파라미터로 넘겨준 맵 객체에 담아 줄 것이다.
-      listener.contextInitialized(context);
-    }
-  }
-
-  // service() 실행 후에 옵저버에게 통지한다.
-  private void notifyApplicationContextListenerOnServiceStopped() {
-    for (ApplicationContextListener listener : listeners) {
-      // 서비스가 종료되었으니 마무리 작업하라고,
-      // 마무리 작업에 관심있는 각 옵저버에게 통지한다.
-      // => 옵저버에게 맵 객체를 넘겨준다.
-      // => 옵저버는 작업 결과를 파라미터로 넘겨준 맵 객체에 담아 줄 것이다.
-      listener.contextDestroyed(context);
-    }
-  }
-
-
-  public static void main(String[] args) throws Exception {
-    App app = new App();
-
-    // 옵저버 등록
-    app.addApplicationContextListener(new AppInitListener());
-    app.addApplicationContextListener(new DataHandlerListener());
-
-    app.service();
-  }
-
-  @SuppressWarnings("unchecked")
-  public void service() throws Exception {
-
-    notifyApplicationContextListenerOnServiceStarted();
-
-    // 옵저버가 작업한 결과를 맵에서 꺼낸다.
-    List<Board> boardList = (List<Board>) context.get("boardList");
-    List<Member> memberList = (List<Member>) context.get("memberList");
-    List<Project> projectList = (List<Project>) context.get("projectList");
-    List<Task> taskList = (List<Task>) context.get("taskList");
-
-    Map<String,Command> commandMap = new HashMap<>();
-
-    commandMap.put("/board/add", new BoardAddCommand(boardList));
-    commandMap.put("/board/list", new BoardListCommand(boardList));
-    commandMap.put("/board/detail", new BoardDetailCommand(boardList));
-    commandMap.put("/board/update", new BoardUpdateCommand(boardList));
-    commandMap.put("/board/delete", new BoardDeleteCommand(boardList));
-
+    List<Member> memberList = new LinkedList<>();
+    MemberAddCommand memberAddCommand = new MemberAddCommand(memberList);
     MemberListCommand memberListCommand = new MemberListCommand(memberList);
-    commandMap.put("/member/add", new MemberAddCommand(memberList));
-    commandMap.put("/member/list", memberListCommand);
-    commandMap.put("/member/detail", new MemberDetailCommand(memberList));
-    commandMap.put("/member/update", new MemberUpdateCommand(memberList));
-    commandMap.put("/member/delete", new MemberDeleteCommand(memberList));
+    MemberDetailCommand memberDetailCommand = new MemberDetailCommand(memberList);
+    MemberUpdateCommand memberUpdateCommand = new MemberUpdateCommand(memberList);
+    MemberDeleteCommand memberDeleteCommand = new MemberDeleteCommand(memberList);
 
-    commandMap.put("/project/add", new ProjectAddCommand(projectList, memberListCommand));
-    commandMap.put("/project/list", new ProjectListCommand(projectList));
-    commandMap.put("/project/detail", new ProjectDetailCommand(projectList));
-    commandMap.put("/project/update", new ProjectUpdateCommand(projectList, memberListCommand));
-    commandMap.put("/project/delete", new ProjectDeleteCommand(projectList));
+    List<Project> projectList = new LinkedList<>();
+    ProjectAddCommand projectAddCommand = new ProjectAddCommand(projectList, memberListCommand);
+    ProjectListCommand projectListCommand = new ProjectListCommand(projectList);
+    ProjectDetailCommand projectDetailCommand = new ProjectDetailCommand(projectList);
+    ProjectUpdateCommand projectUpdateCommand = new ProjectUpdateCommand(projectList, memberListCommand);
+    ProjectDeleteCommand projectDeleteCommand = new ProjectDeleteCommand(projectList);
 
-    commandMap.put("/task/add", new TaskAddCommand(taskList, memberListCommand));
-    commandMap.put("/task/list", new TaskListCommand(taskList));
-    commandMap.put("/task/detail", new TaskDetailCommand(taskList));
-    commandMap.put("/task/update", new TaskUpdateCommand(taskList, memberListCommand));
-    commandMap.put("/task/delete", new TaskDeleteCommand(taskList));
+    List<Task> taskList = new ArrayList<>();
+    TaskAddCommand taskAddCommand = new TaskAddCommand(taskList, memberListCommand);
+    TaskListCommand taskListCommand = new TaskListCommand(taskList);
+    TaskDetailCommand taskDetailCommand = new TaskDetailCommand(taskList);
+    TaskUpdateCommand taskUpdateCommand = new TaskUpdateCommand(taskList, memberListCommand);
+    TaskDeleteCommand taskDeleteCommand = new TaskDeleteCommand(taskList);
 
-    commandMap.put("/hello", new HelloCommand());
+    HelloCommand helloCommand = new HelloCommand();
 
+    // 자바에서는 stack 알고리즘(LIFO)에 대한 인터페이스로 Deque 를 제공한다.
     Deque<String> commandStack = new ArrayDeque<>();
+
+    // 자바에서 제공하는 LinkedList 클래스는 Queue 구현체이기도 하다.
     Queue<String> commandQueue = new LinkedList<>();
 
     loop:
       while (true) {
-        String inputStr = Prompt.inputString("명령> ");
+        String command = Prompt.inputString("명령> ");
 
-        if (inputStr.length() == 0) {
-          continue;
-        }
+        // 사용자가 입력한 명령을 보관한다.
+        commandStack.push(command);
+        commandQueue.offer(command);
 
-        commandStack.push(inputStr);
-        commandQueue.offer(inputStr);
+        switch (command) {
+          case "/member/add": memberAddCommand.execute(); break;
+          case "/member/list": memberListCommand.execute(); break;
+          case "/member/detail": memberDetailCommand.execute(); break;
+          case "/member/update": memberUpdateCommand.execute(); break;
+          case "/member/delete": memberDeleteCommand.execute(); break;
+          case "/project/add": projectAddCommand.execute(); break;
+          case "/project/list": projectListCommand.execute(); break;
+          case "/project/detail": projectDetailCommand.execute(); break;
+          case "/project/update": projectUpdateCommand.execute(); break;
+          case "/project/delete": projectDeleteCommand.execute(); break;
+          case "/task/add": taskAddCommand.execute(); break;
+          case "/task/list": taskListCommand.execute(); break;
+          case "/task/detail": taskDetailCommand.execute(); break;
+          case "/task/update": taskUpdateCommand.execute(); break;
+          case "/task/delete": taskDeleteCommand.execute(); break;
+          case "/board/add": boardAddCommand.execute(); break;
+          case "/board/list": boardListCommand.execute(); break;
+          case "/board/detail": boardDetailCommand.execute(); break;
+          case "/board/update": boardUpdateCommand.execute(); break;
+          case "/board/delete": boardDeleteCommand.execute(); break;
+          case "/hello": helloCommand.execute(); break;
 
-        switch (inputStr) {
+          // Iterator 패턴을 이용하면,
+          // 자료 구조와 상관없이 일관된 방법으로 목록의 값을 조회할 수 있다.
           case "history": printCommandHistory(commandStack.iterator()); break;
           case "history2": printCommandHistory(commandQueue.iterator()); break;
+
           case "quit":
           case "exit":
             System.out.println("안녕!");
             break loop;
           default:
-            Command command = commandMap.get(inputStr);
-            if (command != null) {
-              try {
-                // 실행 중 오류가 발생할 수 있는 코드는 try 블록 안에 둔다.
-                command.execute();
-              } catch (Exception e) {
-                // 오류가 발생하면 그 정보를 갖고 있는 객체의 클래스 이름을 출력한다.
-                System.out.println("--------------------------------------------------------------");
-                System.out.printf("명령어 실행 중 오류 발생: %s\n", e);
-                System.out.println("--------------------------------------------------------------");
-              }
-            } else {
-              System.out.println("실행할 수 없는 명령입니다.");
-            }
+            System.out.println("실행할 수 없는 명령입니다.");
         }
-        System.out.println();
+        System.out.println(); // 이전 명령의 실행을 구분하기 위해 빈 줄 출력
       }
 
     Prompt.close();
-
-    notifyApplicationContextListenerOnServiceStopped();
   }
 
-  void printCommandHistory(Iterator<String> iterator) {
+  static void printCommandHistory(Iterator<String> iterator) {
     try {
       int count = 0;
       while (iterator.hasNext()) {
         System.out.println(iterator.next());
         count++;
 
+        // 5개 출력할 때 마다 계속 출력할지 묻는다.
         if ((count % 5) == 0 && Prompt.inputString(":").equalsIgnoreCase("q")) {
           break;
         }
@@ -192,8 +139,4 @@ public class App {
       System.out.println("history 명령 처리 중 오류 발생!");
     }
   }
-
-
-
-
 }

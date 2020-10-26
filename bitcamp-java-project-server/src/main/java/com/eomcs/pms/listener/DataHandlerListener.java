@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 // 게시물, 회원, 프로젝트, 작업 데이터를 파일에서 로딩하고 파일로 저장하는 일을 한다.
 public class DataHandlerListener implements ApplicationContextListener {
 
-
   List<Board> boardList = new ArrayList<>();
   File boardFile = new File("./board.json"); // 게시글을 저장할 파일 정보
 
