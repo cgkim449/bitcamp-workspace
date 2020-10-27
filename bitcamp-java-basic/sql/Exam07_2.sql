@@ -9,6 +9,10 @@ select rno, loc, name
 from room
 order by name asc;
 
+select rno, loc /* 절의 실행순서에 유의하라 */
+from room
+order by name asc;
+
 /* asc는 생략 가능하다. */
 select rno, loc, name 
 from room
@@ -17,7 +21,7 @@ order by name;
 /* 이름의 내림 차순으로 정렬하기 */
 select rno, loc, name 
 from room
-order by name desc;
+order by name desc; 
 
 /* 이름은 오름차순, 지점명도 오름차순으로 정렬하기*/
 select rno, loc, name 
