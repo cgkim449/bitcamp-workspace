@@ -1,3 +1,14 @@
+# mariaDB documentation
+SELECT CONCAT('The value of @v is: ', IFNULL(@v, ''));
++------------------------------------------------+
+| CONCAT('The value of @v is: ', IFNULL(@v, '')) |
++------------------------------------------------+
+| The value of @v is:                            |
++------------------------------------------------+
+v가 null이면 빈문자열넣어라
+
+dual : 더미테이블
+
 # DQL(Data Query Language)
 데이터를 조회할 때 사용하는 문법
 
@@ -36,6 +47,7 @@ select no, name, tel from test1;
 
 /* 가상의 컬럼 값을 조회하기*/
 select no, concat(name,'(',class,')') from test1;
+/* concat : 합쳐서" */
 ```
 
 ### 조회하는 컬럼에 별명 붙이기 

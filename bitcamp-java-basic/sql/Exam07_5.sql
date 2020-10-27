@@ -1,8 +1,12 @@
+/*
+
+*/
+
 /* 조인
 => 서로 관련된 테이블의 데이터를 연결하여 추출하는 방법
 => 기법
-1) CROSS 조인
-2) NATURAL 조인
+1) CROSS(곱하기) 조인 : 가장 무식한 조인, 1대1로 조인, 아무짝에 쓸모없음
+2) NATURAL 조인 : 
 3) JOIN ~ ON
 4) OUTER JOIN
 */
@@ -14,6 +18,8 @@ select mno, work, bank from stnt;
 /* => mno가 어떤 테이블의 컬럼인지 지정하지 않으면 실행 오류!*/
 select mno, name, mno, work, bank
 from memb cross join stnt;
+/*ERROR 1052 (23000): Column 'mno' in field list is ambiguous(불분명하다)
+mno가 둘다에 있어서 명령이 불분명하다*/
 
 /* => select  컬럼이 두 테이블 모두 있을 경우,
          컬럼명 앞에 테이블명을 명시하여 구분하라!*/ 
