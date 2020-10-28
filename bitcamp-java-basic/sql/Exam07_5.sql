@@ -46,9 +46,10 @@ from memb m, stnt s;
 select m.mno, name, s.mno, work, bank
 from memb m natural join stnt s;   
 
+
 /* 예전 문법 */
 select m.mno, name, s.mno, work, bank
-from memb m, stnt s
+from memb m, stnt s --일단 크로스조인 한다음에
 where m.mno=s.mno;
 
 /* natural join 의 문제점
@@ -101,6 +102,7 @@ select rno, loc, name from room;
 select 
     l.lno, 
     l.titl, 
+    l.rno,
     r.rno, 
     r.loc, 
     r.name
@@ -157,16 +159,18 @@ from memb join stnt using(mno);
 
 select memb.mno, name, work
 from memb, stnt
-where memb.mno=stnt.mno;
+where memb.mno=stnt.mno; -- 옛날 방식 : 크로스 조인한 다음에
 
 select memb.mno, name, work
-from memb inner join stnt on memb.mno=stnt.mno;
+from memb inner join stnt on memb.mno=stnt.mno; 
 
 select memb.mno, name, work
-from memb join stnt on memb.mno=stnt.mno;
+from memb join stnt on memb.mno=stnt.mno; -- inner 생략 가능
 
 select m.mno, name, work
-from memb m join stnt s on m.mno=s.mno;
+from memb m join stnt s on m.mno=s.mno; -- 별명 붙인거
+
+-- 위에 꺼들 다 똑같음
 
 /* 안타깝게도 위의 SQL문은 학생 목록만 출력한다.
     왜? memb테이블의 데이터와 stnt 테이블의 데이터를 
