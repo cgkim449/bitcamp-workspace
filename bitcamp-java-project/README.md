@@ -1,115 +1,211 @@
-# 33. `Observer` 디자인 패턴을 적용하여 클래스 구조를 변경
+# 37-c. 데이터 관리를 DBMS에게 맡기기 : 무결성 제약 조건 다루기
 
 이번 훈련에서는,
-- **Observer 디자인 패턴** 을 프로젝트에 적용하는 것을 연습할 것이다.
+- **무결성 제약 조건(integrity constraints)** 을 이용하여
+  무효한 데이터가 존재하지 않도록 하는 방법을 배울 것이다.
+- 테이블 간의 다대다 관계를 해소하기 위해 **관계 테이블** 을 다루는 방법을 배울 것이다.
 
-**Observer 디자인 패턴**은,
-- 특정 객체의 상태 변화에 따라 수행해야 하는 작업이 있을 경우,
-  기존 코드를 손대지 않고 손쉽게 기능을 추가하거나 제거할 수 있는 설계 기법이다.
-- **발행(publish)/구독(subscribe) 모델** 이라고 부르기도 한다.
-- 발행 측(publisher)에서는 구독 객체(subscriber)의 목록을 유지할 컬렉션을 가지고 있다.
-- 또한 구독 객체를 등록하거나 제거하는 메서드가 있다.
-- 구독 객체를 **리스너(listener)** 또는 **관찰자(observer)** 라 부르기도 한다.
 
 ## 훈련 목표
-- `Observer` 디자인 패턴의 용도와 이점을 이해한다.
-- Observer 디자인 패턴으로 구조를 바꾸는 것을 연습한다.
+- **무결성 제약 조건** 의 의미를 이해한다.
+- **외부 키** 를 설정하는 방법과 활용하는 것을 배운다.
+- **다대다 관계** 의 문제를 이해하고 **관계 테이블** 을 이용하여 해소하는 것을 배운다.
+- **조인** 을 활용하여 여러 테이블에 걸쳐 있는 데이터를 가져오는 것을 배운다.
+- 테이블 간의 관계에 맞춰 객체 간의 포함 관계를 구현하는 것을 배운다.
 
 ## 훈련 내용
-- 인터페이스를 활용하여 옵저버 호출 규칙을 정의한다.
-- 옵저버 구현체를 등록하고 제거하는 메서드와 컬렉션을 추가한다.
-- 특정 상태가 되면 옵저버에게 통지하게 한다.
-
+- 프로젝트 테이블과 작업 테이블을 변경한다.
+  - 회원 이름을 저장하는 owner 컬럼을 회원 테이블에 존재하는 회원 번호를 저장하도록 외부 키(foreign key) 컬럼으로 변경한다.
+  - 프로젝트 팀원 정보를 저장할 관계 테이블을 정의한다.
+- 프로젝트 테이블과 작업 테이블의 변경에 맞춰 ProjectXxxCommand 클래스와 TaskXxxCommand 클래스를 변경한다.
 
 ## 실습
 
-### 1단계 - App 클래스의 스태틱 멤버(필드와 메서드)를 인스턴스 멤버로 전환한다.
+### 1단계 - 프로젝트 테이블(pms_project)과 작업 테이블(pms_task)에 외부 키 제약 조건을 설정한다.
 
-- `App` 클래스 변경
-  - 스태틱 필드와 스태틱 메서드를 인스턴스 필드와 인스턴스 메서드로 전환한다.
-  - 보통 실무에서는 클래스의 일반적인 구조로 인스턴스 필드와 메서드를 사용한다.
+- 프로젝트 테이블을 재정의한다.
+```
+create table pms_project(
+  no int not null,
+  title varchar(255) not null,
+  content text not null,
+  sdt date not null,
+  edt date not null,
+  owner int not null      /* pms_member 테이블의 'no' PK 컬럼 값을 저장해야 한다. */
 
-#### 작업 파일
-- com.eomcs.pms.App 변경
-  - 백업: App01.java
+  /* 다대다 관계를 표현하는 컬럼을 제거한다.*/
+  /*   members varchar(255) not null */
+);
 
+alter table pms_project
+  add constraint pms_project_pk primary key(no);
 
-### 2단계 - 애플리케이션을 시작하거나 종료할 때 실행할 옵저버의 메서드 호출 규칙을 정의한다.
+alter table pms_project
+  modify column no int not null auto_increment;
 
-- `ApplicationContextListener` 인터페이스 생성
-  - Observer가 갖춰야 할 규칙을 정의한다.
-  - 애플리케이션이 시작할 때 자동으로 호출할 메서드의 규칙을 정의한다.
-  - 애플리케이션을 종료하기 전에 자동으로 호출할 메서드의 규칙을 정의한다.
+alter table pms_project
+  add constraint pms_project_fk foreign key(owner) references pms_member(no);
+```
 
-#### 작업 파일
-- com.eomcs.context.ApplicationContextListener 생성
+- 작업 테이블을 재정의한다.
+```
+create table pms_task(
+  no int not null,
+  content text not null,
+  deadline date not null,
+  owner int not null,   /* pms_member 의 PK 컬럼을 가리키는 외부키다*/
+  status int default 0
+);
 
+alter table pms_task
+  add constraint pms_task_pk primary key(no);
 
+alter table pms_task
+  modify column no int not null auto_increment;
 
-### 3단계 - 옵저버를 저장할 컬렉션 객체와 옵저버를 추가하고 제거하는 메서드를 추가한다.
+alter table pms_task
+  add constraint pms_task_fk foreign key(owner) references pms_member(no);
+```
 
-- `App` 클래스 변경
-  - 옵저버를 보관할 컬렉션 객체를 추가한다.
-  - 옵저버를 등록하는 메서드(`addApplicationContextListener()`)를 추가한다.
-  - 옵저버를 제거하는 메서드(`removeApplicationContextListener()`)를 추가한다.
+- 프로젝트와 멤버는 다대다 관계다!
+  - 한 멤버가 0 개 이상의 프로젝트의 관리자가 될 수 있다.
+    - 이것은 pms_project 테이블에 owner 컬럼을 통해 처리하였다.
+  - 한 프로젝트에 1명 이상의 멤버가 참여할 수 있다.
+    - 이것은 pms_project 테이블에 members 컬럼을 통해 처리하였다.
+  - 문제점
+    - owner 컬럼을 외부키(FK)로 설정하여 유효한 멤버 번호만 저장할 수 있게 통제할 수 있다.
+    - 그러나 members 컬럼에는 여러 멤버의 번호를 저장하기 때문에 FK 로 설정할 수 없다.
+    - 즉 members 컬럼에 유효하지 않은 회원 번호를 넣는 것을 막을 수 없다.
+    - 이것은 다대다 관계일 때 발생하는 문제다.
 
-#### 작업 파일
-- com.eomcs.pms.App 변경
-  - 백업: App02.java
+- 위 다대다 관계일 때 FK를 설정하지 못하는 문제를 해결하기
+  - 프로젝트에 참여하는 멤버 정보를 별도의 테이블에 저장한다.
+  - 멤버가 참여하는 프로젝트를 정보를 별도의 테이블에 저장한다.
+  - 즉 프로젝트와 멤버의 관계 정보를 저장할 테이블을 만들어 그 테이블에 저장한다.
 
-### 4단계 - 애플리케이션의 service() 실행 전/후에 옵저버에게 통지하는 코드를 추가한다.
+```
+/* 프로젝트와 멤버의 다대다 관계를 저장할 테이블을 정의한다.*/
+create table pms_member_project(
+  member_no int not null,
+  project_no int not null
+);
 
-- `App` 클래스 변경
-  - 옵저버를 호출하는 메서드를 정의한다.
-    - notifyApplicationContextListenerOnServiceStarted()
-    - notifyApplicationContextListenerOnServiceStopped()
-  - service() 메서드의 시작/종료 부분에 옵저버를 호출하는 메서드를 실행한다.
+/* 다대다 관계를 저장할 컬럼의 대해 FK를 설정한다. */
+alter table pms_member_project
+  add constraint pms_member_project_fk1 foreign key(member_no) references pms_member(no),
+  add constraint pms_member_project_fk2 foreign key(project_no) references pms_project(no);
 
-#### 작업 파일
-- com.eomcs.pms.App 변경
-  - 백업: App03.java
+/* 프로젝트-멤버 정보가 중복 저장되지 않도록 PK로 설정한다 */
+alter table pms_member_project
+  add constraint pms_member_project_pk primary key(member_no, project_no);
+```
 
+### 2단계 - `pms_project` 테이블의 변경에 맞춰 외부키를 다룰 수 있도록 ProjectXxxCommand 클래스를 변경한다.
 
-### 5단계 - 애플리케이션을 시작하고 종료할 때 간단한 안내 메시지를 출력하는 옵저버를 추가한다. 
+- com.eomcs.pms.handler.MemberListCommand 변경
+  - findByName() 를 변경한다.
+  - Member 객체를 리턴할 때 회원 번호를 추가한다.
+- com.eomcs.pms.domain.Project 변경
+  - owner 필드를 관리자 회원 정보를 저장하도록 Member 타입으로 변경한다.
+  - members 필드를 참여자 회원 목록을 저장하도록 List<Member> 타입으로 변경한다.
+- com.eomcs.pms.handler.ProjectAddCommand 변경
+  - `pms_project` 테이블에 프로젝트를 입력할 때 회원 이름 대신 번호를 저장한다.
+  - 프로젝트를 입력한 후 프로젝트의 멤버들은 `pms_member_project` 테이블에 입력한다.
+- com.eomcs.pms.handler.ProjectListCommand 변경
+  - `pms_project` 테이블과 `pms_member` 테이블을 조인하여 회원 이름을 알아낸다.
+- com.eomcs.pms.handler.ProjectDetailCommand 변경
+  - `pms_project` 와 `pms_member` 를 조인하여 프로젝트 관리자의 이름을 알아낸다.
+  - `pms_member_project` 와 `pms_member` 를 조인하여 팀원 목록과 그 이름을 알아낸다.
+- com.eomcs.pms.handler.ProjectUpdateCommand 변경
+  - 팀원 목록을 변경할 때 일단 기존 팀원들을 모두 지우고 새로 등록한다.
+- com.eomcs.pms.handler.ProjectDeleteCommand 변경
+  - `pms_member_project` 테이블에서 팀원 목록을 먼저 삭제한다.
+  - 그런 후 프로젝트 정보를 삭제한다.
 
-이번 단계에서는 옵저버 디자인 패턴을 적용한 후 그 사용법을 간단히 실험한다.
+### 3단계 - `pms_task` 테이블의 변경에 맞춰 외부키를 다룰 수 있도록 TaskXxxCommand 클래스를 변경한다.
 
-- AppInitListener 생성
-  - ApplicationContextListener를 구현한다.
-  - 애플리케이션을 시작할 때 다음과 같이 간단한 안내 메시지를 출력한다.
-    - "프로젝트 관리 시스템(PMS)에 오신 걸 환영합니다!"
-  - 애플리케이션을 종료할 때 다음과 같이 간단한 안내 메시지를 출력한다.
-    - "프로젝트 관리 시스템(PMS)을 종료합니다!"
-- App 변경
-  - service() 호출 전에 옵저버를 등록한다.
-
-#### 작업 파일
-- com.eomcs.pms.listener.AppInitListener 클래스 생성
-- com.eomcs.pms.App 변경
-  - 백업: App04.java
-
-
-
-
-
-  - 애플리케이션을 시작할 때 옵저버를 호출한다.
-  - 애플리케이션을 종료할 때 옵저버를 호출한다.
-
-
-
-
-### 4단계 - `Arrays.asList()` 를 사용하여 배열을 데이터 목록에 바로 추가한다.
-
-- App 변경
-  - loadObjects() 메서드를 변경한다.
-  - `Arrays.asList()` 를 사용하면 배열을 `List` 구현체로 만들 수 있다.
-  - `List.addAll()` 을 이용하면 `List` 객체를 통째로 추가할 수 있다.
-  - 반복문을 사용하는 것 보다 간결하다.
-
-#### 작업 파일
-- com.eomcs.pms.App 변경
+- com.eomcs.pms.domain.Task 변경
+  - owner 필드를 담당자 회원 정보를 저장하도록 Member 타입으로 변경한다.
+- com.eomcs.pms.handler.TaskXxxCommand 변경
+  - 외부키를 고려하여 등록, 조회, 변경, 삭제를 처리한다.
 
 
 ## 실습 결과
-- build.gradle 변경
-- src/main/java/com/eomcs/pms/App.java 변경
+- src/main/java/com/eomcs/pms/domain/Project.java 변경
+- src/main/java/com/eomcs/pms/domain/Task.java 변경
+- src/main/java/com/eomcs/pms/handler/MemberListCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/ProjectXxxCommand.java 변경
+- src/main/java/com/eomcs/pms/handler/TaskXxxCommand.java 변경
+
+- - - - - - - - - - - - - -
+
+## 1단계
+기존의 프로젝트 테이블을 지워야한다 
+```
+create table pms_project(
+  no int not null,
+  title varchar(255) not null,
+  content text not null,
+  sdt date not null,
+  edt date not null,
+  owner int not null, -- int로 바꿈(다른 테이블의 프라이머리키값을 담을거기때문에 타입이 일치해야한다)
+  members varchar(255) not null
+);
+
+alter table pms_project
+  add constraint pms_project_pk primary key(no);
+
+alter table pms_project
+  modify column no int not null auto_increment;
+
+alter table pms_project
+  add constraint pms_project_fk foreign key(owner) references pms_member(no);
+```
+한컬럼에 값이 여러개 들어가면 그 컬럼을 fk로 설정할 수 없다
+```
+create table pms_member_project(
+  member_no int not null,
+  project_no int not null
+);
+
+alter table pms_member_project -- 관계 테이블
+  add constraint pms_member_project_fk1 foreign key(member_no) references pms_member(no),
+  add constraint pms_member_project_fk2 foreign key(project_no) references pms_project(no);
+
+alter table pms_member_project
+  add constraint pms_member_project_pk primary key(member_no, project_no); -- 처음으로 두개 컬럼을 묶어서 프라이머리키 설정해보는것
+```
+```
+create table pms_project(
+  no int not null,
+  title varchar(255) not null,
+  content text not null,
+  sdt date not null,
+  edt date not null,
+  owner int not null -- int로 바꿈(다른 테이블의 프라이머리키값을 담을거기때문에 타입이 일치해야한다)
+  -- members 삭제
+);
+```
+테이블을 다시 drop 해야되네
+근데 부모테이블을 지우려면 자식테이블을 먼저 지워야한다
+
+# 2단계 task
+
+```
+create table pms_task(
+  no int not null,
+  content text not null,
+  deadline date not null,
+  owner int not null,
+  status int default 0
+);
+
+alter table pms_task
+  add constraint pms_task_pk primary key(no);
+
+alter table pms_task
+  modify column no int not null auto_increment;
+
+alter table pms_task
+  add constraint pms_task_fk foreign key(owner) references pms_member(no);
+```
