@@ -14,20 +14,37 @@ public class ProjectListCommand implements Command {
     try (Connection con = DriverManager.getConnection(
         "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
         PreparedStatement stmt = con.prepareStatement(
-            "select no, title, sdt, edt, owner, members"
-                + " from pms_project"
-                + " order by no desc")) {
+            "select p.no, p.title, p.sdt, p.edt, m.name owner_name"
+                + " from pms_project p inner join pms_member m on p.owner=m.no"
+                + " order by p.no desc")) {
 
       try (ResultSet rs = stmt.executeQuery()) {
         System.out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
+
         while (rs.next()) {
+          StringBuilder members = new StringBuilder();
+          try (PreparedStatement stmt2 = con.prepareStatement(
+              "select mp.member_no, m.name"
+                  + " from pms_member_project mp"
+                  + " inner join pms_member m on mp.member_no=m.no"
+                  + " where mp.project_no=" + rs.getInt("no"));
+              ResultSet memberRs = stmt2.executeQuery()) {
+
+            while (memberRs.next()) {
+              if (members.length() > 0) {
+                members.append(",");
+              }
+              members.append(memberRs.getString("name"));
+            }
+          }
+
           System.out.printf("%d, %s, %s ~ %s, %s, [%s]\n",
               rs.getInt("no"),
               rs.getString("title"),
               rs.getString("sdt"),
               rs.getString("edt"),
-              rs.getString("owner"),
-              rs.getString("members"));
+              rs.getString("owner_name"),
+              members.toString());
         }
       }
     } catch (Exception e) {

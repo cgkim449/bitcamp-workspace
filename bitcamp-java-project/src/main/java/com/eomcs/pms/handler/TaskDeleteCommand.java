@@ -1,17 +1,27 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.util.List;
+import com.eomcs.pms.domain.Task;
 import com.eomcs.util.Prompt;
 
 public class TaskDeleteCommand implements Command {
 
+  List<Task> taskList;
+
+  public TaskDeleteCommand(List<Task> list) {
+    this.taskList = list;
+  }
+
   @Override
   public void execute() {
     System.out.println("[작업 삭제]");
-
     int no = Prompt.inputInt("번호? ");
+    int index = indexOf(no);
+
+    if (index == -1) {
+      System.out.println("해당 번호의 작업이 없습니다.");
+      return;
+    }
 
     String response = Prompt.inputString("정말 삭제하시겠습니까?(y/N) ");
     if (!response.equalsIgnoreCase("y")) {
@@ -19,23 +29,17 @@ public class TaskDeleteCommand implements Command {
       return;
     }
 
-    try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-        PreparedStatement stmt = con.prepareStatement(
-            "delete from pms_task where no=?")) {
+    taskList.remove(index);
+    System.out.println("작업을 삭제하였습니다.");
+  }
 
-      stmt.setInt(1, no);
-      int count = stmt.executeUpdate();
-
-      if (count == 0) {
-        System.out.println("해당 번호의 작업이 존재하지 않습니다.");
-      } else {
-        System.out.println("작업을 삭제하였습니다.");
+  private int indexOf(int no) {
+    for (int i = 0; i < taskList.size(); i++) {
+      Task task = taskList.get(i);
+      if (task.getNo() == no) {
+        return i;
       }
-
-    } catch (Exception e) {
-      System.out.println("작업 삭제 중 오류 발생!");
-      e.printStackTrace();
     }
+    return -1;
   }
 }

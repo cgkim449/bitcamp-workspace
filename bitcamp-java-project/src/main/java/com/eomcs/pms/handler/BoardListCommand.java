@@ -1,37 +1,34 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.Iterator;
+import java.util.List;
+import com.eomcs.pms.domain.Board;
 
 public class BoardListCommand implements Command {
+
+  List<Board> boardList;
+
+  public BoardListCommand(List<Board> list) {
+    this.boardList = list;
+  }
+
 
   @Override
   public void execute() {
     System.out.println("[게시물 목록]");
 
-    try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-        PreparedStatement stmt = con.prepareStatement(
-            "select no, title, writer, cdt, vw_cnt"
-                + " from pms_board"
-                + " order by no desc")) {
+    // 전체 목록을 조회할 때 `Iterator` 객체를 사용한다.
+    // 만약 목록의 일부만 조회하면다면 인덱스를 직접 다루는 이전 방식을 사용해야 한다.
+    Iterator<Board> iterator = boardList.iterator();
 
-      try (ResultSet rs = stmt.executeQuery()) {
-        System.out.println("번호, 제목, 작성자, 등록일, 조회수");
-        while (rs.next()) {
-          System.out.printf("%d, %s, %s, %s, %d\n",
-              rs.getInt("no"),
-              rs.getString("title"),
-              rs.getString("writer"),
-              rs.getDate("cdt"),
-              rs.getInt("vw_cnt"));
-        }
-      }
-    } catch (Exception e) {
-      System.out.println("게시글 목록 조회 중 오류 발생!");
-      e.printStackTrace();
+    while (iterator.hasNext()) {
+      Board board = iterator.next();
+      System.out.printf("%d, %s, %s, %s, %d\n",
+          board.getNo(),
+          board.getTitle(),
+          board.getWriter(),
+          board.getRegisteredDate(),
+          board.getViewCount());
     }
   }
 

@@ -3,7 +3,7 @@
  *
  * This generated file contains a sample Java project to get you started.
  * For more details take a look at the Java Quickstart chapter in the Gradle
- * User Manual available at https://docs.gradle.org/6.2.1/userguide/tutorial_java_projects.html
+ * User Manual available at https://docs.gradle.org/6.5.1/userguide/tutorial_java_projects.html
  */
 
 plugins {
@@ -23,17 +23,18 @@ repositories {
 }
 
 dependencies {
-    // JSON 라이브러리
+//MariaDB JDBC 드라이버
+implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.0'
+// JSON 라이브러리
     implementation 'com.google.code.gson:gson:2.8.6'
-
     // This dependency is used by the application.
-    implementation 'com.google.guava:guava:28.1-jre'
+    implementation 'com.google.guava:guava:29.0-jre'
 
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 application {
     // Define the main class for the application.
-    mainClassName = 'com.eomcs.pms.App'
+    mainClassName = 'com.eomcs.pms.ClientApp'
 }

@@ -1,11 +1,15 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import com.eomcs.pms.dao.BoardDao;
 import com.eomcs.util.Prompt;
 
 public class BoardDeleteCommand implements Command {
+
+  private BoardDao boardDao;
+
+  public BoardDeleteCommand(BoardDao boardDao) {
+    this.boardDao = boardDao;
+  }
 
   @Override
   public void execute() {
@@ -18,17 +22,14 @@ public class BoardDeleteCommand implements Command {
       return;
     }
 
-    try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-        PreparedStatement stmt = con.prepareStatement("delete from pms_board where no=?")) {
+    try {
 
-      stmt.setInt(1, no);
-      int count = stmt.executeUpdate();
+      int count = boardDao.delete(no);
 
       if (count == 0) {
         System.out.println("해당 번호의 게시물이 존재하지 않습니다.");
       } else {
-        System.out.println("회원을 삭제하였습니다.");
+        System.out.println("게시글을 삭제하였습니다.");
       }
 
     } catch (Exception e) {

@@ -1,7 +1,6 @@
 package com.eomcs.pms.domain;
 
 import java.sql.Date;
-import java.util.List;
 
 //Project 클래스는 더이상 CsvObject를 구현할 필요가 없다.
 //
@@ -11,8 +10,8 @@ public class Project {
   private String content;
   private Date startDate;
   private Date endDate;
-  private Member owner;
-  private List<Member> members;
+  private String owner;
+  private String members;
 
   public int getNo() {
     return no;
@@ -44,16 +43,16 @@ public class Project {
   public void setEndDate(Date endDate) {
     this.endDate = endDate;
   }
-  public Member getOwner() {
+  public String getOwner() {
     return owner;
   }
-  public void setOwner(Member owner) {
+  public void setOwner(String owner) {
     this.owner = owner;
   }
-  public List<Member> getMembers() {
+  public String getMembers() {
     return members;
   }
-  public void setMembers(List<Member> members) {
+  public void setMembers(String members) {
     this.members = members;
   }
 }
