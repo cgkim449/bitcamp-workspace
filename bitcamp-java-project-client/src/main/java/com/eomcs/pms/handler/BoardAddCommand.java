@@ -19,8 +19,8 @@ public class BoardAddCommand implements Command {
   @Override
   public void execute() {
     System.out.println("[게시물 등록]");
-    try {
 
+    try {
       Board board = new Board();
       board.setTitle(Prompt.inputString("제목? "));
       board.setContent(Prompt.inputString("내용? "));
@@ -32,7 +32,6 @@ public class BoardAddCommand implements Command {
           System.out.println("게시글 등록을 취소합니다.");
           return;
         } else {
-
           Member member = memberDao.findByName(name);
 
           if (member == null) {
@@ -44,15 +43,12 @@ public class BoardAddCommand implements Command {
         }
       }
 
-
       boardDao.insert(board);
-
-      System.out.println("게시글을 등록하였습니다");
+      System.out.println("게시글을 등록하였습니다.");
 
     } catch (Exception e) {
       System.out.println("게시글 등록 중 오류 발생!");
       e.printStackTrace();
-      return;
     }
   }
 }

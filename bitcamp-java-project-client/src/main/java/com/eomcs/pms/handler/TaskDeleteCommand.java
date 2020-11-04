@@ -1,11 +1,21 @@
 package com.eomcs.pms.handler;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
+import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.util.Prompt;
 
 public class TaskDeleteCommand implements Command {
+
+  TaskDao taskDao;
+  ProjectDao projectDao;
+  MemberDao memberDao;
+
+  public TaskDeleteCommand(TaskDao taskDao, ProjectDao projectDao, MemberDao memberDao) {
+    this.taskDao = taskDao;
+    this.projectDao = projectDao;
+    this.memberDao = memberDao;
+  }
 
   @Override
   public void execute() {
@@ -19,16 +29,13 @@ public class TaskDeleteCommand implements Command {
       return;
     }
 
-    try (Connection con = DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
-        PreparedStatement stmt = con.prepareStatement(
-            "delete from pms_task where no=?")) {
+    try {
 
-      stmt.setInt(1, no);
-      int count = stmt.executeUpdate();
+      int count = taskDao.delete(no);
 
       if (count == 0) {
         System.out.println("해당 번호의 작업이 존재하지 않습니다.");
+        return;
       } else {
         System.out.println("작업을 삭제하였습니다.");
       }

@@ -5,7 +5,6 @@ import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
 public class BoardDetailCommand implements Command {
-
   BoardDao boardDao;
 
   public BoardDetailCommand(BoardDao boardDao) {
