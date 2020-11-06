@@ -2,6 +2,7 @@ package com.eomcs.pms.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
@@ -19,7 +20,7 @@ public class ProjectUpdateCommand implements Command {
   }
 
   @Override
-  public void execute() {
+  public void execute(Map<String,Object> context) {
     System.out.println("[프로젝트 변경]");
     int no = Prompt.inputInt("번호? ");
 
@@ -38,23 +39,6 @@ public class ProjectUpdateCommand implements Command {
           "시작일(%s)? ", project.getStartDate())));
       project.setEndDate(Prompt.inputDate(String.format(
           "종료일(%s)? ", project.getEndDate())));
-
-      while (true) {
-        String name = Prompt.inputString("관리자?(취소: 빈 문자열) ");
-
-        if (name.length() == 0) {
-          System.out.println("프로젝트 변경을 취소합니다.");
-          return;
-        } else {
-          Member member = memberDao.findByName(name);
-          if (member == null) {
-            System.out.println("등록된 회원이 아닙니다.");
-            continue;
-          }
-          project.setOwner(member);
-          break;
-        }
-      }
 
       // 프로젝트에 참여할 회원 정보를 담는다.
       List<Member> members = new ArrayList<>();

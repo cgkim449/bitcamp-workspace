@@ -2,6 +2,7 @@ package com.eomcs.pms.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.domain.Member;
@@ -19,7 +20,7 @@ public class ProjectAddCommand implements Command {
   }
 
   @Override
-  public void execute() {
+  public void execute(Map<String,Object> context) {
     System.out.println("[프로젝트 등록]");
 
     try {
@@ -29,22 +30,8 @@ public class ProjectAddCommand implements Command {
       project.setStartDate(Prompt.inputDate("시작일? "));
       project.setEndDate(Prompt.inputDate("종료일? "));
 
-      while (true) {
-        String name = Prompt.inputString("관리자?(취소: 빈 문자열) ");
-
-        if (name.length() == 0) {
-          System.out.println("프로젝트 등록을 취소합니다.");
-          return;
-        } else {
-          Member member = memberDao.findByName(name);
-          if (member == null) {
-            System.out.println("등록된 회원이 아닙니다.");
-            continue;
-          }
-          project.setOwner(member);
-          break;
-        }
-      }
+      Member loginUser = (Member) context.get("loginUser");
+      project.setOwner(loginUser);
 
       // 프로젝트에 참여할 회원 정보를 담는다.
       List<Member> members = new ArrayList<>();
@@ -66,6 +53,8 @@ public class ProjectAddCommand implements Command {
       project.setMembers(members);
 
       projectDao.insert(project);
+
+      System.out.println("프로젝트가 등록되었습니다!");
 
     } catch (Exception e) {
       System.out.println("프로젝트 등록 중 오류 발생!");
