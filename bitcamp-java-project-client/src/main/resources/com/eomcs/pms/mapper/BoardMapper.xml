@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- SQL 문 목록
+  namespace 속성
+- SQL 문을 가리킬 때 사용할 그룹명이다.
+- 보통 SQl을 사용하는 객체 이름으로 설정한다.
+- 즉 DAO 인터페이스 또는 클래스명으로 설정한다.
+- 그래야만 유지보수할 때 DAO와 연결된 SQL을 바로 찾을 수 있다.
+- 
+   -->
+<mapper namespace="BoardDao">
+
+<!-- 컬럼의 값을 어떤 자바 객체에 담을 것인지
+다음과 같이 따로 정의할 수 있다 
+-type 속성 : 컬럼-프로퍼티 연결 정보
+-id 속성 : 컬럼-프로퍼티의 연결 정보를 가리킬 이름. SQL문을 정의할 때 사용
+-->
+
+  <resultMap type="com.eomcs.pms.domain.Board"id="BoardMap">
+    <result column= "no"      property="no"></result>
+    <result column= "title"   property="title"></result>
+    <result column= "cdt"     property="registeredDate"></result>
+    <result column= "vw_cnt"  property="viewCount"></result>
+    
+    <association property="wirter" javaType="com.eomcs.pms.domain.Member"></association>
+  </resultMap>
+<!-- select 태그
+- select SQL 문을 정의하는 태그다
+- id 속성: mybatis에서 SQL을 찾을 때 사용할 이름이다
+- resultType 속성: select 결과물에서 한 개의 레코드 값을 담을 도메인 클래스 객체 이름이다.
+ 
+ -->
+  <select id="findAll" resultMap="com.eomcs.pms.domain.Board">
+    select 
+      b.no, 
+      b.title, 
+      b.cdt as , 
+      b.vw_cnt , 
+      m.no writer_no, 
+      m.name
+    from pms_board b 
+      inner join pms_member m on b.writer=m.no
+    order by 
+      b.no desc
+  </select>
+  
+  <insert id="insert" parameterType="com.eomcs.pms.Board">
+  insert into pms_board(title,content,writer) values(#{title},#{content},#{writer.no())
+  </insert>
+  
+</mapper>

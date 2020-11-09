@@ -1,34 +1,58 @@
 package com.eomcs.pms.filter;
 
-import java.util.ArrayList;
+import java.util.Map;
 import com.eomcs.pms.handler.Request;
 
 // 역할:
 // - CommandFilter 구현체를 관리하고 실행시킨다.
 // -
-public class CommandFilterManager implements FilterChain {
-  ArrayList<CommandFilter>  filters = new ArrayList<>();
-  int nextFilterIndex = 0;
+public class CommandFilterManager {
+  Chain firstChain;
+  Chain lastChain;
 
   public void add(CommandFilter filter) {
-    filters.add(filter);
-  }
-
-  public void reset() {
-    this.nextFilterIndex = 0;
-  }
-
-  // 다음 순서의 필터를 실행시킨다.
-  @Override
-  public void doFilter(Request request) throws Exception {
-    if (nextFilterIndex >= filters.size()) {
-      // 다음 필터가 없다.
+    Chain chain = new Chain(filter);
+    if (lastChain == null) {
+      firstChain = lastChain = chain;
       return;
     }
+    lastChain.nextChain = chain;
+    lastChain = chain;
+  }
 
-    // 보관소에서 해당 인덱스의 필터를 꺼낸다.
-    CommandFilter nextFilter = filters.get(nextFilterIndex++);
-    nextFilter.doFilter(request, this);
+  public FilterChain getFilterChains() {
+    return firstChain;
+  }
 
+  // 각각의 필터에게 준비하라고 요청한다.
+  public void init(Map<String,Object> context) throws Exception {
+    Chain chain = firstChain;
+    while (chain != null) {
+      chain.filter.init(context);
+      chain = chain.nextChain;
+    }
+  }
+
+  //각각의 필터에게 마무리하라고 요청한다.
+  public void destroy() {
+    Chain chain = firstChain;
+    while (chain != null) {
+      chain.filter.destroy();
+      chain = chain.nextChain;
+    }
+  }
+
+  public static class Chain implements FilterChain {
+    CommandFilter filter;
+    Chain nextChain;
+
+    public Chain(CommandFilter filter) {
+      this.filter = filter;
+    }
+
+    @Override
+    public void doFilter(Request request) throws Exception {
+      filter.doFilter(request, nextChain);
+    }
   }
 }
