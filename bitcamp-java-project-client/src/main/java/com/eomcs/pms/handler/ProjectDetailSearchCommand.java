@@ -17,18 +17,21 @@ public class ProjectDetailSearchCommand implements Command {
 
   @Override
   public void execute(Map<String,Object> context) {
-    System.out.println("[프로젝트 상세검색]");
+    System.out.println("[프로젝트 상세 검색]");
 
     try {
       HashMap<String,Object> keywords = new HashMap<>();
+
       String title = Prompt.inputString("프로젝트명? ");
       if (title.length() > 0) {
         keywords.put("title", title);
       }
+
       String owner = Prompt.inputString("관리자명? ");
       if (owner.length() > 0) {
         keywords.put("owner", owner);
       }
+
       String member = Prompt.inputString("팀원명? ");
       if (member.length() > 0) {
         keywords.put("member", member);

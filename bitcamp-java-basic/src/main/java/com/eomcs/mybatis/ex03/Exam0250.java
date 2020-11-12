@@ -32,12 +32,12 @@ public class Exam0250 {
     System.out.print("조회할 게시물 번호들(예: 1 6 8 10; 최대 5개)? ");
     String[] values = keyScan.nextLine().split(" ");
 
+    System.out.println(values.length); // 1
     ArrayList<Object> noList = new ArrayList<>();
     for (String value : values) {
       noList.add(value);
     }
     params.put("noList", noList);
-
     keyScan.close();
 
     List<Board> list = sqlSession.selectList("BoardMapper.select23", params);

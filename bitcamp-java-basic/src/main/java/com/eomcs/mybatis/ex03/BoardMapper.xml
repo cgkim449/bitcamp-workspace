@@ -172,7 +172,7 @@
 	    <when test="item == 'no'">
 	      board_id = #{keyword}
 	    </when>
-	    <when test='item == "title"'>
+	    <when test="item == 'title'">
 	      title like concat('%', #{keyword}, '%')
 	    </when>
 	    <otherwise>
@@ -201,8 +201,8 @@
   <update id="update4" parameterType="map">
     update x_board 
     <set>
-      <if test="title != null">title=#{title},</if>   
-      <if test="content != null">contents=#{content}</if>  
+      <if test="title != null">title=#{title}</if>   
+      <if test="content != null">,contents=#{content}</if>  
     </set> 
     where board_id=#{no}
   </update>
@@ -233,6 +233,7 @@
       </if>
     </where>
   </select>  
+  
   <select id="select23" resultMap="BoardMap" parameterType="map">
     select 
       board_id,
@@ -243,10 +244,13 @@
     from x_board
     <where>
       <foreach collection="noList" item="no">
+        <if test = "no !=''">
         or board_id = #{no}
+        </if>
       </foreach>
     </where>
   </select>
+  
   <select id="select24" resultMap="BoardMap" parameterType="map">
     select 
       board_id,
@@ -256,12 +260,13 @@
       view_count /* comments */
     from x_board
     <where>
-      board_id in /* (1, 2, 11, 12) */
+      board_id in /* (1, 2, 11, 12) */ /* 4개 값중에 하나라면*/
       <foreach collection="noList" item="no" open="(" separator="," close=")">
         #{no}
       </foreach>
     </where>
   </select>
+  
   <select id="select25" resultMap="BoardMap" parameterType="map">
     select 
       board_id,
@@ -276,6 +281,8 @@
       </foreach>
     </where>
   </select>
+  
+  bind는 변수를 만드는것
   <select id="select26" resultMap="BoardMap" parameterType="map">
     <bind name="titlePattern" value="'%' + _parameter.title + '%'"/>
     select 
