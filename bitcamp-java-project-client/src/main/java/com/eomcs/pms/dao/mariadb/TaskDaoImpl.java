@@ -16,14 +16,14 @@ public class TaskDaoImpl implements com.eomcs.pms.dao.TaskDao {
 
   @Override
   public int insert(Task task) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.insert("TaskDao.insert", task);
     }
   }
 
   @Override
   public int delete(int no) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.delete("TaskDao.delete", no);
     }
   }
@@ -51,7 +51,7 @@ public class TaskDaoImpl implements com.eomcs.pms.dao.TaskDao {
 
   @Override
   public int update(Task task) throws Exception {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       return sqlSession.update("TaskDao.update", task);
     }
   }

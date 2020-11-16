@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 
 public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
@@ -27,7 +26,6 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
       // 프로젝트의 멤버 정보 입력
       sqlSession.insert("ProjectDao.insertMembers", project);
 
-      sqlSession.commit();
       return count;
     }
   }
@@ -86,7 +84,7 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
   @Override
   public int update(Project project) throws Exception {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return 
+      return sqlSession.update("ProjectDao.update", project);
     }
   }
 }
