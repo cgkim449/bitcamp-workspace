@@ -7,6 +7,7 @@ import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
+import com.eomcs.pms.service.ProjectService;
 import com.eomcs.util.Prompt;
 
 public class ProjectDetailCommand implements Command {
@@ -24,7 +25,7 @@ public class ProjectDetailCommand implements Command {
     int no = Prompt.inputInt("번호? ");
 
     try {
-      Project project = projectDao.findByNo(no);
+      Project project = ProjectService.cl
       if (project == null) {
         System.out.println("해당 번호의 프로젝트가 존재하지 않습니다.");
         return;
@@ -47,7 +48,7 @@ public class ProjectDetailCommand implements Command {
       HashMap<String,Object> map = new HashMap<>();
       map.put("projectNo", project.getNo());
 
-      List<Task> tasks = taskDao.findAll(map);
+      List<Task> tasks = taskService.l
 
       System.out.println("번호, 작업내용, 마감일, 작업자, 상태");
       for (Task task : tasks) {
