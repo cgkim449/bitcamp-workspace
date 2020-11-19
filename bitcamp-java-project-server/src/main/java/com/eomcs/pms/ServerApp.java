@@ -71,7 +71,7 @@ public class ServerApp {
         if (stop) {
           break;
         }
-        // 람다 문법 사용
+        // 직접 스레드를 생성하는 것이 아니라 스레드풀에 작업을 맡긴다.
         threadPool.execute(() -> handleClient(clientSocket));
       }
 
@@ -81,10 +81,11 @@ public class ServerApp {
 
     notifyApplicationContextListenerOnServiceStopped();
 
-    // 스레드풀을 종료한다
+    // 스레드풀을 종료한다.
     threadPool.shutdown();
 
     try {
+      // 스레드풀의 모든 스레드가 종료될 때까지 기다린다.
       if (!threadPool.awaitTermination(10, TimeUnit.SECONDS)) {
         System.out.println("아직 종료 안된 작업이 있다.");
         System.out.println("남아 있는 작업의 강제 종료를 시도하겠다.");
@@ -99,11 +100,11 @@ public class ServerApp {
         } else {
           System.out.println("모든 작업을 강제 종료했다.");
         }
-
       }
     } catch (Exception e) {
-      //
+      System.out.println("스레드풀 종료 중 오류 발생!");
     }
+    System.out.println("서버 종료!");
   }
 
   public static void main(String[] args) {
@@ -139,7 +140,9 @@ public class ServerApp {
 
       Command command = (Command) context.get(request);
       if (command != null) {
-        command.execute(out, in);
+        context.put("out", out);
+        context.put("in", in);
+        command.execute(context);
       } else {
         out.println("해당 명령을 처리할 수 없습니다!");
       }
@@ -147,7 +150,6 @@ public class ServerApp {
       // 응답의 끝을 알리는 빈 문자열을 보낸다.
       out.println();
       out.flush();
-
 
     } catch (Exception e) {
       System.out.println("클라이언트와의 통신 오류!");

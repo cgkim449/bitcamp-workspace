@@ -7,12 +7,13 @@ import java.util.Map;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
+import com.eomcs.util.Prompt;
 
-public class ProjectListCommand implements Command {
+public class ProjectSearchCommand implements Command {
 
   ProjectService projectService;
 
-  public ProjectListCommand(ProjectService projectService) {
+  public ProjectSearchCommand(ProjectService projectService) {
     this.projectService = projectService;
   }
 
@@ -20,28 +21,30 @@ public class ProjectListCommand implements Command {
   public void execute(Map<String, Object> context) {
     PrintWriter out = (PrintWriter) context.get("out");
     BufferedReader in = (BufferedReader) context.get("in");
+    out.println("[프로젝트 검색]");
+
     try {
-      out.println("[프로젝트 목록]");
+      String keyword = Prompt.inputString("검색어? ", out, in);
 
-      List<Project> projects = (List<Project>) projectService.list();
+      List<Project> list = projectService.list(keyword);
+      out.println("번호, 프로젝트명, 시작일 ~ 종료일, 관리자, 팀원");
 
-      StringBuilder members = new StringBuilder();
-      for (Project p : projects) {
-        for (Member member : p.getMembers()) {
+      for (Project project : list) {
+        StringBuilder members = new StringBuilder();
+        for (Member member : project.getMembers()) {
           if (members.length() > 0) {
             members.append(",");
           }
           members.append(member.getName());
         }
 
-      }
-      for (Project project : projects) {
-        out.printf("%d, %s, %s, %s, %s, [%s]\n", project.getNo(), project.getTitle(),
+        out.printf("%d, %s, %s ~ %s, %s, [%s]\n", project.getNo(), project.getTitle(),
             project.getStartDate(), project.getEndDate(), project.getOwner().getName(),
             members.toString());
       }
     } catch (Exception e) {
-      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
+      System.out.println("프로젝트 목록 조회 중 오류 발생!");
+      e.printStackTrace();
     }
   }
 }
