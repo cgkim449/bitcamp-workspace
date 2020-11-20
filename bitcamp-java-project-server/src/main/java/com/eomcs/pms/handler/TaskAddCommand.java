@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
@@ -13,13 +12,16 @@ import com.eomcs.pms.service.ProjectService;
 import com.eomcs.pms.service.TaskService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/task/add")
 public class TaskAddCommand implements Command {
 
   TaskService taskService;
   ProjectService projectService;
   MemberService memberService;
 
-  public TaskAddCommand(TaskService taskService, ProjectService projectService,
+  public TaskAddCommand(
+      TaskService taskService,
+      ProjectService projectService,
       MemberService memberService) {
     this.taskService = taskService;
     this.projectService = projectService;
@@ -27,18 +29,17 @@ public class TaskAddCommand implements Command {
   }
 
   @Override
-  public void execute(Map<String, Object> context) {
-    PrintWriter out = (PrintWriter) context.get("out");
-    BufferedReader in = (BufferedReader) context.get("in");
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
 
-
-    // 프로젝트 목록을 가져온다.
     try {
       out.println("[작업 등록]");
 
       // 작업 정보를 입력 받을 객체 준비
       Task task = new Task();
 
+      // 프로젝트 목록을 가져온다.
       List<Project> projects = projectService.list();
       if (projects.size() == 0) {
         out.println("프로젝트가 없습니다!");
@@ -106,7 +107,7 @@ public class TaskAddCommand implements Command {
       out.println("작업을 등록했습니다.");
 
     } catch (Exception e) {
-      out.println("작업 등록 중 오류 발생!");
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
       e.printStackTrace();
     }
   }

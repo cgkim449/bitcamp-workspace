@@ -7,14 +7,17 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import com.eomcs.context.ApplicationContextListener;
-import com.eomcs.pms.handler.Command;
+import com.eomcs.pms.filter.FilterChain;
+import com.eomcs.pms.handler.Request;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.pms.listener.DataHandlerListener;
 import com.eomcs.pms.listener.RequestMappingListener;
@@ -127,24 +130,34 @@ public class ServerApp {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream())) {
 
-      // 클라이언트가 보낸 요청을 읽는다.
-      String request = in.readLine();
+      // 클라이언트가 보낸 세션 아이디에 따라 세션 보관소를 준비한다.
+      String sessionId = prepareSession(in.readLine());
 
-      if (request.equalsIgnoreCase("stop")) {
+      // 클라이언트가 보낸 요청을 읽는다.
+      String requestLine = in.readLine();
+
+      if (requestLine.equalsIgnoreCase("stop")) {
         stop = true; // 서버의 상태를 멈추라는 의미로 true로 설정한다.
+        out.println("SessionID=xxx");
         out.println("서버를 종료하는 중입니다!");
         out.println();
         out.flush();
         return;
       }
 
-      Command command = (Command) context.get(request);
-      if (command != null) {
-        context.put("out", out);
-        context.put("in", in);
-        command.execute(context);
-      } else {
-        out.println("해당 명령을 처리할 수 없습니다!");
+      // 커맨드나 필터가 사용할 객체를 준비한다.
+      Request request = new Request(requestLine, context, out, in, sessionId);
+
+      // context 맵에 보관된 필터 체인을 꺼낸다.
+      FilterChain filterChain = (FilterChain) context.get("filterChain");
+
+      // 필터들의 체인을 실행한다.
+      // => 필터 체인을 따라가면서 중간에 삽입된 필터가 있다면 실행할 것이다.
+      // => 마지막 필터에서는 클라이언트가 요청한 명령을 처리할 것이다.
+      if (filterChain != null) {
+        // 클라이언트 응답 첫 줄에 세션 ID를 출력한다.
+        out.printf("SessionID=%s\n", sessionId);
+        filterChain.doFilter(request);
       }
 
       // 응답의 끝을 알리는 빈 문자열을 보낸다.
@@ -153,9 +166,33 @@ public class ServerApp {
 
     } catch (Exception e) {
       System.out.println("클라이언트와의 통신 오류!");
+      e.printStackTrace();
     }
 
     System.out.printf("클라이언트(%s)와의 연결을 끊었습니다.\n",
         address.getHostAddress());
+  }
+
+  private static String prepareSession(String sessionInfo) {
+
+    String[] values = sessionInfo.split("=");
+
+    // 클라이언트에서 자신의 세션 아이디를 보내왔다면,
+    if (values.length == 2 && context.get(values[1]) != null) {
+      // 기존에 서버에서 발급한 세션 아이디를 그대로 리턴한다.
+      return values[1];
+    }
+
+    // 세션 아이디가 없다면,
+    // 클라이언트에게 새 세션 아이디를 부여한다.
+    String sessionId = UUID.randomUUID().toString();
+
+    // 새 세션을 위한 보관소를 생성한다.
+    HashMap<String,Object> sessionMap = new HashMap<>();
+
+    // 필터나 커맨드가 사용할 수 있도록 context 맵에 저장한다.
+    context.put(sessionId, sessionMap);
+
+    return sessionId;
   }
 }

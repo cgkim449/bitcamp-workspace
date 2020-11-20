@@ -9,6 +9,7 @@ import com.eomcs.pms.service.BoardService;
 import com.eomcs.util.Prompt;
 
 // Command 규칙에 따라 클래스를 정의한다.
+@CommandAnno("/board/add")
 public class BoardAddCommand implements Command {
 
   BoardService boardService;
@@ -18,21 +19,21 @@ public class BoardAddCommand implements Command {
   }
 
   @Override
-  public void execute(Map<String, Object> context) {
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+    Map<String,Object> session = request.getSession();
 
-    PrintWriter out = (PrintWriter) context.get("out");
-      BufferedReader in = (BufferedReader) context.get("in");
-
-      try {
+    try {
       out.println("[게시물 등록]");
 
       Board board = new Board();
       board.setTitle(Prompt.inputString("제목? ", out, in));
       board.setContent(Prompt.inputString("내용? ", out, in));
 
-      Member loginUser = (Member) context.get("loginUser");
-      
+      Member loginUser = (Member) session.get("loginUser");
       board.setWriter(loginUser);
+
       boardService.add(board);
 
       out.println("게시글을 등록하였습니다.");

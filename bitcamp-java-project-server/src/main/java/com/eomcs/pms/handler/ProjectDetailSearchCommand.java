@@ -4,12 +4,12 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
 import com.eomcs.util.Prompt;
 
+@CommandAnno("/project/detailSearch")
 public class ProjectDetailSearchCommand implements Command {
 
   ProjectService projectService;
@@ -19,14 +19,14 @@ public class ProjectDetailSearchCommand implements Command {
   }
 
   @Override
-  public void execute(Map<String, Object> context) {
-    PrintWriter out = (PrintWriter) context.get("out");
-    BufferedReader in = (BufferedReader) context.get("in");
+  public void execute(Request request) {
+    PrintWriter out = request.getWriter();
+    BufferedReader in = request.getReader();
+
+    out.println("[프로젝트 상세 검색]");
 
     try {
-      out.println("[프로젝트 상세 검색]");
-
-      HashMap<String, Object> keywords = new HashMap<>();
+      HashMap<String,Object> keywords = new HashMap<>();
 
       String title = Prompt.inputString("프로젝트명? ", out, in);
       if (title.length() > 0) {
@@ -55,12 +55,16 @@ public class ProjectDetailSearchCommand implements Command {
           members.append(m.getName());
         }
 
-        out.printf("%d, %s, %s ~ %s, %s, [%s]\n", project.getNo(), project.getTitle(),
-            project.getStartDate(), project.getEndDate(), project.getOwner().getName(),
+        out.printf("%d, %s, %s ~ %s, %s, [%s]\n",
+            project.getNo(),
+            project.getTitle(),
+            project.getStartDate(),
+            project.getEndDate(),
+            project.getOwner().getName(),
             members.toString());
       }
     } catch (Exception e) {
-      out.println("프로젝트 목록 조회 중 오류 발생!");
+      out.printf("작업 처리 중 오류 발생! - %s\n", e.getMessage());
       e.printStackTrace();
     }
   }

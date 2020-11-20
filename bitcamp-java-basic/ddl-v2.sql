@@ -1,3 +1,10 @@
+drop table pms_board;
+drop table pms_member;
+drop table pms_task;
+drop table pms_project;
+drop table pms_member_project;
+
+
 create table pms_board(
   no int not null,
   title varchar(255) not null,
@@ -22,6 +29,8 @@ create table pms_member(
   tel varchar(20),
   cdt datetime default now()
 );
+
+/*insert into pms_member(name, email, password) values('cg', 'cg@test.com', password(1111));*/
 
 alter table pms_member
   add constraint pms_member_pk primary key(no);
@@ -53,22 +62,6 @@ alter table pms_project
 alter table pms_project
   add constraint pms_project_fk foreign key(owner) references pms_member(no);
 
-create table pms_task(
-  no int not null,
-  content text not null,
-  deadline date not null,
-  /*owner int not null,   /* pms_member 의 PK 컬럼을 가리키는 외부키다*/*/
-  status int default 0
-);
-
-alter table pms_task
-  add constraint pms_task_pk primary key(no);
-
-alter table pms_task
-  modify column no int not null auto_increment;
-
-/*alter table pms_task
-  add constraint pms_task_fk foreign key(owner) references pms_member(no);*/
 
 
 /* 프로젝트와 멤버의 다대다 관계를 저장할 테이블을 정의한다.*/
@@ -85,3 +78,23 @@ alter table pms_member_project
 /* 프로젝트-멤버 정보가 중복 저장되지 않도록 PK로 설정한다 */
 alter table pms_member_project
   add constraint pms_member_project_pk primary key(member_no, project_no);
+
+create table pms_task(
+  no int not null,
+  content text not null,
+  deadline date not null,
+  owner int not null,   /* pms_member 의 PK 컬럼을 가리키는 외부키다*/
+  project_no int not null,
+  status int default 0
+);
+
+alter table pms_task
+  add constraint pms_task_pk primary key(no);
+
+alter table pms_task
+  modify column no int not null auto_increment;
+
+alter table pms_task
+  add constraint pms_task_fk foreign key (owner, project_no) references pms_member_project(member_no, project_no);
+  
+  
