@@ -13,6 +13,10 @@ repositories {
 }
 
 dependencies {
+compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
 //Mybatis 퍼시스턴스 프레임워크
 implementation 'org.mybatis:mybatis:3.5.6'
 
