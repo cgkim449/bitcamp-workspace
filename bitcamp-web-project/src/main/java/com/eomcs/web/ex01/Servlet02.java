@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 // => service() 메서드만 남겨두고 나머지 메서드들은 모두 구현하였다.
 // => 따라서 이 클래스를 상속 받는 서브 클래스는 service() 만 구현하면 된다.
 //
-public class Servlet02 extends GenericServlet {
+public class Servlet02 extends GenericServlet { 
 
   // GenericServlet 추상 클래스는 java.io.Serialize 인터페이스를 구현하였다.
   // => serialVersionUID 변수 값을 설정해야 한다.

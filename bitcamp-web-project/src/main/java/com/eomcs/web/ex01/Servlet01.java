@@ -7,7 +7,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
 
 // 서블릿 클래스를 만든 후,
 // 배치 파일(web.xml; DD 파일)에 서블릿 정보를 등록해야만 실행될 수 있다.
@@ -55,7 +54,7 @@ import javax.servlet.annotation.WebServlet;
 // 왜? 인스턴스는 모든 클라이언트가 공유하기 때문이다.
 //
 
-@WebServlet("/ex01/first")
+//@WebServlet("/ex01/first")
 public class Servlet01 implements Servlet {
 
   ServletConfig config;

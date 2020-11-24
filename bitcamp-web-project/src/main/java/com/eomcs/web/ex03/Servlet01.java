@@ -19,8 +19,9 @@ public class Servlet01 extends GenericServlet {
       throws ServletException, IOException {
 
     // 출력 스트림을 꺼내기 전에 출력할 때 사용할 문자표(charset)를 지정하지 않으면
-    // 기본이 영어 문자로 간주하여 아스키 코드(ASCII)로 변환하여 출력한다.
-    // 자바(Unicode2;UTF-16) ===> 출력문자(ASCII)
+    // 기본 문자표 (ISO-8859-1)을 사용한다
+    // 자바(Unicode2;UTF-16) ===> 출력문자(ISO-8859-1)
+    // 없다는 의미로 ?로 출력된다
     PrintWriter out = res.getWriter();
     out.println("Hello!");
     out.println("안녕하세요!");

@@ -20,7 +20,7 @@ public class Servlet04 extends GenericServlet {
   public void service(ServletRequest req, ServletResponse res)
       throws ServletException, IOException {
 
-    // /WEB-INF/photo.jpeg 파일의 실제 경로 알아내기
+    // /webapp/photo.jpeg 파일의 실제 경로 알아내기
     // 1) 서블릿의 환경 정보를 다루는 객체를 먼저 얻는다.
     ServletContext ctx = req.getServletContext();
 
@@ -34,12 +34,13 @@ public class Servlet04 extends GenericServlet {
     // 바이너리를 출력할 때 MIME 타입을 지정해야 웹 브라우저가 제대로 출력할 수 있다.
     // => 웹 브라우저가 모르는 형식을 지정하면 웹 브라우저는 처리하지 못하기 때문에
     // 그냥 다운로드 대화상자를 띄운다.
-    res.setContentType("image/jpeg");
+    res.setContentType("image/ohora");
+    // MIMETYPE 실수하면 다운로드 화면이뜸
 
     BufferedOutputStream out = new BufferedOutputStream(res.getOutputStream());
-
+    //속도빨라짐: inputStream에도 장착해도됨
     int b;
-    while ((b = in.read()) != -1) {
+    while ((b = in.read()) != -1) { // 1바이트씩읽어서
       out.write(b);
     }
 
