@@ -19,9 +19,9 @@ public class Servlet01 extends GenericServlet {
       throws ServletException, IOException {
 
     // GET 요청
-    // - 웹 브라우저에 URL을 입력한 후 엔터를 치면 GET 요청을 보낸다.
-    // - 웹 페이지에서 링크를 클릭하면(자바스크립트 처리하지 않은 상태) GET 요청을 보낸다.
-    // - 웹 페이지의 폼(method='GET' 일 때)에서 전송 버튼을 클릭하면 GET 요청을 보낸다.
+    //    1. 웹 브라우저에 URL을 입력한 후 엔터를 치면 GET 요청을 보낸다.
+    //    2. 웹 페이지에서 링크를 클릭하면(자바스크립트 처리하지 않은 상태) GET 요청을 보낸다.
+    //    3. 웹 페이지의 폼(method='GET' 일 때)에서 전송 버튼을 클릭하면 GET 요청을 보낸다.
     //
     // 테스트
     // - http://localhost:8080/java-web/ex04/test01.html 실행
@@ -40,10 +40,12 @@ public class Servlet01 extends GenericServlet {
   }
 }
 
+
 // 웹브라우저에서 웹서버의 자원을 요청하는 방법
 // 1) 서블릿 클래스를 실행하고 싶을 때
 // => 서블릿 클래스의 실제 위치:
 // 톰캣배치폴더/wtpwebapps/eomcs-java-web/WEB-INF/classes/com/eomcs/web/ex04/Servlet01.class
+// 프로젝트폴더/........................................./com/eomcs/web/ex04/Servlet01.java
 // => 요청:
 // 해당 서블릿을 서버에 등록할 때 사용한 URL을 지정해야 한다.
 // http://localhost:9999/eomcs-java-web/ex04/s1
@@ -51,14 +53,15 @@ public class Servlet01 extends GenericServlet {
 // 2) HTML, CSS, JavaScript, JPEG 등 정적 파일을 받고 싶을 때
 // => 정적 파일의 실제 위치:
 // 톰캣배치폴더/wtpwebapps/eomcs-java-web/ex04/test01.html
+// 프로젝트폴더/................../webapp/ex04/test01.html
 // => 요청:
 // http://localhost:9999/eomcs-java-web/ex04/test01.html
 //
-// 3) /WEB-INF/ 폴더에 있는 정적 파일을 받고 싶을 때
+// 3) /WEB-INF/ 폴더에 있는 정적 파일(보안에 중요)을 받고 싶을 때
 // => 정적 파일의 실제 위치:
 // 톰캣배치폴더/wtpwebapps/eomcs-java-web/WEB-INF/ex04/test01.html
 // => 요청:
-// /WEB-INF 폴더 아래에 있는 파일은 클라이언트에서 요청할 수 없다!
+// /WEB-INF 폴더 아래에 있는 파일은 클라이언트에서 [요청할 수 없다!]
 // 웹 애플리케이션의 정보를 두는 폴더이기 때문이다.
 
 // HTTP 요청 형식
@@ -123,6 +126,8 @@ public class Servlet01 extends GenericServlet {
 /*
  * HTTP/1.1 200 OK Content-Type: text/plain;charset=UTF-8 Content-Length: 27 Date: Thu, 28 Mar 2019
  * 05:46:08 GMT CRLF 이름=홍길동 나이=20
+ * 
+ * 
  */
 
 // URI (Uniform Resource Identifier)
