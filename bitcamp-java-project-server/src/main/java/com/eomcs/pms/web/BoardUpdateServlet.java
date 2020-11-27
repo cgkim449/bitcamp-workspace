@@ -9,20 +9,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.eomcs.pms.domain.Board;
 import com.eomcs.pms.service.BoardService;
 
-@WebServlet("/board/delete")
-public class BoardDeleteCommand extends HttpServlet{
-
-
+@WebServlet("/board/update")
+public class BoardUpdateServlet extends HttpServlet {
 
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
 
+
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
     ServletContext ctx = request.getServletContext();
@@ -34,16 +34,21 @@ public class BoardDeleteCommand extends HttpServlet{
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
-    out.println("<head><title>게시글 삭제</title></head>");
+    out.println("<head><title>게시글 변경</title></head>");
     out.println("<body>");
     try {
-      out.println("<h1>게시글 삭제</h1>");
+      out.println("<h1>게시글 변경</h1>");
 
-      int no = Integer.parseInt(request.getParameter("no"));
-      if (boardService.delete(no) == 0) {
-        out.println("<p>해당 번호의 게시글이 없습니다.</p>");
+      Board board = new Board();
+      board.setNo(Integer.parseInt(request.getParameter("no")));
+      board.setTitle(request.getParameter("title"));
+      board.setContent(request.getParameter("content"));
+      int count = boardService.update(board);
+      if (count == 0) {
+        out.println("해당 번호의 게시글이 없습니다");
+      } else {
+        out.println("<p>게시글을 변경하였습니다.</p>");
       }
-      out.println("<p>게시글을 삭제하였습니다.</p>");
 
     } catch (Exception e) {
       out.println("<h2>작업 처리 중 오류 발생! - %s</h2>\n");

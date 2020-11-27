@@ -1,3 +1,5 @@
+/* 37-a */
+
 drop table pms_board;
 drop table pms_member;
 drop table pms_task;
@@ -22,9 +24,10 @@ alter table pms_member
 alter table pms_member
   modify column no int not null auto_increment;
 
+/*alter table pms_member drop index pms_member_uk;*/
+  
 alter table pms_member
-  add constraint pms_member_uk unique (no);
-
+  add constraint pms_member_uk unique(email);
 
 create table pms_board(
   no int not null,

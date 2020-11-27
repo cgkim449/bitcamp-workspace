@@ -45,12 +45,22 @@ public class BoardDetailServlet extends HttpServlet {
         out.println("해당 번호의 게시글이 없습니다.");
         return;
       }
-
-      out.printf("제목: %s<br>\n", board.getTitle());
-      out.printf("내용: %s<br>\n", board.getContent());
+      out.println("<form action='update' method='post'>");
+      out.printf("번호: <input type='text' name='no' value='%d' readonly><br>\n", board.getNo());
+      out.printf("제목: <input type='text' name='title' value='%s'><br>\n", board.getTitle());
+      out.printf("내용: <textarea name='content'>%s</textarea><br>\n", board.getContent());
       out.printf("작성자: %s<br>\n", board.getWriter().getName());
       out.printf("등록일: %s<br>\n", board.getRegisteredDate());
       out.printf("조회수: %d<br>\n", board.getViewCount());
+      out.println("<p>");
+      out.println("<button>변경</button>");
+      out.printf("<a href='delete?no=%d'>삭제</a>", board.getNo());
+      /*
+       * 삭제를 post방식으로 하려면 form을 새로 또 만들어야됨
+       * 그래서 그냥 링크로 했음(get)
+       */
+      out.println("</p>");
+      out.println("</form>");
 
     } catch (Exception e) {
       out.printf("<p>작업 처리 중 오류 발생! - %s</p>\n", e.getMessage());

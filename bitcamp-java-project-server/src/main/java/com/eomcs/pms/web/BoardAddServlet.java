@@ -44,15 +44,13 @@ public class BoardAddServlet extends HttpServlet {
     out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
-    //    out.println("<meta http-equiv='Refresh' content='1;list'>");
+    out.println("<meta http-equiv='Refresh' content='1;list'>");
     out.println("<title>게시글등록</title></head>");
     out.println("<body>");
     try {
       out.println("<h1>게시물 등록</h1>");
 
-      //Member loginUser = (Member) session.getAttribute("loginUser");
-      Member loginUser = new Member();
-      loginUser.setNo(1);
+      Member loginUser = (Member) session.getAttribute("loginUser");
 
       board.setWriter(loginUser);
 

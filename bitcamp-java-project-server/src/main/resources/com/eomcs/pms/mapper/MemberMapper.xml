@@ -18,7 +18,8 @@
     select 
       no, 
       name, 
-      email, 
+      email,
+      photo, 
       tel, 
       cdt
     from 
