@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.service.MemberService;
 
-@WebServlet("/member/list")
-public class MemberListServlet extends HttpServlet {
+@WebServlet("/project/form")
+public class ProjectAddFormServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -30,43 +30,31 @@ public class MemberListServlet extends HttpServlet {
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
-    out.println("<head><title>회원목록</title></head>");
+    out.println("<head>");
+    out.println("<title>프로젝트생성</title></head>");
     out.println("<body>");
+
     try {
-      out.println("<h1>회원 목록</h1>");
+      out.println("<h1>프로젝트 생성</h1>");
 
-      out.println("<a href='form.html'>새 회원</a><br>");
+      out.println("<form action='add' method='post'>");
+      out.println("프로젝트명: <input type='text' name='title'><br>");
+      out.println("내용: <textarea name='content' rows='10' cols='60'></textarea><br>");
+      out.println("기간: <input type='date' name='startDate'> ~ ");
+      out.println("      <input type='date' name='endDate'><br>");
+      out.println("팀원: <br>");
+      out.println("<ul>");
 
-      List<Member> list = memberService.list();
-
-      out.println("<table border='1'>");
-      out.println("<thead><tr>" // table row
-          + "<th>번호</th>" // table header
-          + "<th>이름</th>"
-          + "<th>이메일</th>"
-          + "<th>전화</th>"
-          + "<th>등록일</th>"
-          + "</tr></thead>");
-
-      out.println("<tbody>");
-
-      for (Member member : list) {
-        out.printf("<tr>"
-            + "<td>%d</td>"
-            + "<td><a href='detail?no=%1$d'><img src='../upload/%s_30x30.jpg' alt='[%2$s]'>%s</a></td>"
-            + "<td>%s</td>"
-            + "<td>%s</td>"
-            + "<td>%s</td>"
-            + "</tr>\n",
-            member.getNo(),
-            member.getPhoto(),
-            member.getName(),
-            member.getEmail(),
-            member.getTel(),
-            member.getRegisteredDate());
+      List<Member> members = memberService.list();
+      for (Member m : members) {
+        out.printf("  <li><input type='checkbox' name='members' value='%d'>%s</li>\n",
+            m.getNo(),
+            m.getName());
       }
-      out.println("</tbody>");
-      out.println("</table>");
+
+      out.println("</ul><br>");
+      out.println("<button>생성</button>");
+      out.println("</form>");
 
     } catch (Exception e) {
       out.println("<h2>작업 처리 중 오류 발생!</h2>");

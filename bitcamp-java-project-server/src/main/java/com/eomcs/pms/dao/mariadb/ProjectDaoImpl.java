@@ -69,4 +69,18 @@ public class ProjectDaoImpl implements com.eomcs.pms.dao.ProjectDao {
       return sqlSession.insert("ProjectDao.insertMembers", project);
     }
   }
+
+  @Override
+  public int updateInactiveMembers(Project project) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.update("ProjectDao.updateInactiveMembers", project);
+    }
+  }
+
+  @Override
+  public int updateActiveMembers(Project project) {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.update("ProjectDao.updateActiveMembers", project);
+    }
+  }
 }

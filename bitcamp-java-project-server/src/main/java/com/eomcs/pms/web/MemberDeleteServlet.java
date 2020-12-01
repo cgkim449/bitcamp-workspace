@@ -9,16 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.eomcs.pms.service.BoardService;
+import com.eomcs.pms.service.MemberService;
 
-@WebServlet("/board/delete")
-public class BoardDeleteCommand extends HttpServlet{
-
-
-
-  /**
-   * 
-   */
+@WebServlet("/member/delete")
+public class MemberDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -26,32 +20,38 @@ public class BoardDeleteCommand extends HttpServlet{
       throws ServletException, IOException {
 
     ServletContext ctx = request.getServletContext();
-    BoardService boardService =
-        (BoardService) ctx.getAttribute("boardService");
+    MemberService memberService =
+        (MemberService) ctx.getAttribute("memberService");
 
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
-    out.println("<head><title>게시글 삭제</title></head>");
+    out.println("<head>");
+    out.println("<meta http-equiv='Refresh' content='1;url=list'>");
+    out.println("<title>회원삭제</title></head>");
     out.println("<body>");
-    try {
-      out.println("<h1>게시글 삭제</h1>");
 
+    try {
+      out.println("<h1>회원 삭제</h1>");
       int no = Integer.parseInt(request.getParameter("no"));
-      if (boardService.delete(no) == 0) {
-        out.println("<p>해당 번호의 게시글이 없습니다.</p>");
+
+      if (memberService.delete(no) == 0) {
+        out.println("<p>해당 번호의 회원이 없습니다.</p>");
+
+      } else {
+        out.println("<p>회원을 삭제하였습니다.</p>");
       }
-      out.println("<p>게시글을 삭제하였습니다.</p>");
 
     } catch (Exception e) {
-      out.println("<h2>작업 처리 중 오류 발생! - %s</h2>\n");
+      e.printStackTrace();
+      out.println("<h2>작업 처리 중 오류 발생!</h2>");
       out.printf("<pre>%s</pre>\n", e.getMessage());
 
       StringWriter errOut = new StringWriter();
       e.printStackTrace(new PrintWriter(errOut));
-      out.println("<h3>작업 처리 중 오류 발생! - %s</h3>\n");
+      out.println("<h3>상세 오류 내용</h3>");
       out.printf("<pre>%s</pre>\n", errOut.toString());
     }
 

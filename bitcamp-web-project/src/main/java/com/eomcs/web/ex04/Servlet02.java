@@ -90,7 +90,8 @@ public class Servlet02 extends GenericServlet {
  * text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng, Referer:
  * http://localhost:8080/java-web/ex04/test02.html Accept-Encoding: gzip, deflate, br
  * Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6 빈 줄
- * name=ABC%EA%B0%80%EA%B0%81&age=20
+ * 
+ * name=ABC%EA%B0%80%EA%B0%81&age=20 - 쿼리스트링이아니라 메세지바디라고 함
  */
 
 // GET 요청 vs POST 요청
