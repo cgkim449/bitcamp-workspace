@@ -53,8 +53,8 @@ create table pms_project(
   content text not null,
   sdt date not null,
   edt date not null,
-  owner int not null      /* pms_member 테이블의 'no' PK 컬럼 값을 저장해야 한다. */
-
+  owner int not null,      /* pms_member 테이블의 'no' PK 컬럼 값을 저장해야 한다. */
+state int default 1
   /* 다대다 관계를 표현하는 컬럼을 제거한다.*/
   /*   members varchar(255) not null */
 );
@@ -73,7 +73,8 @@ alter table pms_project
 /* 프로젝트와 멤버의 다대다 관계를 저장할 테이블을 정의한다.*/
 create table pms_member_project(
   member_no int not null,
-  project_no int not null
+  project_no int not null,
+  state int default 1
 );
 
 /* 다대다 관계를 저장할 컬럼의 대해 FK를 설정한다. */

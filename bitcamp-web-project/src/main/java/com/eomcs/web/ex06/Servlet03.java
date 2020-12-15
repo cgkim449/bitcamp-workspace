@@ -9,35 +9,58 @@ import javax.servlet.http.HttpServlet;
 //
 //@WebServlet(
 //    value = "/ex06/s3",
-//    loadOnStartup = 1,
+//    //    loadOnStartup = 1,
+//    /*
+//     * 로그인 서블릿은 무조건 쓰기때문에
+//     * 만들어놓으면 속도가 빠르다
+//     * 그런애들은 얘를 붙여라
+//     */
 //    initParams = {
 //        @WebInitParam(name = "jdbc.driver", value = "org.mariadb.jdbc.Driver"),
 //        @WebInitParam(name = "jdbc.url", value = "jdbc:mariadb://localhost/studydb"),
 //        @WebInitParam(name = "jdbc.username", value = "study"),
 //        @WebInitParam(name = "jdbc.password", value = "1111")})
-//@SuppressWarnings("serial")
+@SuppressWarnings("serial") // serial를 무시하겟다
 public class Servlet03 extends HttpServlet {
+
+  //  서블릿의 init에서 하는것
+  //  db에 커넥션한다거나 소켓을 연결한다거나
+  //
+  //  GenericServlet
+  //  @Override
+  //  public void init(ServletConfig config) throws ServletException {
+  //    this.config = config;
+  //    this.init();
+  //  }
+  //
+  //  Servlet의 init를 직접 오버라이딩 하지말고(그럼 번거로움)
+  //  얘를 오버라이딩해라
+  //  @Override
+  //  public void init() throws ServletException {
+  //
+  //  }
+
 
   // @Override
   // public void init(ServletConfig config) throws ServletException {
-  // // 서블릿 객체가 생성될 때 뭔가 준비하는 작업을 해야 한다면,
-  // // 보통 이 메서드를 오버라이딩 할 것이다.
-  // //
-  // // 문제는 이 메서드가 호출될 때 넘어오는 값(config)을 인스턴스 필드에 보관했다가,
-  // // 나중에 getServletConfig()가 호출될 때 리턴하도록 코드를 작성해야 한다.
-  // // 이런 작업이 번거롭다.
-  // //
-  // // 이런 불편함을 없애기 위해서 GenericServlet은
-  // // 미리 이 메서드에 해당 코드를 작성해 두었다.
-  // // 그리고 추가적으로 파라미터 값을 받지 않는 init()를 호출하도록
-  // // 구현하였다.
-  // //
-  // // 결론?
-  // // => 그러니 개발자는 서블릿 객체가 생성될 때 뭔가 작업을 수행하고 싶다면,
-  // // 이 메서드를 직접 오버라이딩 하지 말고,
-  // // 이 메서드가 호출하는 다른 init()를 오버라이딩 하라!
-  // //
-  // //
+  //  서블릿 객체가 생성될 때 뭔가 준비하는 작업을 해야 한다면,
+  //  보통 이 메서드를 오버라이딩 할 것이다.
+  // 
+  //  문제는 이 메서드가 호출될 때 넘어오는 값(config)을 나중에 사용할 수 있도록 인스턴스 필드에 보관해둔다
+  //  즉 getServletConfig()가 호출될 때 리턴하도록 다음과 같이 코드를 작성해야 한다.
+  //  이런 작업이 번거롭다.
+  // 
+  //  이런 불편함을 없애기 위해서 GenericServlet은
+  //  미리 이 메서드에 해당 코드를 작성해 두었다.
+  //  그리고 추가적으로 파라미터 값을 받지 않는 init()를 호출하도록
+  //  구현하였다.
+  // 
+  //  결론?
+  //  => 그러니 개발자는 서블릿 객체가 생성될 때 뭔가 작업을 수행하고 싶다면,
+  //  이 메서드를 직접 오버라이딩 하지 말고,
+  //  이 메서드가 호출하는 다른 init()를 오버라이딩 하라!
+  // 
+  // 
   // super.init(config);
   // }
 
@@ -66,7 +89,7 @@ public class Servlet03 extends HttpServlet {
     // => 값이 바뀌더라도 소스를 변경할 필요가 없다.
     // => 보통 DD 파일(web.xml)에 둔다.
     // => 다만 이 예제에서는 애노테이션으로도 설정할 수 있다는 것을
-    // 보여주기 위해 서블릿 상단에 애노테이션으로 설정하였다.
+    //    보여주기 위해 서블릿 상단에 애노테이션으로 설정하였다.(그러나 이거도 하드코딩임)
     // => 예)
     // @WebInitParam(name = "jdbc.driver", value = "org.mariadb.jdbc.Driver")
     // => 애노테이션에 설정된 값을 꺼내기 위해서는 ServletConfig 객체가 필요하다.
@@ -79,7 +102,11 @@ public class Servlet03 extends HttpServlet {
     String jdbcUrl = config.getInitParameter("jdbc.url");
     String username = config.getInitParameter("jdbc.username");
     String password = config.getInitParameter("jdbc.password");
-
+    /*
+     * FilterConfig
+     * ServletConfig
+     * 메서드명도 똑같음
+     */
 
     System.out.println(jdbcDriver);
     System.out.println(jdbcUrl);

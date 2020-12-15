@@ -37,6 +37,15 @@ public class Servlet01 extends HttpServlet {
     response.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
+    // 명심!
+    // => 서블릿의 PrintWriter 객체를 통해 값을 출력하면
+    // 클라이언트로 바로 출력되는게 아니라
+    // 내부에 마련된 버퍼로 출력된다
+    // => 그럼 출력 결과는 언제? 
+    // - service() 메서드 호출이 끝났을때 버퍼의 내용이 클라이언트로 출력된다
+    // => 만약 버퍼가 꽉 차면, service() 메서드 호출이 끝나기 전에 자동으로 출력된다
+    //
+    // 따라서 다음 출력 코드는 버퍼로 값을 출력한 것이다
     out.println("더하기 계산 결과:");
 
     String op = request.getParameter("op");
