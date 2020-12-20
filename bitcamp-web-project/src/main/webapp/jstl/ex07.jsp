@@ -22,17 +22,19 @@
 <h2>배열</h2>
 <%
 pageContext.setAttribute("names", new String[]{"홍길동", "임꺽정", "유관순"});
-
-/*
-String[] names = (String[]) pageContext.getAttribute("names");
-for (String n : names) {
-  out.println("<li>" + n + "</li>");
-}
-*/
 %>
-
+<hr>
 <ul>
-<c:forEach items="${pageScope.names}" var="n">
+<% 
+String[] names = (String[]) pageContext.getAttribute("names");
+for (String n : names) {%>
+  <li><%=n%></li>
+<%} %>
+</ul>
+
+<hr>
+<ul>
+<c:forEach items="${names}" var="n">
     <li>${n}</li>
 </c:forEach>
 </ul>
@@ -47,7 +49,7 @@ pageContext.setAttribute("names2", names2);
 %>
 
 <ul>
-<c:forEach items="${pageScope.names2}" var="n">
+<c:forEach items="${names2}" var="n">
     <li>${n}</li>
 </c:forEach>
 </ul>
@@ -64,8 +66,8 @@ pageContext.setAttribute("names3", names3);
 <ul>
 <%-- Map 객체에 대해 반복문을 돌리면 var로 저장되는 것은 
      key와 value를 갖고 있는 Entry 객체이다. --%>
-<c:forEach items="${pageScope.names3}" var="n">
-    <li>${n.getKey()} : ${n.getValue()}</li>   
+<c:forEach items="${names3}" var="n">
+    <li>${n.getKey()} : ${n.getValue()} => ${n.key} : ${n.value}</li>   
 </c:forEach>
 </ul>
 
@@ -75,7 +77,7 @@ pageContext.setAttribute("names4", "홍길동,임꺽정,유관순,김구");
 %>
 
 <ul>
-<c:forEach items="${pageScope.names4}" var="n">
+<c:forEach items="${names4}" var="n">
     <li>${n}</li>
 </c:forEach>
 </ul>

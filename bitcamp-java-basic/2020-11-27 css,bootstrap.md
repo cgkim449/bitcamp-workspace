@@ -175,7 +175,7 @@ npm install bootstrap@next
 ### nodejs 다운
 https://nodejs.org/en/ -> lts버전 other download -> Installing Node.js via package manager
 
-또는 scoop install nodejs
+또는 scoop install -g nodejs@14.15.3
 
   
 ## 임포트 방식CDN
@@ -183,6 +183,7 @@ https://nodejs.org/en/ -> lts버전 other download -> Installing Node.js via pac
   rel="stylesheet" 
   integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
   crossorigin="anonymous">
+  
 test11_2.html
 사이트의 introduction에서 css, js 링크 모두 복붙
 https://sweetalert2.github.io/#download의 installation에서
@@ -201,10 +202,11 @@ nodemodules 폴더가 분명히 있음에도 안보인다면 이클립스에서 
 
 팀원중 한명이
 webapp에서 
-npm init 
+npm init
 계속 엔터
 그럼 package.json 파일 생성(gradle init 마냥)
 npm install --save bootstrap@next 
+하면 nodemodules폴더 생김
 npm install --save sweetalert2
 푸쉬
 
@@ -213,3 +215,9 @@ packcage.json이 있으면 쉽다(거기에 gradle 의 dependency처럼 bootstra
 npminstall(webapp밑에서)
 
 
+
+npm init 해서 프로젝트 생성 (-> package.json 파일 생성됨. 여기 의존라이브러리 정보가 들어감. build.gradle 같은파일)
+그 다음에 npm install 의존라이브러리명 --save 하면 node_modules에 설치될 뿐만 아니라 package.json 에 의존라이브러리 정보가 기입됨
+이제 깃푸시하면 실제 라이브러리가 있는 node_modules 폴더는 올라가지 않지만 package.json 파일은 올라가게 되어서
+다른 사람이 깃풀하고 npm install 인가 암튼 그런 명령어를 주면(gradle eclipse 같은거) package.json에 있는 의존라이브러리들이
+다운받아집니다

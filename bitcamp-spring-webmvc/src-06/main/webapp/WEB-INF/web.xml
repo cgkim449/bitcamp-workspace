@@ -27,7 +27,8 @@
     <servlet-name>app</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <!-- 다음 설정은 생략해도 된다. 
-    왜? 설정 파일의 이름을 규칙에 따라 작성했기 때문이다. -->
+         왜? 
+         Spring IoC 컨테이너의 설정 파일 이름을 규칙에 따라 작성했기 때문이다. -->
     <!--  
     <init-param>
       <param-name>contextConfigLocation</param-name>

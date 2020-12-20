@@ -26,9 +26,7 @@ https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&qu
     <c:param name="fbm" value="1"/>
     <c:param name="ie" value="utf8"/>
     <c:param name="query" value="홍길동"/>
-</c:url>
-
-<pre>${naverUrl}</pre>
+</c:url><pre>${naverUrl}</pre>
 
 </body>
 </html>

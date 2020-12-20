@@ -14,12 +14,11 @@
 <pre>
 - redirect 응답하기
 </pre>
-
 <c:if test="${param.search == 'naver'}">
     <c:redirect url="http://www.naver.com"/>
     <%-- 
     response.sendRedirect("http://www.naver.com");
-    --%>
+    --%> 
 </c:if>
 
 <c:if test="${param.search == 'daum'}">

@@ -22,8 +22,7 @@ names.add("윤봉길");
 
 pageContext.setAttribute("list", names);
 %>
-<!-- class면 제네릭 쓸수없음 -->
-<%-- <jsp:useBean id="list" class="java.util.ArrayList" scope="page"/> --%>
+
 <jsp:useBean id="list" type="java.util.ArrayList<String>" scope="page"/>
 <%-- 자바코드로 표현해보면,
   java.util.ArrayList<String> list = 
@@ -34,8 +33,8 @@ pageContext.setAttribute("list", names);
  --%>
 
 <%
-for (String n : list) {
-  out.println(n + "<br>");
+for (Object obj : list) {
+  out.println(obj + "<br>");
 }
 %>
 

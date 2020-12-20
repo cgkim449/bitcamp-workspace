@@ -39,6 +39,12 @@ list.add("임꺽정");
 list.add("유관순");
 list.add("안중근");
 
+// ArrayList 에 제네릭을 적용하지 않으면 
+// 다음과 같이 어떤 타입의 객체라도 저장할 수 있다.
+// => 그러나 jsp:useBean 태그에서 type 속성을 설정하면 제네릭을 사용할 수 있다.
+//list.add(new Integer(100));
+//list.add(new com.eomcs.web.vo.Board());
+ 
 for (String n : list) {
   out.println(n + "<br>");
 }

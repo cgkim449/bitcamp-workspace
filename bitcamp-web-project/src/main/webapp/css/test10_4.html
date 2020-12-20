@@ -11,47 +11,34 @@
     /*border: 1px solid black;*/
     padding: 10px;
   }
-/*  
-div는 블럭 -> 독점함 -> inline으로 만들던가 방법은 여러가지
--> inline은 contents의 너비높이로 결정?(inline은 너비높이가 모두 무시됨)
--> inline-block 하면 floating한거같이 되긴함
--> 근데 div사이의 엔터가 서로 카드사이를 간격을 줌
--> inlineblock잘안씀 floating씀
--> floating 쓰면 자기만의 inline-block처럼 너비높이를 가짐?
 
-상품이미지는 반드시 너비 높이를 갖게해야함
-썸네일 만들어서 비율같게하고
-height로 크기 맞추자
-
-이미지 없는 div도 높이 맞춰야되니까 div에서 heigth 180px
-*/
   div {
+    xdisplay: inline-block;
     border: 1px solid black;
-    width: 140px;
-    margin: 10px;
+    margin: 5px;
     padding: 10px;
+    width: 140px;
     height: 180px;
     text-align: center;
     float: left;
   }
 
   div > p {
+    border: 1px solid red;
+    xtext-align: center;
   }
   
   div > img {
     height: 80px;
   }
 
-
-
   </style>
 </head>
 <body>
   <div>
     <img src="http://image.auction.co.kr/itemimage/10/4d/ab/104dabf002.jpg">
-    <p>오블링/요콘 헤드셋</p>
+    <p>오블링2/요콘 헤드셋</p>
   </div>
-
   <div>
     <img src="http://image.auction.co.kr/itemimage/97/72/f1/9772f1972.jpg">
     <p>무료배송 헤드셋</p>

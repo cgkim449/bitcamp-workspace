@@ -19,6 +19,7 @@
 <%
 pageContext.setAttribute("name", "유관순");
 %>
+
 <c:out value="임꺽정"/><br>
 <c:out value="${null}" default="홍길동"/><br>
 <c:out value="${null}">홍길동</c:out><br>

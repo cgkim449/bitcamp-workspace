@@ -25,7 +25,8 @@
   <!-- => DispatcherServlet의 IoC 컨테이너를 사용하고 싶지 않다면,
           contextConfigLocation 초기화 파라미터의 값을 빈 채로 두면 된다.
           초기화 파라미터 변수가 없으면 안된다.
-          왜? 없으면 /WEB-INF/서블릿이름-servlet.xml 파일을 자동으로 찾기 때문이다.
+          왜? 
+          없으면 /WEB-INF/서블릿이름-servlet.xml 파일을 자동으로 찾기 때문이다.
   --> 
   <servlet>
     <servlet-name>app</servlet-name>

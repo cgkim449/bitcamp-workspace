@@ -29,7 +29,7 @@ for (String n : values) {
 %>
 
 <ul>
-<c:forTokens items="${pageScope.names1}" var="n" delims=",">
+<c:forTokens items="${names1}" var="n" delims=",">
     <li>${n}</li>
 </c:forTokens>
 </ul>

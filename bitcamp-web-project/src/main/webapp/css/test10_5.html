@@ -8,29 +8,28 @@
     => 가장 가까운 조상 중에 absolute나 relative, fixed 타입 조상이 있으면 
        그 조상을 기준으로 자신의 위치를 조정한다.
        테두리 안쪽을 기준으로 위치를 계산한다.
-    => 만약 조상 중에 absolute나 relative가 없다면,
-       문서(웹브라우저) 가장자리를 기준으로 자신의 위치를 조정한다.
-       (html body 등 말고 웹브라우저 : 0px로 해보라)
+    => 만약 조상 중에 absolute나 relative, fixed가 없다면,
+       문서 가장자리를 기준으로 자신의 위치를 조정한다.
     => absolute 태그는 width, height를 지정하지 않으면 콘텐츠의 크기에 맞춘다.
     => 기준이 되는 태그가 움직이면 자신도 같이 움직인다.
   */
   html {
     border: 10px dotted navy;
     margin: 30px; 
-    xposition: relative;
+    position: relative;
   }
 
   body {
-    border: 10px dashed black;
+    border: 5px dashed black;
     margin: 10px;
-    xposition: relative;
+    position: relative;
   }
 
   div {
     border: 1px solid red;
     margin: 10px;
   }
-  
+
 
   .c1 {
     width: 100px;
@@ -40,12 +39,12 @@
 
   #d1 {
     background-color: red;
-    xposition: relative;
+    position: relative;
   }
 
   #d11 {
     background-color: orange;
-    xposition: relative;
+    position: relative;
   }
   
   #d2 {
@@ -56,9 +55,6 @@
     background-color: blue;
     height: 400px;
   }
-
-/* float상태가 아니기 때문에 right top 안먹힘
-단 absolute면 무조건 먹힘 */
 
   #d111 {
     position: absolute;

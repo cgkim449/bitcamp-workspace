@@ -18,7 +18,7 @@
   <!-- => DispatcherServlet은 자체적으로 IoC 컨테이너를 보유하고 있다.
        => 파라미터를 사용하여 IoC 컨테이너의 설정 파일을 지정한다.
           초기화 파라미터명: contextConfigLocation
-          초기화 파라미터값: 예) /WEB-INF/app-context.xml
+          초기화 파라미터값: 예) /WEB-INF/app-servlet.xml
        => 설정하고 싶지 않다면 init-value를 비워둬라.
   --> 
   <servlet>
@@ -26,7 +26,7 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/app-context.xml</param-value>
+      <param-value>/WEB-INF/app-servlet.xml</param-value>
     </init-param>
     <!-- 서블릿을 요청하지 않아도 웹 애플리케이션을 시작시킬 때 자동 생성되어 
          IoC 컨테이너를 준비하는 초기화 작업을 수행할 수 있도록 

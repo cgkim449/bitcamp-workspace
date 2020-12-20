@@ -13,22 +13,28 @@ public class Controller01_2 {
   public String handler() {
     return "c01_2_h1";
   }
-  
+
   @RequestMapping("/c01_2_h2") // 핸들러에서 URL을 지정한다.
   @ResponseBody 
   public String handler2() {
     return "c01_2_h2";
   }
-  
+
   @RequestMapping("/c01_2/h3") // URL을 지정할 때 디렉토리 형식으로 지정할 수 있다.
   @ResponseBody 
   public String handler3() {
     return "/c01_2/h3";
   }
-  
+
   @RequestMapping("/c01_2/h4") // URL을 지정할 때 디렉토리 형식으로 지정할 수 있다.
   @ResponseBody 
   public String handler4() {
     return "/c01_2/h4";
+  }
+
+  @RequestMapping({"/c01_2/h5", "/c01_2/h6", "/c01_2/h7"}) 
+  @ResponseBody 
+  public String handler5() {
+    return "/c01_2/h5";
   }
 }
