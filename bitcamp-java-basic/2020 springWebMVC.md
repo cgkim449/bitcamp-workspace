@@ -471,6 +471,62 @@ application/x-www-form-urlencoded = 변수=값, 변수=값, 변수=값 ... (얘�
 
 자바스크립트!를 사용하여 개발자가 임의의 형식으로 값을 보낼 수 있다.
 
+45. boolean은 파라미터로 null이 넘어오면 false, 근데 int는 null이 오면 자동형변환안되니까 디폴트값줘야됨
+문자열을 날짜로 줄 수 없다
+다른 페이지 컨트롤러에서 등록한 프로퍼티 에디터는 사용할 수 없다
+그래서 글로벌 프로퍼티에디터가 있는것
+
+46. 브라우저 정보는 요청헤더에서 user-agent에 들어있다
+".*Edg.*"
+. : 어떤 문자 한개
+* : 0개이상의 어떤 문자
+중간에 Edg가 있다면 엣지브라우저
+
+47. 쿠키
+@CookieValue(value = "name1", required = false) String name1
+false로 하면 해당 쿠키가 없더라도 에러를 띄우지않음
+쿠키를 보낼때 한글이 깨지면 이 예제를 보러와란
+
+48. multipart/form-data 형식의 파라미터 값 받기
+
+App1WebApplicationInitializer
+@Override
+  protected void customizeRegistration
+  오버라이딩이 중요
+
+49. 
+
+51. Entity : 데이터 덩어리
+52. 
+jsp는 무조건 web-inf밑에둔다
+접근못하게한다
+
+DS가
+RequestMappingHandlerMapping한테 물어봄
+1 DS한테 요청이 들어오면
+2 요청 핸들러 찾기 
+ - RMHM가 요청핸들러 정보를 리턴해줌
+8 
+
+53. 빈그릇좀 줘라
+스프링아 빈그릇좀줘라(Model)
+h2 : map은 빈그릇
+빈그릇 달라그런다음에 값을넣음
+
+-----------------------------------
+
+# app2
+
+31. 
+41. 인터셉터
+
+필터 3종 기술(그림)
+
+AOP : 모든객체에 대해서 메서드 호출 앞뒤로 꽂을수있다
+주로 서비스, DAO
+
+
+
 -----------------------------------
 
 ### 요청 핸들러의 파라미터

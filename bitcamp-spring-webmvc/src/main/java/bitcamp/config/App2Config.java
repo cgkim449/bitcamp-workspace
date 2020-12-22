@@ -36,7 +36,7 @@ public class App2Config implements WebMvcConfigurer {
     InternalResourceViewResolver vr = new InternalResourceViewResolver(//
         "/WEB-INF/jsp2/", // prefix
         ".jsp" // suffix
-    );
+        );
     return vr;
     // => prefix + 페이지컨트롤러 리턴 값 + suffix
     // 예) "/WEB-INF/jsp2/" + "board/list" + ".jsp" = /WEB-INF/jsp2/board/list.jsp
@@ -134,8 +134,8 @@ public class App2Config implements WebMvcConfigurer {
     // 즉, /c04_1/ 의 모든 하위 경로에 있는 자원에 대해서만 인터셉터를 적용한다.
     // 단 /c04_1/a/ 의 모든 하위 경로에 있는 자원은 제외한다.
     registry.addInterceptor(new Controller04_1_Interceptor4())//
-        .addPathPatterns("/c04_1/**") //
-        .excludePathPatterns("/c04_1/a/**");
+    .addPathPatterns("/c04_1/**") //
+    .excludePathPatterns("/c04_1/a/**");
   }
 }
 
