@@ -18,7 +18,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 // 멀티파트 형식으로 전송된 데이터는
-// 별도의 처리과정이 필요한다.
+// 별도의 처리과정이 필요하다.
 // 이 일을 대신 해주는 라이브러리가 있다.
 // => Apache 소프트웨어 재단(ASF)에서 제공하는 fileupload 라이브러리이다.
 // => search.maven.org 에서 'commons-fileupload' 검색한다.
@@ -45,31 +45,32 @@ public class Servlet04 extends GenericServlet {
 
     // 멀티파트 형식으로 보낸 첨부 파일 데이터를 읽는 방법
     // => Content-Type 헤더에 지정한 구분자를 사용하여 각 파트를 분리한 다음
-    // 데이터를 읽는다.
+    //    데이터를 읽는다.
     // => 문제는 기존에 제공하는 getParameter()로는 멀티파트 형식으로 전송된
-    // 데이터를 읽을 수 없다.
+    //    데이터를 읽을 수 없다.
     // => 방법?
     // 1) 개발자가 직접 멀티파트 형식을 분석하여 데이터를 추출한다.(X)
     // 2) 외부 라이브러리를 사용한다.
-    // - apache.org 사이트에서 제공하는 멀티파트 데이터 분석기를 사용한다.
-    // - 실무에서 예전에 많이 사용했다.
+    //    - apache.org 사이트에서 제공하는 멀티파트 데이터 분석기를 사용한다.
+    //    - 실무에서 예전에 많이 사용했다.
     // 3) Servlet 3.0 부터 제공하는 기능을 이용한다.
-    // - 실무에서 사용하던 그대로 계속 사용하는 바람에
-    // 서블릿에서 제공하는 방법을 개발자들이 잘 사용하지 않는다.
-    // - 그것이 문제다!
+    //    - 실무에서 사용하던 그대로 계속 사용하는 바람에
+    //      서블릿에서 제공하는 방법을 개발자들이 잘 사용하지 않는다.
+    //    - 그것이 문제다!
     // 4) Spring WebMVC를 사용한다면 해당 프레임워크에서 제공하는 기능을 이용한다.
-    // - Spring WebMVC를 설명할 때 실습하겠다.
+    //    - Spring WebMVC를 설명할 때 실습하겠다.
+    //
     // 테스트
     // - http://localhost:8080/java-web/ex04/test04.html 실행
     //
-
+    //
     // 멀티파트 데이터를 처리할 때는 다음의 인코딩 설정이 적용되지 않는다.
     // req.setCharacterEncoding("UTF-8");
-
+    //
     // getParameter()가 null을 리턴한다는 것을 확인하기 위해
     // 파라미터 모두 String으로 받는다.
     // => 멀티파트 형식으로 전송된 데이터는 getParameter()로 꺼낼 수 없다.
-
+    //
     // String age = req.getParameter("age");
     // String name = req.getParameter("name");
     // String photo = req.getParameter("photo");
@@ -79,7 +80,7 @@ public class Servlet04 extends GenericServlet {
     // out.printf("이름=%s\n", name);
     // out.printf("나이=%s\n", age);
     // out.printf("사진=%s\n", photo);
-
+    //
     // 멀티파트 형식의 데이터 처리하기
     // 1) Apache 라이브러리 가져온다.
     // - mvnrepository.com에서 apache fileupload 라이브러리 검색한다.
@@ -93,7 +94,6 @@ public class Servlet04 extends GenericServlet {
 
     // => 공장 객체를 사용하여 클라이언트가 보낸 데이터를 처리할 객체 준비
     ServletFileUpload multipartDataHandler = new ServletFileUpload(fileItemFactory);
-
 
     // => 분석한 데이터를 보관할 맵 객체를 준비한다.
     HashMap<String, String> paramMap = new HashMap<>();

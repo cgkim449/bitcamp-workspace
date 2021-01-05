@@ -19,13 +19,27 @@ var data = {
 };
 
 // 태그에 삽입할 HTML 내용을 다음과 같이 자바스크립트 코드로 작성한다. 
-var str = "번호: " + data.no + "<br>" +
-  "제목: " + data.title + "<br>" +
-  "작성자: " + data.writer + "<br>";
+var str = "<table border='1'>" + 
+"<tbody>" + 
+"<tr>" + 
+"  <th>번호</th>" + 
+"  <td>" + data.no + "</td>" + 
+"</tr>" + 
+"<tr>" + 
+"  <th>제목</th>" + 
+"  <td>" + data.title + "</td>" + 
+"</tr>" + 
+"<tr>" + 
+"  <th>작성자</th>" + 
+"  <td>" + data.writer + "</td>" + 
+"</tr>" + 
+"</tbody>" + 
+"</table>"; 
 
-$('#btn1').click(() => {
-  $('#d1').html(str)
-});
+var btn1Button = document.querySelector("#btn1");
+btn1Button.onclick = (event) => {
+  document.querySelector("#d1").innerHTML = str;
+};
 
 
 

@@ -29,6 +29,7 @@ tag1.onclick = function() {
   xhr.send();
   
   // JSON 형식의 문자열 데이터 ==> JavaScript 객체
+  console.log(xhr.responseText);
   var arr = JSON.parse(xhr.responseText);
   
   var trList = "";

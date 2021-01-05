@@ -35,12 +35,11 @@ public class Servlet04 extends GenericServlet {
     // => 웹 브라우저가 모르는 형식을 지정하면 웹 브라우저는 처리하지 못하기 때문에
     // 그냥 다운로드 대화상자를 띄운다.
     res.setContentType("image/jpeg");
-    // MIMETYPE 실수하면 다운로드 화면이뜸
 
     BufferedOutputStream out = new BufferedOutputStream(res.getOutputStream());
-    //속도빨라짐: inputStream에도 장착해도됨
+
     int b;
-    while ((b = in.read()) != -1) { // 1바이트씩읽어서
+    while ((b = in.read()) != -1) {
       out.write(b);
     }
 

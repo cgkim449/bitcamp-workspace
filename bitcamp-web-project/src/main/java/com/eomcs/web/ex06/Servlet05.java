@@ -22,7 +22,13 @@ public class Servlet05 extends HttpServlet {
       throws ServletException, IOException {
 
     // 컨텍스트 초기화 파라미터 값을 꺼내려면 ServletContext 객체가 있어야 한다.
+    // => 웹 애플리케이션 당 ServletContext 객체는 한 개이다.
+    // => 따라서 다음 코드 모두 같은 객체를 리턴한다.
     ServletContext sc = this.getServletContext();
+    ServletContext sc2 = req.getServletContext();
+    ServletContext sc3 = this.getServletConfig().getServletContext();
+    System.out.println(sc == sc2);
+    System.out.println(sc == sc3);
 
     System.out.printf("driver=%s\n", sc.getInitParameter("jdbc2.driver"));
     System.out.printf("url=%s\n", sc.getInitParameter("jdbc2.url"));

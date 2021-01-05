@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import com.eomcs.pms.dao.ProjectDao;
 import com.eomcs.pms.dao.TaskDao;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.service.ProjectService;
 
+// 트랜잭션 다루기 방법3:
+// => @Transactional 애노테이션을 사용하여 트랜잭션으로 묶어 작업해야 하는 메서드를 표시하기.
+//    - 단 @Transactional 애노테이션을 처리할 객체를 IoC 컨테이너에 등록해야 한다.
+//
+//
 @Service
 public class DefaultProjectService implements ProjectService {
 
@@ -19,52 +26,29 @@ public class DefaultProjectService implements ProjectService {
   public DefaultProjectService(
       TaskDao taskDao,
       ProjectDao projectDao) {
-
     this.projectDao = projectDao;
     this.taskDao = taskDao;
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public int delete(int no) throws Exception {
-    try {
-      /*
-      factoryProxy.startTransaction();
-      taskDao.deleteByProjectNo(no);
-      projectDao.deleteMembers(no);
-      //if (100 == 100) throw new Exception("일부러 예외 발생!");
-      int count = projectDao.delete(no);
 
-      factoryProxy.commit();
-       */
+    // 트랜잭션으로 다뤄야 할 작업을 이 메서드에 작성한다.
+    //          taskDao.deleteByProjectNo(no);
+    //          projectDao.deleteMembers(no);
+    //          return projectDao.delete(no);
 
-      return projectDao.inactive(no);
-
-    } catch (Exception e) {
-      //factoryProxy.rollback();
-      throw e; // 서비스 객체에서 발생한 예외는 호출자에게 전달한다.
-
-    } finally {
-      //factoryProxy.endTransaction();
-    }
+    return projectDao.inactive(no);
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public int add(Project project) throws Exception {
-    try {
-      projectDao.insert(project);
-
-      //if (100 == 100) throw new Exception("일부러 예외 발생!");
-
-      projectDao.insertMembers(project);
-
-      return 1;
-
-    } catch (Exception e) {
-      throw e;
-
-    } finally {
-
-    }
+    projectDao.insert(project);
+    //    if (100 == 100) throw new Exception("일부러 예외 발생!");
+    projectDao.insertMembers(project);
+    return 1;
   }
 
   @Override
@@ -102,42 +86,30 @@ public class DefaultProjectService implements ProjectService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public int update(Project project) throws Exception {
-    // 프로젝트 정보를 변경한다.
+    //1) 프로젝트 정보 변경
     int count = projectDao.update(project);
 
-    // 프로젝트 멤버를 변경한다.
-    // 1) 기존 멤버를 비활성화시킨다.
-    //    삭제하지 않고 왜?
-    //    - 삭제하면 그 회원이 했던 작업도 모두 삭제되기 때문이다.
-    //    - 그러면 프로젝트에서 수행한 작업 기록이 사라진다.
-    //
-    //    - 이전 프로젝트 정보(멤버 목록 포함)를 가져온다.
+    //2) 기존 멤버 비활성화
     Project oldProject = projectDao.findByNo(project.getNo());
-
-    //    - 이전 프로젝트의 전체 멤버를 비활성 상태로 만든다.
     if (oldProject.getMembers().size() > 0) {
       projectDao.updateInactiveMembers(oldProject);
     }
 
-    // 2) 변경한 프로젝트의 멤버를 활성 상태로 만든다.
+    //3) 선택한 멤버 활성화
     if (project.getMembers().size() > 0) {
       projectDao.updateActiveMembers(project);
     }
 
-    // 3) 프로젝트에 추가한 멤버를 등록한다.
+    //4) 새로 선택한 멤버 추가
     List<Member> addMembers = minusMembers(
         project.getMembers(),
         oldProject.getMembers());
-
     if (addMembers.size() > 0) {
-      // 파라미터로 받은 프로젝트 객체를 변경하지 않기 위해
-      // 새 프로젝트 객체를 만들어 사용한다.
-      // => 파라미터 값은 가능한 변경하지 말라!
       Project updateMembersProject = new Project();
       updateMembersProject.setNo(project.getNo());
       updateMembersProject.setMembers(addMembers);
-
       projectDao.insertMembers(updateMembersProject);
     }
 

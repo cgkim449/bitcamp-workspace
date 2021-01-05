@@ -12,7 +12,8 @@
 <script>
 "use strict"
 // onreadystatechange
-// => 비동기로 AJAX 요청을 하게 되면 작업 상태가 바뀔 때 마다 onreadystatechange로 등록한 
+// => 비동기로 AJAX 요청을 하게 되면 
+//    작업 상태가 바뀔 때 마다 onreadystatechange로 등록한 
 //    메서드가 호출된다.
 // => 작업 상태는 메서드가 호출될 때 마다 readyState 값을 검사해 보면 알 수 있다. 
 // => readyState의 값:
@@ -38,6 +39,8 @@ document.querySelector("#btn1").onclick = () => {
     };
     
     xhr.open("GET", "test3.jsp", true);
+    console.log("open() 리턴함.");
+    
     xhr.send();
     console.log("send() 리턴함.");
     

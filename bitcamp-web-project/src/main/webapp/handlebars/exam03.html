@@ -16,13 +16,25 @@
 <div id="d1"></div>
 
 <script id="t1" type="text/x-handlebars-template">
-번호: {{no}}<br>
-제목: {{title}}<br>
-작성자: {{writer}}<br>
+<table border="1">
+<tbody>
+  <tr>  
+    <th>번호</th>  
+    <td>{{no}}</td>
+  </tr>
+  <tr>  
+    <th>제목</th>  
+    <td>{{title}}</td>
+  </tr>
+  <tr>  
+    <th>작성자</th>  
+    <td>{{writer}}</td>
+  </tr>
+</tbody>
+</table>
 </script>
 
 <script src="../node_modules/handlebars/dist/handlebars.min.js"></script>
-<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script>
 var data = {
   no:1, 
@@ -30,22 +42,22 @@ var data = {
   writer:"홍길동"
 };
 
-$('#btn1').click(() => {
+document.querySelector("#btn1").onclick = () => {
   //1) Handlebars 템플릿 엔진이 사용할 HTML 소스를 준비한다.
   //   - 보통 script 태그에 작성한 HTML 소스를 가져온다.
-  var templateSrc = $('#t1').html();
+  var templateSrc = document.querySelector("#t1").innerHTML;
   
   //2) 템플릿 소스와 데이터를 가지고 HTML을 생성할 함수를 준비한다.
-  var f = Handlebars.compile(templateSrc);
+  var htmlGenerator = Handlebars.compile(templateSrc);
   
   //3) 템플릿을 처리하는 함수를 호출한다.
   //   - 이 함수는 파라미터로 받은 데이터를 사용하여 템플릿 소스의 지정된 위치에 값을 삽입한다.
   //   - 그리고 최종 생성된 HTML을 리턴한다.
-  var str = f(data);
+  var html = htmlGenerator(data);
   
   //4) 템플릿 함수가 리턴한 HTML을 div 태그에 넣는다.
-  $('#d1').html(str);
-});
+  document.querySelector("#d1").innerHTML = html;
+};
 
 
 

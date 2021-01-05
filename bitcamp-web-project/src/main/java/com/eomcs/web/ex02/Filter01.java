@@ -20,11 +20,11 @@ import javax.servlet.ServletResponse;
 // 필터의 용도
 // => 서블릿을 실행하기 전후에 필요한 작업을 수행
 // => 서블릿 실행 전
-// - 웹브라우저가 보낸 암호화된 파라미터 값을 서블릿으로 전달하기 전에 [암호 해제]하기
-// - 웹브라우저가 보낸 압축된 데이터를 서블릿으로 전달하기 전에 [압축 해제]하기
-// - 서블릿의 실행을 요청할 [권한]이 있는지 검사하기
-// - [로그인 사용자]인지 검사하기
-// - [로그] 남기기
+// - 웹브라우저가 보낸 암호화된 파라미터 값을 서블릿으로 전달하기 전에 암호 해제하기
+// - 웹브라우저가 보낸 압축된 데이터를 서블릿으로 전달하기 전에 압축 해제하기
+// - 서블릿의 실행을 요청할 권한이 있는지 검사하기
+// - 로그인 사용자인지 검사하기
+// - 로그 남기기
 // => 서블릿 실행 후
 // - 클라이언트로 보낼 데이터를 압축하기
 // - 클라이언트로 보낼 데이터를 암호화시키기
@@ -47,8 +47,11 @@ public class Filter01 implements Filter {
   }
 
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-      throws IOException, ServletException {
+  public void doFilter(
+      ServletRequest request,
+      ServletResponse response,
+      FilterChain chain)
+          throws IOException, ServletException {
     // 요청이 들어 올 때 마다 호출된다.
     // => 단 필터를 설정할 때 지정된 URL의 요청에만 호출된다.
     // => 서블릿이 실행되기 전에 필터가 먼저 실행된다.

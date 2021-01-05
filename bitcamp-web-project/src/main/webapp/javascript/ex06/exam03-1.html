@@ -16,8 +16,12 @@
 //
 document.getElementById("btn1").addEventListener("click", function(e) {
 	console.log(this);
+
 	// 이벤트가 발생한 객체의 속성 값 알아내기
 	console.log(this.getAttribute("data-no"));
+	
+	// 태그에 직접 추가한 속성은 다음과 같이 일반적인 방법으로 꺼낼 수 없다. 
+	console.log(this["data-no"]); // undefined
 });
 </script>
 </body>

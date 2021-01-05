@@ -25,11 +25,15 @@ document.querySelector("#btn1").onclick = () => {
     xhr.onreadystatechange = () => {
         if (xhr.readyState == 4) {
             if (xhr.status == 200) {
-            	// 서버에서 받은 JSON 문자열을 자바스크립트 객체로 변환한다.
-                var list = JSON.parse(xhr.responseText);
-            	
-            	// 배열을 반복하여 값을 꺼낸다.
-                for (var b of list) {
+
+                console.log(xhr.responseText);
+
+                // 서버에서 받은 JSON 문자열을 자바스크립트 객체로 변환한다.
+                var arr = JSON.parse(xhr.responseText);
+                console.log(arr);
+                
+                // 배열을 반복하여 값을 꺼낸다.
+                for (var b of arr) {
                 	// tr 태그를 만든다.
                 	var tr = document.createElement("tr");
                 	

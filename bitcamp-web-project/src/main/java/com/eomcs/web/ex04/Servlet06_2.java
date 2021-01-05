@@ -31,7 +31,7 @@ public class Servlet06_2 extends GenericServlet {
     // => 예) genre=1&genre=2&genre=4
     // => 다음과 같이 한 번에 값을 리턴 받는다.
     String[] genres = req.getParameterValues("genre");
-    String[] genreData = {"", "로맨틱", "스릴러", "호러", "드라마", "액션", "SF"};
+    String[] genreData = {"", "aaa", "bbb", "ccc", "ddd", "eee", "fff"};
 
     res.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = res.getWriter();

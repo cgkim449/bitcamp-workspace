@@ -31,17 +31,17 @@ var header = document.querySelector("#header"),
 })();
 
 (function() { // 꼬리말 가져오기
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                footer.innerHTML = xhr.responseText;
-            }
-        }
-    };
-    xhr.open("GET", "footer.html", true);
-    xhr.send();
-})();
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = () => {
+      if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+              footer.innerHTML = xhr.responseText;
+          }
+      }
+  };
+  xhr.open("GET", "footer.html", true);
+  xhr.send();
+}());
 
 </script>
 </body>

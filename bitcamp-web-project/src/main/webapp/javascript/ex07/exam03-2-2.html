@@ -32,12 +32,13 @@ document.querySelector("#btn1").onclick = () => {
     // => 서버에서 일부로 10초 정도 응답을 지연시켰다.
     // 
     // 해결책?
-    // => 서버에서 응답하는데 걸리는 시간(예: 5초)이 지난 후에
-    //    (넉넉하게 잡아서 13초 후에) responseText 변수를 사용하게 한다.
+    // => 서버에서 응답하는데 걸리는 시간(예: 10초)이 지난 후에
+    //    (넉넉하게 잡아서 13초 후에) responseText 변수의 값을 꺼낸다.
     // => 타임아웃에 함수를 등록해서 13초가 지난 후에 호출되면 
     //    responseText 변수의 값을 꺼내게 한다.
     window.setTimeout(() => {
-    	console.log("xhr.responseText 변수의 값을 꺼내 보자!")
+      console.log("13초가 지났다.")
+      console.log("xhr.responseText 변수의 값을 꺼내 보자!")
       ta.value = xhr.responseText;
     }, 13000);
     

@@ -6,7 +6,8 @@
 </head>
 <body>
 <h1>이벤트 - 리스너 등록하기</h1>
-<button id="btn1" onclick="var str='Hello'; window.alert(str);">버튼1</button><br>
+<button id="btn1-1" onclick="var str='Hello'; window.alert(str);">버튼1-1</button><br>
+<button id="btn1-2" onclick="btn1Click()">버튼1-2</button><br>
 <button id="btn2">버튼2</button><br>
 <button id="btn3">버튼3</button><br>
 
@@ -43,6 +44,12 @@
 //    => 사용자가 태그를 클릭하면 해당 이벤트에 등록된 함수가 호출된다.
 //    => 이 또한 HTML 태그와 자바스크립트 코드가 분리되어 있어서 유지보수에 좋다.
 //    => 특히 여러 개의 리스너를 등록할 수 있다.
+
+// 방법1:
+function btn1Click() {
+  var str = "Hello";
+  window.alert(str);
+}
 
 // 방법2:
 var btn2 = document.getElementById("btn2");
